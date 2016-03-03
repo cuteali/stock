@@ -2,7 +2,7 @@ class Order < ActiveRecord::Base
   belongs_to :address
   belongs_to :user
 
-  validates_uniqueness_of :order_no
+  validates :order_no, uniqueness: true
 
   before_create :generate_order_no
 
