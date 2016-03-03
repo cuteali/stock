@@ -22,5 +22,6 @@ else
     json.detail_category_id pop_product.detail_category_id.to_s
     json.hot_category_id pop_product.hot_category_id.to_s
     json.sale_count pop_product.sale_count.to_s
+    json.spec pop_product.spec.to_s
   end
 end
