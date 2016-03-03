@@ -17,7 +17,7 @@ class Order < ActiveRecord::Base
 
   private
     def generate_order_no
-      max_order_no = Order.maximum(:user_no) || 1603030
+      max_order_no = Order.maximum(:order_no) || 1603030
       self.order_no = max_order_no.succ
     end
 end
