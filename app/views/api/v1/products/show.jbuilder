@@ -3,6 +3,8 @@ if @product.present?
   json.product do
     json.unique_id @product.unique_id.to_s
     json.name @product.name.to_s
+    json.desc @product.desc.to_s
+    json.info @product.info.to_s
     json.images Image.get_images(@product).to_s
     json.unit @product.unit.present?? @product.unit.name.to_s : ""
     json.stock_num @product.stock_num.to_s
