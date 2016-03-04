@@ -59,7 +59,7 @@ module V1
         requires :unique_id, type: String
         requires :product_num, type: String
       end
-      post "", jbuilder: "v1/cart_items/edit_product_num" do
+      post "edit_product_num", jbuilder: "v1/cart_items/edit_product_num" do
         @token, @user = current_user
         if @token.present?
           @cart_item = CartItem.find_by(user_id: @user.id, unique_id: params[:unique_id])
