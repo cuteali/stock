@@ -36,13 +36,33 @@ module V1
       #http://localhost:3000/api/v1/cart_items
       params do 
         requires :token,type: String
-        requires :pro_unique_id,type:String
+        requires :pro_unique_id,type: String
       end
       post "",jbuilder:"v1/cart_items/create" do
         @token,@user = current_user
         if @token.present?
           product = Product.find_by(unique_id:params[:pro_unique_id])
-          @cart_item = CartItem.create(product_id:product.id,user_id:@user.id,unique_id:SecureRandom.urlsafe_base64)
+          @cart_item = CartItem.find_by(product_id: product.id, user_id: @user.id)
+          if @cart_item
+            @cart_item.product_num += 1
+            @cart_item.save
+          else
+            @cart_item = CartItem.create(product_id: product.id, user_id: @user.id, product_num: 1, unique_id: SecureRandom.urlsafe_base64)
+          end
+        end
+      end
+
+      #http://localhost:3000/api/v1/cart_items
+      params do 
+        requires :token, type: String
+        requires :unique_id, type: String
+        requires :product_num, type: String
+      end
+      post "", jbuilder: "v1/cart_items/edit_product_num" do
+        @token, @user = current_user
+        if @token.present?
+          @cart_item = CartItem.find_by(product_id: product.id, user_id: @user.id, unique_id: params[:unique_id])
+          @cart_item.product_num = params[:unique_id] if @cart_item
         end
       end
 

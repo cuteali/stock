@@ -6,6 +6,7 @@ else
     json.unique_id cart_item.unique_id.to_s
     json.user_unique_id cart_item.user.present? ? cart_item.user.unique_id.to_s : ""
     json.product_unique_id cart_item.product.present? ? cart_item.product.unique_id.to_s : ""
+    json.product_num cart_item.product_num.to_s
     if cart_item.product.present?
       json.product do
         json.unique_id cart_item.product.unique_id.to_s
