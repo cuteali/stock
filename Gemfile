@@ -57,5 +57,7 @@ gem 'grape'
 gem 'grape-jbuilder'
 gem 'redis'
 
+gem 'ransack'
+
 gem 'kaminari'
 

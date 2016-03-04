@@ -5,16 +5,29 @@
    <a href = "/admin">产品列表</a>
 </h2>
 <div class="product_weight">
-  <%= link_to '添加产品', new_admin_product_path, class: ' btn btn-success'%>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-1 row pull-left">
+          <%= link_to '添加产品', new_admin_product_path, class: 'btn btn-success'%>
+        </div>
+        <div class="col-md-3 row">
+            <%= f.label '产品名称：' %>
+            <%= f.search_field :name_cont, class: 'input-medium', placeholder:"产品名称" %>
+            <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
   <% if @products.present? %>
     <div class = "panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>id</th>
-            <th>name</th>
-            <th>desc</th>
-            <th>info</th>
+            <th>产品名称</th>
+            <th>产品描述</th>
+            <th>产品详情</th>
             <th>具体类别</th>
             <th>热门类别</th>
             <th>状态</th>
