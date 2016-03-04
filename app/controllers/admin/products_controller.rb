@@ -40,12 +40,24 @@ class Admin::ProductsController < Admin::BaseController
     end
   end
 
+  def select_category
+    options = SubCategory.where(category_id: params[:category_id]).order(:id)
+    html = Product.get_select_category_html(options)
+    render json: {html: html}
+  end
+
+  def select_sub_category
+    options = DetailCategory.where(sub_category_id: params[:sub_category_id]).order(:id)
+    html = Product.get_select_sub_category_html(options)
+    render json: {html: html}
+  end
+
   private
     def set_product
       @product = Product.find(params[:id])
     end
 
     def product_params
-      params.require(:product).permit(:name,:desc,:info,:state,:unit_id,:stock_num,:price,:old_price,:detail_category_id,:hot_category_id,:sale_count,:spec,:unit_price,:origin,:remark)
+      params.require(:product).permit(:name,:desc,:info,:state,:unit_id,:stock_num,:price,:old_price,:category_id,:sub_category_id,:detail_category_id,:hot_category_id,:sale_count,:spec,:unit_price,:origin,:remark)
     end
 end
