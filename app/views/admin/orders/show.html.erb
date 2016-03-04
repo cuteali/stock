@@ -79,7 +79,13 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td class="text-right" colspan="4">
+                  <td class="text-right" colspan="2">
+                    <strong>商品总数</strong>
+                  </td>
+                  <td>
+                    <%= @products.map { |h| h["number"] }.sum %>
+                  </td>
+                  <td class="text-right">
                     <strong>商品总额</strong>
                   </td>
                   <td>
