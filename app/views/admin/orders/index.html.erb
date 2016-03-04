@@ -12,15 +12,16 @@
         <thead>
           <tr>
             <th>id</th>
-            <th>user_id</th>
-            <th>state</th>
-            <th>phone_num</th>
-            <th>receive_name</th>
-            <th>address</th>
-            <th>products</th>
-            <th>create_time</th>
-            <th>delivery_time</th>
-            <th>complete_time</th>
+            <th>昵称</th>
+            <th>订单号</th>
+            <th>订单状态</th>
+            <th>收货人</th>
+            <th>手机号</th>
+            <th>收货地址</th>
+            <!--th>products</th-->
+            <th>创建时间</th>
+            <th>收货时间</th>
+            <th>完成时间</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -28,28 +29,31 @@
           <% @orders.each do |order|%>
             <tr>
               <td class="col-sm-1"><%=order.id%></td>
+              <td class="col-sm-1"><%=order.order_no%></td>
               <% if order.user.present? %>
                 <td class="col-sm-1"><%=order.user.user_name%></td>
               <% else %>
                 <td class="col-sm-1"></td>
               <% end %>
               <td class="col-sm-1"><%=order_state_show(order.state)%></td>
-              <td class="col-sm-1"><%=order.phone_num%></td>
               <td class="col-sm-1"><%=order.receive_name%></td>
+              <td class="col-sm-1"><%=order.phone_num%></td>
               <td class="col-sm-2"><%=address_show(order.address)%></td>
-              <td class="col-sm-2"></td>
+              <!--td class="col-sm-2"></td-->
               <td class="col-sm-2"><%=time_show(order.created_at)%></td>
               <td class="col-sm-2"><%=time_show(order.delivery_time)%></td>
               <td class="col-sm-2"><%=time_show(order.complete_time)%></td>
-              <td class="col-sm-2">
-               <%= link_to '修改',edit_admin_order_path(order)%>|
-               <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' }%> 
+              <td class="col-sm-4">
+                <%= link_to '详情',admin_order_path(order)%>|
+                <%= link_to '修改',edit_admin_order_path(order)%>|
+                <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' }%> 
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
     </div>
+    <%= paginate @orders %>
   <% else %>
     <div class="col-sm-offset-2">
       <h2>赶快来添加吧！</h2>

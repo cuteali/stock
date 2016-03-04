@@ -1,7 +1,7 @@
 class Admin::OrdersController < Admin::BaseController
-  before_action :set_order,only:[:edit,:update,:destroy]
+  before_action :set_order,only:[:edit,:update,:destroy,:show]
   def index
-    @orders = Order.all
+    @orders = Order.paged_list(params[:page],20)
   end
 
   def new
@@ -34,6 +34,10 @@ class Admin::OrdersController < Admin::BaseController
     else
       render 'new'
     end
+  end
+
+  def show
+    @products = JSON.parse(@order.products)
   end
 
   private 
