@@ -43,7 +43,7 @@ class API < Grape::API
   before do
     if params[:token]
       @token,@user = current_user
-      Rack::Response.new({ result: 2 }, 500, { 'Content-type' => 'application/json' }).finish unless @token
+      error!(result: 2) unless @token
     end
   end
 
