@@ -27,7 +27,6 @@ module V1
         requires :token,type: String
       end
       get ":token",jbuilder:"v1/cart_items/index" do
-        @token,@user = current_user
         if @token.present?
           @cart_items = @user.cart_items
         end
@@ -40,7 +39,6 @@ module V1
         requires :product_num, type: String
       end
       post "",jbuilder:"v1/cart_items/create" do
-        @token,@user = current_user
         if @token.present?
           product = Product.find_by(unique_id:params[:pro_unique_id])
           @cart_item = CartItem.find_by(product_id: product.id, user_id: @user.id)
@@ -60,7 +58,6 @@ module V1
         requires :product_num, type: String
       end
       post "edit_product_num", jbuilder: "v1/cart_items/edit_product_num" do
-        @token, @user = current_user
         if @token.present?
           @cart_item = CartItem.find_by(user_id: @user.id, unique_id: params[:unique_id])
           @cart_item.product_num = params[:product_num] if @cart_item
@@ -73,7 +70,6 @@ module V1
         requires :unique_ids,type:String
       end
       delete "",jbuilder:"v1/cart_items/delete" do
-        @token,@user = current_user
         AppLog.info("unique_ids: #{params[:unique_ids]}")
         unique_ids_json = JSON.parse(params[:unique_ids].gsub("\\",""))
         AppLog.info("unique_ids_json:  #{unique_ids_json}")

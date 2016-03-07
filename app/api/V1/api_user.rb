@@ -10,7 +10,6 @@ module V1
         requires :token, type: String
       end
       post "user_info", jbuilder: 'v1/users/show' do
-        @token,@user = current_user
         # phone_num_encrypt = params[:phone_num]
         # @user = User.find_by(phone_num:phone_num_encrypt)
       end
@@ -47,7 +46,6 @@ module V1
         requires :token, type: String
       end
       post 'token',jbuilder:"v1/users/token" do
-        @token,user = current_user
         if @token.present?
           @token = SecureRandom.urlsafe_base64
           redis_token = @user.phone_num + @user.unique_id
@@ -66,7 +64,6 @@ module V1
         #requires :head_portrait,type:String
       end
       put '',jbuilder:"v1/users/update" do 
-        @token,@user = current_user
         if @token.present?
           ActiveRecord::Base.transaction do
             @user.phone_num = params[:new_phone_num] if params[:new_phone_num].present?

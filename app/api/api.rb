@@ -39,6 +39,14 @@ class API < Grape::API
   # use Rack::PostBodyContentTypeParser
   formatter :json, Grape::Formatter::Jbuilder
   # stock app v1.0 版本
+
+  before do
+    if params[:token]
+      @token,@user = current_user
+      Rack::Response.new({ result: 2 }, 500, { 'Content-type' => 'application/json' }).finish unless @token
+    end
+  end
+
   mount V1::ApiCategory
   mount V1::ApiAdvert
   mount V1::ApiProduct

@@ -11,7 +11,6 @@ module V1
         requires :state,type: String
       end
       get "",jbuilder:"v1/orders/index" do
-        @token,@user = current_user
         if @token.present?
           state_json = JSON.parse(params[:state].gsub("\\",""))
           @orders = Order.where(state:state_json).where("user_id = ?",@user.id)
@@ -28,7 +27,6 @@ module V1
         requires :money,type:String
       end
       post "",jbuilder:"v1/orders/create" do
-        @token,@user = current_user
         if @token.present?
           AppLog.info("products : #{params[:products]}")
           address = Address.find_by(unique_id:params[:address_id])
@@ -57,7 +55,6 @@ module V1
         requires :unique_id,type:String
       end
       get ":unique_id",jbuilder:"v1/orders/show" do
-        @token,@user = current_user
         if @token.present?
           @order = Order.find_by(unique_id:params[:unique_id])
         end

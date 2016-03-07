@@ -10,7 +10,6 @@ module V1
         requires :token, type: String
       end
       get ":token", jbuilder: 'v1/addresses/index' do
-        @token,@user = current_user
         if @token.present?
           @addresses = @user.addresses
         end
@@ -26,7 +25,6 @@ module V1
         requires :default,type: String
       end
       post "",jbuilder: 'v1/addresses/new' do
-        @token,@user = current_user
         if @token.present?
           if params[:default] == "1"
             address_default = Address.find_by(user_id:@user.id,default:1)
@@ -47,7 +45,6 @@ module V1
         requires :token,type:String
       end
       put "",jbuilder: 'v1/addresses/update' do
-        @token,@user = current_user
         if @token.present?
           @address = Address.find_by(unique_id:params[:unique_id])
           if @address.present?
@@ -67,7 +64,6 @@ module V1
         requires :token,type:String
       end
       delete "",jbuilder:"v1/addresses/delete" do
-        @token,@user = current_user
         if @token.present?
           @address = Address.find_by(unique_id:params[:unique_id])
           if @address.present?
@@ -84,7 +80,6 @@ module V1
       end
       get "show/:unique_id",jbuilder:"v1/addresses/show" do
         AppLog.info("address:test")
-        @token,@user = current_user
         if @token.present?
           @address = Address.find_by(unique_id:params[:unique_id])
         end
@@ -96,7 +91,6 @@ module V1
         requires :token,type:String
       end
       get 'default/:token',jbuilder:"v1/addresses/show" do 
-        @token,@user = current_user
         if @token.present?
           @address = Address.find_by(user_id:@user.id,default:1)
         end
