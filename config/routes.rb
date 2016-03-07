@@ -8,7 +8,12 @@ Rails.application.routes.draw do
     resources :hot_categories
     resources :users
     resources :products do
-      get :select_category, :select_sub_category, on: :collection
+      collection do
+        get :select_category, :select_sub_category
+      end
+      member do
+        get :delete_image
+      end
     end
     resources :addresses
     resources :orders

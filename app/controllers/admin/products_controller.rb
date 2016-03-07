@@ -53,6 +53,14 @@ class Admin::ProductsController < Admin::BaseController
     render json: {html: html}
   end
 
+  def delete_image
+    image = Image.find(params[:id])
+    if image.delete
+      image.image.file.delete
+      redirect_to admin_product_path(image.target_id)
+    end
+  end
+
   private
     def set_product
       @product = Product.find(params[:id])
