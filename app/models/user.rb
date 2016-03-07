@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
     redis_rand_code = $redis.get(phone_num_encrypt)
     token = nil
     unique_id = nil
-    if phone_num_encrypt == "F59E10256A72D10742349BEBBFDD8FA8"
+    if phone_num_encrypt == 'F59E10256A72D10742349BEBBFDD8FA8' || 'D6694C9CC6FD5AC0D6EABF1C6CB04B9D'
       if rand_code == "1111"
         #1.验证正确,存入cookies.
         token = SecureRandom.urlsafe_base64
