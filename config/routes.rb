@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   mount API => '/'
   get 'admin'=>'admin/welcomes#index'
 
-  resources :service_agreement, only: :index
+  resources :service_agreement, only: :index do
+    collection do
+      get :app_download
+    end
+  end
 
   namespace :admin do
     resources :categories
