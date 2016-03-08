@@ -1,5 +1,15 @@
-.print-pdf {
+.print-hide {
+	display: none;
+}
+
+.print-pdf-hide {
 	@media print {
   	display: none;
+  }
+}
+
+.print-pdf-show {
+	@media print {
+  	display: inline !important;;
   }
 }

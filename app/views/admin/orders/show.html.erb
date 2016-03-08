@@ -1,9 +1,17 @@
 <div class="container-fluid main-content">
-  <div class="page-title print-pdf">
+  <div class="page-title print-pdf-hide">
     <h1>
       订单详情
     </h1>
   </div>
+  <center class="print-hide print-pdf-show">
+    <h1>
+      要货啦  送货单
+    </h1>
+    <h4>
+      要货啦客服电话：400-0050-383
+    </h4>
+  </center>
   <div class="invoice">
     <div class="row">
       <div class="col-lg-12">
@@ -12,9 +20,9 @@
             <h2>
               订单号：<%= @order.order_no %>
             </h2>
-            <p>
+            <h4>
               创建时间：<%= time_show(@order.created_at) %>
-            </p>
+            </h4>
           </div>
         </div>
       </div>
@@ -43,16 +51,19 @@
               <thead>
                 <th width="50"></th>
                 <th>
-                  产品
+                  货物名称
+                </th>
+                <th>
+                  规格
                 </th>
                 <th width="70">
                   数量
                 </th>
                 <th width="100">
-                  单位价格
+                  单价
                 </th>
                 <th width="100">
-                  总价格
+                  金额
                 </th>
               </thead>
               <tbody>
@@ -64,6 +75,9 @@
                     </td>
                     <td>
                       <%= product.name %>
+                    </td>
+                    <td>
+                      <%= product.spec %>
                     </td>
                     <td>
                       <%= pro_hash["number"].to_s %>
@@ -79,7 +93,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td class="text-right" colspan="2">
+                  <td class="text-right" colspan="3">
                     <strong>商品总数</strong>
                   </td>
                   <td>
@@ -109,7 +123,7 @@
                   </td>
                 </tr-->
                 <tr>
-                  <td class="text-right" colspan="4">
+                  <td class="text-right" colspan="5">
                     <h4 class="text-primary">
                       总计
                     </h4>
@@ -136,7 +150,7 @@
         </div>
       </div>
     </div-->
-    <div class="row print-pdf">
+    <div class="row print-pdf-hide">
       <div class="col-lg-12">
         <a class="btn btn-primary pull-right" onclick="javascript:window.print();"><i class="icon-print"></i>打印订单</a>
       </div>
