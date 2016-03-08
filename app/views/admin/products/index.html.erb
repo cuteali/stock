@@ -61,9 +61,9 @@
                 <td class="col-sm-1">暂无</td>
               <% end %>
               <% if product.state == 0 %>
-                <td class="col-sm-1">下架</td>
-              <% else %>
                 <td class="col-sm-1">上架</td>
+              <% else %>
+                <td class="col-sm-1">下架</td>
               <% end %>
               <% if product.unit.present? %>
                 <td class="col-sm-1"><%=product.unit.name%></td>
