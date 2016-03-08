@@ -1,7 +1,7 @@
 require 'net/http'
 require 'uri'
 module Sms
-  def self.send_sms(mobile_encrypt)
+  def self.send_sms(mobile_encrypt, text)
     mobile = AesUtil.aes_dicrypt($key,mobile_encrypt)
     AppLog.info("mobile: #{mobile}")
     params = {}
@@ -9,10 +9,6 @@ module Sms
     apikey = '7c5ab5d6099fdaa4424fd0ad8ca29388'
     #修改为您要发送的手机号码，多个号码用逗号隔开
     # mobile = '18301849268'
-    #修改为您要发送的短信内容
-    text = '【要货啦】您的验证码是'
-    rand = self.rand_code
-    text += rand
 
     #指定模板发送接口HTTP地址
     send_sms_uri = URI.parse('https://sms.yunpian.com/v1/sms/send.json')
