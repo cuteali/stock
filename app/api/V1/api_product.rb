@@ -39,6 +39,17 @@ module V1
           end
         end
       end
+
+      # http://localhost:3000/api/v1/products/sub_category/:unique_id
+      params do
+        requires :unique_id, type: String
+      end
+      get "sub_category/:unique_id", jbuilder: 'v1/products/sub_category' do
+        @sub_category = SubCategory.find_by(unique_id: params[:unique_id])
+        if @sub_category
+          @products = Product.where(sub_category_id: @sub_category.id)
+        end
+      end
     end
   end
 end
