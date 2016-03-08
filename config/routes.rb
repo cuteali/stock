@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
   mount API => '/'
   get 'admin'=>'admin/welcomes#index'
+
+  resources :service_agreement, only: :index
+
   namespace :admin do
     resources :categories
     resources :sub_categories

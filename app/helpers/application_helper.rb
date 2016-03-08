@@ -1,4 +1,13 @@
 module ApplicationHelper
+  def full_title(page_title)
+    base_title = "QuanZhen"
+    if page_title.empty?
+      base_title
+    else
+      "#{base_title} | #{page_title}"
+    end
+  end
+
   def time_show(time)
     time.strftime("%Y-%m-%d %H:%M:%S") if time.present?
   end
