@@ -1,7 +1,7 @@
 require 'net/http'
 require 'uri'
 module Sms
-  def self.send_sms(mobile_encrypt, text)
+  def self.send_sms(mobile_encrypt, text, rand=nil)
     mobile = AesUtil.aes_dicrypt($key,mobile_encrypt)
     AppLog.info("mobile: #{mobile}")
     params = {}
@@ -22,8 +22,10 @@ module Sms
     response = JSON.parse(response.body)
     AppLog.info("response:  #{response}")
     if response["code"] == 0
-      $redis.set(mobile_encrypt,rand)
-      $redis.expire(mobile_encrypt,1800)
+      if rand
+        $redis.set(mobile_encrypt,rand)
+        $redis.expire(mobile_encrypt,1800)
+      end
       AppLog.info("#{$redis.get(mobile_encrypt)}")
       return "success"
     else
