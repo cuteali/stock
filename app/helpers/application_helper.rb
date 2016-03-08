@@ -64,7 +64,7 @@ module ApplicationHelper
   def state_list
     state = []
     state << ["请选择",""]
-    state += [["上架",0],["下架",1]]
+    state += [["上架",1],["下架",0]]
   end
 
   def product_list

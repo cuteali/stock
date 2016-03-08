@@ -2,7 +2,7 @@
   产品列表
 <% end %>
 <h2 class="col-sm-offset-5">
-   <a href = "/admin">产品列表</a>
+   <a href = "/admin/products">产品列表</a>
 </h2>
 <div class="product_weight">
   <div class="row">
@@ -60,7 +60,7 @@
               <% else %>
                 <td class="col-sm-1">暂无</td>
               <% end %>
-              <% if product.state == 0 %>
+              <% if product.state == 1 %>
                 <td class="col-sm-1">上架</td>
               <% else %>
                 <td class="col-sm-1">下架</td>
