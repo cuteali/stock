@@ -21,7 +21,7 @@ module V1
       post 'send_sms',jbuilder:"v1/users/send_sms" do
         phone_num_encrypt = params[:phone_num]
         rand = Sms.rand_code
-        text = '【要货啦】您的验证码是#{rand}'
+        text = "【要货啦】您的验证码是#{rand}"
         @info = Sms.send_sms(phone_num_encrypt, text, rand)
         AppLog.info("info:#{@info}")
       end
