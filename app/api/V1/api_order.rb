@@ -47,8 +47,9 @@ module V1
             @cart_items.destroy_all if @cart_items.present?
             if @order
               phone_num_encrypt = 'F59E10256A72D10742349BEBBFDD8FA8'
-              text = "您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
-              Sms.send_sms(phone_num_encrypt, text)
+              text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
+              @info = Sms.send_sms(phone_num_encrypt, text)
+              AppLog.info("info:#{@info}")
             end
           end
         end
