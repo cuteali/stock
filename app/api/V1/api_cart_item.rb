@@ -51,7 +51,7 @@ module V1
         end
       end
 
-      #http://localhost:3000/api/v1/cart_items
+      #http://localhost:3000/api/v1/cart_items/edit_product_num
       params do 
         requires :token, type: String
         requires :unique_id, type: String
@@ -61,6 +61,21 @@ module V1
         if @token.present?
           @cart_item = CartItem.find_by(user_id: @user.id, unique_id: params[:unique_id])
           @cart_item.product_num = params[:product_num] if @cart_item
+        end
+      end
+
+      #http://localhost:3000/api/v1/cart_items/order_batch_entry
+      params do 
+        requires :token, type: String
+        requires :unique_id, type: String
+      end
+      post "order_batch_entry", jbuilder: "v1/cart_items/order_batch_entry" do
+        if @token.present?
+          @order = Order.find_by(unique_id:params[:unique_id])
+          JSON.parse(@order.products) do |pro_hash|
+            product = Product.find_by(unique_id:pro_hash["unique_id"])
+            CartItem.create(product_id: product.id, user_id: @user.id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+          end
         end
       end
 
