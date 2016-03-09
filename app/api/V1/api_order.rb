@@ -35,7 +35,7 @@ module V1
           AppLog.info("products_json : #{products_json}")
           ActiveRecord::Base.transaction do 
             product_arr = JSON.parse(products_json)
-            @stock_num_result = Product.validate_stock_num(products)
+            @stock_num_result = Product.validate_stock_num(product_arr)
             if @stock_num_result == 0
               pro_ids = Product.edit_stock_num(product_arr)
               AppLog.info("pro_ids:      #{pro_ids}")
