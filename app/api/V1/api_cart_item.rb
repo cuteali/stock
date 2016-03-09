@@ -72,9 +72,14 @@ module V1
       post "order_batch_entry", jbuilder: "v1/cart_items/order_batch_entry" do
         if @token.present?
           @order = Order.find_by(unique_id:params[:unique_id])
-          JSON.parse(@order.products).each do |pro_hash|
-            product = Product.find_by(unique_id: pro_hash["unique_id"])
-            CartItem.create(product_id: product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+          product_arr = JSON.parse(@order.products)
+          @stock_num_result = Product.validate_stock_num(product_arr)
+          if @stock_num_result == 0
+            product_arr.each do |pro_hash|
+              product = Product.find_by(unique_id: pro_hash["unique_id"])
+              CartItem.create(product_id: product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+            end
+            @result = true
           end
         end
       end
