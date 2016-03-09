@@ -1,5 +1,5 @@
 class Admin::ProductsController < Admin::BaseController
-  before_action :set_product,only:[:edit,:update,:destroy,:show]
+  before_action :set_product, only: [:edit, :update, :destroy, :show, :image]
   
   def index
     @q = Product.ransack(params[:q])
@@ -16,7 +16,7 @@ class Admin::ProductsController < Admin::BaseController
   def update
     image_params = params[:product][:image]
     if @product.update(product_params)
-        ImageUtil.image_upload(image_params,"Product",@product.id)
+        ImageUtil.image_upload(image_params, "Product", @product.id)
         redirect_to admin_products_path
       else
         render 'edit' 
@@ -33,7 +33,7 @@ class Admin::ProductsController < Admin::BaseController
     @product.unique_id = SecureRandom.urlsafe_base64
     image_params = params[:product][:image]
     if @product.save
-      ImageUtil.image_upload(image_params,"Product",@product.id)
+      ImageUtil.image_upload(image_params, "Product", @product.id)
       redirect_to admin_products_path
     else
       render 'new'
@@ -60,12 +60,15 @@ class Admin::ProductsController < Admin::BaseController
     end
   end
 
+  def image
+  end
+
   private
     def set_product
       @product = Product.find(params[:id])
     end
 
     def product_params
-      params.require(:product).permit(:name,:desc,:info,:state,:unit_id,:stock_num,:price,:old_price,:category_id,:sub_category_id,:detail_category_id,:hot_category_id,:sale_count,:spec,:unit_price,:origin,:remark)
+      params.require(:product).permit(:name, :desc, :info, :state, :unit_id, :stock_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark)
     end
 end

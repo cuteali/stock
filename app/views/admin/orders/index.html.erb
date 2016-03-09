@@ -24,12 +24,12 @@
     </div>
   </div>
   <% if @orders.present? %>
-    <div class = "panel panel-default">
+    <div class="panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>id</th>
-            <th>昵称</th>
+            <!--th>昵称</th-->
             <th>订单号</th>
             <th>订单状态</th>
             <th>收货人</th>
@@ -46,23 +46,19 @@
           <% @orders.each do |order| %>
             <tr>
               <td class="col-sm-1"><%= order.id %></td>
-              <% if order.user.present? %>
-                <td class="col-sm-1"><%= order.user.user_name %></td>
-              <% else %>
-                <td class="col-sm-1"></td>
-              <% end %>
+              <!--td class="col-sm-1"><%#= order.user.try(:user_name) %></td-->
               <td class="col-sm-1"><%= order.order_no %></td>
               <td class="col-sm-1"><%= order_state_show(order.state) %></td>
               <td class="col-sm-1"><%= order.receive_name %></td>
               <td class="col-sm-1"><%= order.phone_num %></td>
               <td class="col-sm-2"><%= address_show(order.address) %></td>
               <!--td class="col-sm-2"></td-->
-              <td class="col-sm-2"><%= time_show(order.created_at) %></td>
-              <td class="col-sm-2"><%= time_show(order.delivery_time) %></td>
-              <td class="col-sm-2"><%= time_show(order.complete_time) %></td>
-              <td class="col-sm-4">
-                <%= link_to '详情', admin_order_path(order) %>|
-                <%= link_to '修改', edit_admin_order_path(order) %>|
+              <td class="col-sm-1"><%= time_show(order.created_at) %></td>
+              <td class="col-sm-1"><%= time_show(order.delivery_time) %></td>
+              <td class="col-sm-1"><%= time_show(order.complete_time) %></td>
+              <td class="col-sm-2">
+                <%= link_to '详情', admin_order_path(order) %> |
+                <%= link_to '修改', edit_admin_order_path(order) %> |
                 <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>

@@ -1,11 +1,83 @@
-<div class="col-sm-offset-3">
-  <h2>显示产品图片</h2>
+<div class="container">
+	<div class="page-title">
+    <h1>
+      详情
+    </h1>
+  </div>
+	<form>
+	  <div class="modal-body">
+	    <p>
+	      <span><b>产品名称：</b></span>
+	      <span><%= @product.name %></span>
+	    </p>
+	    <p>
+	      <span><b>产品描述：</b></span>
+	      <span><%= @product.desc %></span>
+	    </p>
+	    <p>
+	      <span><b>产品详情：</b></span>
+	      <span><%= @product.info %></span>
+	    </p>
+	    <p>
+	      <span><b>大类别：</b></span>
+	      <span><%= @product.category.try(:name) || '暂无' %></span>
+	    </p>
+	    <p>
+	      <span><b>子类别：</b></span>
+	      <span><%= @product.sub_category.try(:name) || '暂无' %></span>
+	    </p>
+	    <p>
+	      <span><b>具体类别：</b></span>
+	      <span><%= @product.detail_category.try(:name) || '暂无' %></span>
+	    </p>
+	    <p>
+	      <span><b>热门类别：</b></span>
+	      <span><%= @product.hot_category.try(:name) || '暂无' %></span>
+	    </p>
+	    <p>
+	      <span><b>状态：</b></span>
+	      <span><%= @product.state == 1 ? '上架' : '下架' %></span>
+	    </p>
+	    <p>
+	      <span><b>单位：</b></span>
+	      <span><%= @product.unit.try(:name) || '暂无' %></span>
+	    </p>
+	    <p>
+	      <span><b>销量：</b></span>
+	      <span><%= @product.sale_count %></span>
+	    </p>
+	    <p>
+	      <span><b>库存数量：</b></span>
+	      <span><%= @product.stock_num %></span>
+	    </p>
+	    <p>
+	      <span><b>现价：</b></span>
+	      <span><%= @product.price %></span>
+	    </p>
+	    <p>
+	      <span><b>原价：</b></span>
+	      <span><%= @product.old_price %></span>
+	    </p>
+	    <p>
+	      <span><b>规格：</b></span>
+	      <span><%= @product.spec %></span>
+	    </p>
+	    <p>
+	      <span><b>单价：</b></span>
+	      <span><%= @product.unit_price %></span>
+	    </p>
+	    <p>
+	      <span><b>产地：</b></span>
+	      <span><%= @product.origin %></span>
+	    </p>
+	    <p>
+	      <span><b>备注：</b></span>
+	      <span><%= @product.remark %></span>
+	    </p>
+	  </div>
+	  <div class="clearfix"></div>
+	  <div class="modal-footer">
+	    <button type="button" class="btn btn-sm btn-primary" onclick="javascript:history.go(-1);">返回</button>
+	  </div>
+	</form>
 </div>
-<div class = "panel panel-default">
-  <% @product.images.each do |image| %>
-  	<div>
-    	<%= image_tag image.image.url, size:"200x200" %>
-    	<%= link_to '删除', delete_image_admin_product_path(image) %>
-    </div>
-  <% end %>
-<div>

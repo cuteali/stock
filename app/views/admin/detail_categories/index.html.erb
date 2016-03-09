@@ -2,46 +2,41 @@
   具体类别列表
 <% end %>
 <h2 class="col-sm-offset-5">
-   <a href = "/admin/detail_categories">具体类别列表</a>
+   <a href="/admin/detail_categories">具体类别列表</a>
 </h2>
 <div class="container">
-  <%= link_to '添加具体类别', new_admin_detail_category_path, class: ' btn btn-success'%>
+  <%= link_to '添加具体类别', new_admin_detail_category_path, class: 'btn btn-success' %>
   <% if @categories.present? %>
-    <div class = "panel panel-default">
+    <div class="panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>id</th>
-            <th>title</th>
-            <th>desc</th>
+            <th>类别名称</th>
+            <th>类别描述</th>
             <th>子类别</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <% @categories.each do |category|%>
+          <% @categories.each do |category| %>
             <tr>
-              <td class="col-sm-2"><%=category.id%></td>
-              <td class="col-sm-2"><%=category.name%></td>
-              <td class="col-sm-2"><%=category.desc%></td>
-              <% if category.sub_category.present? %>
-                <td class="col-sm-2"><%=category.sub_category.name%></td>
-              <% else %>
-                <td class="col-sm-2">暂无</td>
-              <% end %>
-              <td class="col-sm-2">
-               <%= link_to '修改',edit_admin_detail_category_path(category)%>|
-               <%= link_to '删除', admin_detail_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' }%> 
+              <td class="col-sm-1"><%= category.id %></td>
+              <td class="col-sm-1"><%= category.name %></td>
+              <td class="col-sm-2"><%= category.desc %></td>
+              <td class="col-sm-1"><%= category.sub_category.try(:name) || '暂无' %></td>
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_detail_category_path(category) %> |
+               <%= link_to '删除', admin_detail_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>
-          
         </tbody>
       </table>
     </div>
   <% else %>
     <div class="col-sm-offset-2">
-      <h2>赶快来添加吧！</h2>
+      <h2>暂无</h2>
     </div>
   <% end %>
 </div>

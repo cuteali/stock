@@ -1,0 +1,11 @@
+<div class="col-sm-offset-3">
+  <h2>显示产品图片</h2>
+</div>
+<div class = "panel panel-default">
+  <% @product.images.each do |image| %>
+  	<div>
+    	<%= image_tag image.image.url, size:"200x200" %>
+    	<%= link_to '删除', delete_image_admin_product_path(image) %>
+    </div>
+  <% end %>
+<div>

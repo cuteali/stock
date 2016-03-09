@@ -22,7 +22,7 @@
     </div>
   </div>
   <% if @users.present? %>
-    <div class = "panel panel-default">
+    <div class="panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -30,7 +30,7 @@
             <th>昵称</th>
             <th>头像</th>
             <th>状态</th>
-            <th>token</th>
+            <!--th>token</th-->
             <th>地址</th>
             <th>电话</th>
             <!--th>注册时间</th-->
@@ -49,13 +49,13 @@
               <% else %>
                 <td class="col-sm-1">认证</td>
               <% end %>
-              <td class="col-sm-1"><%= user.token %></td>
+              <!--td class="col-sm-1"><%#= user.token %></td-->
               <td class="col-sm-1"><%= address_show(user.addresses.first) %></td>
               <td class="col-sm-1"><%= user.phone%></td>
               <!--td class="col-sm-1"><%#=time_show(user.register_time)%></td-->
               <td class="col-sm-1"><%= user.rand %></td>
-              <td class="col-sm-2">
-               <%= link_to '修改', edit_admin_user_path(user) %>|
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_user_path(user) %> |
                <%= link_to '删除', admin_user_path(user), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>

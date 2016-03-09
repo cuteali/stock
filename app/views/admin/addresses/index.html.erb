@@ -20,7 +20,7 @@
     </div>
   </div>
   <% if @address.present? %>
-    <div class = "panel panel-default">
+    <div class="panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -48,8 +48,8 @@
               <td class="col-sm-1"><%= add.region %></td>
               <td class="col-sm-1"><%= add.area %></td>
               <td class="col-sm-2"><%= add.detail %></td>
-              <td class="col-sm-2">
-               <%= link_to '修改', edit_admin_address_path(add) %>|
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_address_path(add) %> |
                <%= link_to '删除', admin_address_path(add), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>

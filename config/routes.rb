@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         get :select_category, :select_sub_category
       end
       member do
-        get :delete_image
+        get :delete_image, :image
       end
     end
     resources :addresses
