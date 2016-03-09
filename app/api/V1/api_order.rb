@@ -34,22 +34,21 @@ module V1
           products_json = params[:products].gsub("\\","")
           AppLog.info("products_json : #{products_json}")
           ActiveRecord::Base.transaction do 
-            @order = Order.create(state:0,phone_num:params[:phone_num],receive_name:params[:receive_name],products:products_json,user_id:@user.id,address_id:address_id,order_money:params[:money],unique_id:SecureRandom.urlsafe_base64)
             product_arr = JSON.parse(products_json)
-            pro_unique_ids = product_arr.map do |p|
-              p["unique_id"]
-            end
-            AppLog.info("pro_unique_ids:      #{pro_unique_ids}")
-            pro_ids = Product.where(unique_id:pro_unique_ids).pluck(:id)
-            AppLog.info("pro_ids:      #{pro_ids}")
-            @cart_items = CartItem.where("user_id = ?",@user.id).where(product_id:pro_ids)
-            AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
-            @cart_items.destroy_all if @cart_items.present?
-            if @order
-              phone_num_encrypt = 'F59E10256A72D10742349BEBBFDD8FA8'
-              text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
-              @info = Sms.send_sms(phone_num_encrypt, text)
-              AppLog.info("info:#{@info}")
+            @stock_num_result = Product.validate_stock_num(products)
+            if @stock_num_result == 0
+              pro_ids = Product.edit_stock_num(product_arr)
+              AppLog.info("pro_ids:      #{pro_ids}")
+              @order = Order.create(state:0,phone_num:params[:phone_num],receive_name:params[:receive_name],products:products_json,user_id:@user.id,address_id:address_id,order_money:params[:money],unique_id:SecureRandom.urlsafe_base64)
+              @cart_items = CartItem.where("user_id = ?",@user.id).where(product_id:pro_ids)
+              AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
+              @cart_items.destroy_all if @cart_items.present?
+              if @order
+                phone_num_encrypt = 'F59E10256A72D10742349BEBBFDD8FA8'
+                text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
+                @info = Sms.send_sms(phone_num_encrypt, text)
+                AppLog.info("info:#{@info}")
+              end
             end
           end
         end

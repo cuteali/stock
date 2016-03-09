@@ -31,4 +31,32 @@ class Product < ActiveRecord::Base
     html << "</select>" if options
     return html
   end
+
+  def self.validate_stock_num(products)
+    result = 0
+    products.each do |p|
+      product = Product.find_by(unique_id: p["unique_id"])
+      if product.stock_num < p["number"].to_i
+        result = 3
+        break
+      end
+    end
+    result
+  end
+
+  def self.edit_stock_num(products)
+    pro_ids = []
+    products.each do |p|
+      product = Product.find_by(unique_id: p["unique_id"])
+      if product.stock_num >= p["number"].to_i
+        pro_ids << product.id
+        product.stock_num -= p["number"].to_i
+        product.sale_count += p["number"].to_i
+        product.save
+      else
+        break
+      end
+    end
+    pro_ids
+  end
 end
