@@ -5,45 +5,58 @@
    <a href = "/admin/users">用户列表</a>
 </h2>
 <div class="container">
-  <%= link_to '添加用户', new_admin_user_path, class: ' btn btn-success'%>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-2 row pull-left">
+          <%= link_to '添加用户', new_admin_user_path, class: ' btn btn-success'%>
+        </div>
+        <div class="col-md-6 row">
+          <%= f.label '昵称：' %>
+          <%= f.search_field :user_name_cont, class: 'input-medium', placeholder:"昵称" %>
+          <%= f.label '电话：' %>
+          <%= f.search_field :phone_cont, class: 'input-medium', placeholder:"电话" %>
+          <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
   <% if @users.present? %>
     <div class = "panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>id</th>
-            <th>user_id</th>
-            <th>user_name</th>
-            <th>head_portrait</th>
-            <th>identification</th>
+            <th>昵称</th>
+            <th>头像</th>
+            <th>状态</th>
             <th>token</th>
-            <th>address</th>
-            <th>phone_num</th>
-            <th>register_time</th>
-            <th>rand</th>
+            <th>地址</th>
+            <th>电话</th>
+            <!--th>注册时间</th-->
+            <th>等级</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
           <% @users.each do |user|%>
             <tr>
-              <td class="col-sm-1"><%=user.id%></td>
-              <td class="col-sm-1"><%=user.user_id%></td>
-              <td class="col-sm-1"><%=user.user_name%></td>
-              <td class="col-sm-1"><%=image_tag user_image(user),size:"100x100"%></td>
-              <%if user.identification == 0%>
+              <td class="col-sm-1"><%= user.id %></td>
+              <td class="col-sm-1"><%= user.user_name %></td>
+              <td class="col-sm-1"><%= image_tag user_image(user), size:"100x100" %></td>
+              <% if user.identification == 0 %>
                 <td class="col-sm-1">未认证</td>
-              <%else %>
+              <% else %>
                 <td class="col-sm-1">认证</td>
               <% end %>
-              <td class="col-sm-1"><%=user.token%></td>
-              <td class="col-sm-1"><%=address_show(user.addresses.first)%></td>
-              <td class="col-sm-1"><%=user.phone_num%></td>
-              <td class="col-sm-1"><%=time_show(user.register_time)%></td>
-              <td class="col-sm-1"><%=user.rand%></td>
+              <td class="col-sm-1"><%= user.token %></td>
+              <td class="col-sm-1"><%= address_show(user.addresses.first) %></td>
+              <td class="col-sm-1"><%= user.phone%></td>
+              <!--td class="col-sm-1"><%#=time_show(user.register_time)%></td-->
+              <td class="col-sm-1"><%= user.rand %></td>
               <td class="col-sm-2">
-               <%= link_to '修改',edit_admin_user_path(user)%>|
-               <%= link_to '删除', admin_user_path(user), method: :delete, data: { confirm: '确定要删除吗？' }%> 
+               <%= link_to '修改', edit_admin_user_path(user) %>|
+               <%= link_to '删除', admin_user_path(user), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>

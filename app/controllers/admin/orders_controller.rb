@@ -1,7 +1,7 @@
 class Admin::OrdersController < Admin::BaseController
   before_action :set_order,only:[:edit,:update,:destroy,:show]
   def index
-    @orders = Order.paged_list(params[:page],20)
+    @orders = Order.page(params[:page]).per(20)
   end
 
   def new

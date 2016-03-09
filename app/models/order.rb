@@ -6,8 +6,6 @@ class Order < ActiveRecord::Base
 
   before_create :generate_order_no
 
-  scope :paged_list, ->(p,n){ page(p).per(n) }
-  
   def get_address
     address = self.address
     if address.present?

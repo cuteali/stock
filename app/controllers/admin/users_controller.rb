@@ -1,7 +1,8 @@
 class Admin::UsersController < Admin::BaseController
   before_action :set_user,only:[:edit,:update,:destroy]
   def index
-    @users = User.all
+    @q = User.ransack(params[:q])
+    @users = @q.result.page(params[:page]).per(20)
   end
 
   def new
@@ -31,6 +32,7 @@ class Admin::UsersController < Admin::BaseController
     @user = User.new(user_params)
     @user.unique_id = SecureRandom.urlsafe_base64
     @user.user_id = SecureRandom.hex(10)
+    @user.phone_num = AesUtil.aes_encrypt($key, params[:user][:phone])
     if @user.save
       ImageUtil.image_upload(image_params,"User",@user.id)
       redirect_to admin_users_path
@@ -52,6 +54,6 @@ class Admin::UsersController < Admin::BaseController
     end
 
     def user_params
-      params.require(:user).permit(:user_name,:identification,:token,:address_id,:phone_num,:rand,:address_id,:register_time)
+      params.require(:user).permit(:user_name,:identification,:token,:address_id,:phone,:rand,:address_id)
     end
 end

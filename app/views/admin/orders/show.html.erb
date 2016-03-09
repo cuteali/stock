@@ -97,7 +97,7 @@
                     <strong>商品总数</strong>
                   </td>
                   <td>
-                    <%= @products.map { |h| h["number"] }.sum %>
+                    <%= @products.map { |h| h["number"].to_i }.sum %>
                   </td>
                   <td class="text-right">
                     <strong>商品总额</strong>

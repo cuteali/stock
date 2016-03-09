@@ -4,7 +4,7 @@ class Admin::ProductsController < Admin::BaseController
   
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.paged_list(params[:page],20)
+    @products = @q.result.page(params[:page]).per(20)
   end
 
   def new
