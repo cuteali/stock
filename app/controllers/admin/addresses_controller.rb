@@ -1,7 +1,9 @@
 class Admin::AddressesController < Admin::BaseController
   before_action :set_address,only:[:edit,:update,:destroy]
+  
   def index
-    @address = Address.all
+    @q = Address.ransack(params[:q])
+    @address = @q.result.page(params[:page]).per(20)
   end
 
   def new

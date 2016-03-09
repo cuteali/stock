@@ -2,40 +2,55 @@
   地址列表
 <% end %>
 <h2 class="col-sm-offset-5">
-   <a href = "/admin/addresses">地址列表</a>
+   <a href="/admin/addresses">地址列表</a>
 </h2>
 <div class="container">
-  <%= link_to '添加地址', new_admin_address_path, class: ' btn btn-success'%>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-2 row pull-left">
+          <%= link_to '添加地址', new_admin_address_path, class: 'btn btn-success' %>
+        </div>
+        <div class="col-md-8 row">
+          <%= f.label '详细地址：' %>
+          <%= f.search_field :detail_cont, class: 'input-medium', placeholder:"详细地址" %>
+          <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
   <% if @address.present? %>
     <div class = "panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>id</th>
-            <th>user_name</th>
-            <th>province</th>
-            <th>city</th>
-            <th>region</th>
-            <th>detail</th>
+            <th>昵称</th>
+            <th>省</th>
+            <th>市</th>
+            <th>区</th>
+            <th>区域</th>
+            <th>详细地址</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <% @address.each do |add|%>
+          <% @address.each do |add| %>
             <tr>
-              <td class="col-sm-1"><%=add.id%></td>
+              <td class="col-sm-1"><%= add.id %></td>
               <% if add.user.present? %>
-                <td class="col-sm-1"><%=add.user.user_name%></td>
+                <td class="col-sm-1"><%= add.user.user_name %></td>
               <% else %>
                 <td class="col-sm-1">无</td>
               <% end %>
-              <td class="col-sm-1"><%=add.province%></td>
-              <td class="col-sm-1"><%=add.city%></td>
-              <td class="col-sm-1"><%=add.region%></td>
-              <td class="col-sm-2"><%=add.detail%></td>
+              <td class="col-sm-1"><%= add.province %></td>
+              <td class="col-sm-1"><%= add.city %></td>
+              <td class="col-sm-1"><%= add.region %></td>
+              <td class="col-sm-1"><%= add.area %></td>
+              <td class="col-sm-2"><%= add.detail %></td>
               <td class="col-sm-2">
-               <%= link_to '修改',edit_admin_address_path(add)%>|
-               <%= link_to '删除', admin_address_path(add), method: :delete, data: { confirm: '确定要删除吗？' }%> 
+               <%= link_to '修改', edit_admin_address_path(add) %>|
+               <%= link_to '删除', admin_address_path(add), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>

@@ -2,10 +2,27 @@
   订单列表
 <% end %>
 <h2 class="col-sm-offset-5">
-   <a href = "/admin/orders">订单列表</a>
+   <a href="/admin/orders">订单列表</a>
 </h2>
 <div class="container">
-  <%= link_to '添加订单', new_admin_order_path, class: ' btn btn-success'%>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-2 row pull-left">
+          <%= link_to '添加订单', new_admin_order_path, class: 'btn btn-success' %>
+        </div>
+        <div class="col-md-8 row">
+          <%= f.label '订单号：' %>
+          <%= f.search_field :order_no_cont, class: 'input-medium', placeholder:"订单号" %>
+          <%= f.label '收货人：' %>
+          <%= f.search_field :receive_name_cont, class: 'input-medium', placeholder:"收货人" %>
+          <%= f.label '电话：' %>
+          <%= f.search_field :phone_num_cont, class: 'input-medium', placeholder:"电话" %>
+          <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
   <% if @orders.present? %>
     <div class = "panel panel-default">
       <table class="table table-hover">
@@ -16,7 +33,7 @@
             <th>订单号</th>
             <th>订单状态</th>
             <th>收货人</th>
-            <th>手机号</th>
+            <th>电话</th>
             <th>收货地址</th>
             <!--th>products</th-->
             <th>创建时间</th>
@@ -26,27 +43,27 @@
           </tr>
         </thead>
         <tbody>
-          <% @orders.each do |order|%>
+          <% @orders.each do |order| %>
             <tr>
-              <td class="col-sm-1"><%=order.id%></td>
+              <td class="col-sm-1"><%= order.id %></td>
               <% if order.user.present? %>
-                <td class="col-sm-1"><%=order.user.user_name%></td>
+                <td class="col-sm-1"><%= order.user.user_name %></td>
               <% else %>
                 <td class="col-sm-1"></td>
               <% end %>
-              <td class="col-sm-1"><%=order.order_no%></td>
-              <td class="col-sm-1"><%=order_state_show(order.state)%></td>
-              <td class="col-sm-1"><%=order.receive_name%></td>
-              <td class="col-sm-1"><%=order.phone_num%></td>
-              <td class="col-sm-2"><%=address_show(order.address)%></td>
+              <td class="col-sm-1"><%= order.order_no %></td>
+              <td class="col-sm-1"><%= order_state_show(order.state) %></td>
+              <td class="col-sm-1"><%= order.receive_name %></td>
+              <td class="col-sm-1"><%= order.phone_num %></td>
+              <td class="col-sm-2"><%= address_show(order.address) %></td>
               <!--td class="col-sm-2"></td-->
-              <td class="col-sm-2"><%=time_show(order.created_at)%></td>
-              <td class="col-sm-2"><%=time_show(order.delivery_time)%></td>
-              <td class="col-sm-2"><%=time_show(order.complete_time)%></td>
+              <td class="col-sm-2"><%= time_show(order.created_at) %></td>
+              <td class="col-sm-2"><%= time_show(order.delivery_time) %></td>
+              <td class="col-sm-2"><%= time_show(order.complete_time) %></td>
               <td class="col-sm-4">
-                <%= link_to '详情',admin_order_path(order)%>|
-                <%= link_to '修改',edit_admin_order_path(order)%>|
-                <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' }%> 
+                <%= link_to '详情', admin_order_path(order) %>|
+                <%= link_to '修改', edit_admin_order_path(order) %>|
+                <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>
@@ -56,7 +73,7 @@
     <%= paginate @orders %>
   <% else %>
     <div class="col-sm-offset-2">
-      <h2>赶快来添加吧！</h2>
+      <h2>暂无</h2>
     </div>
   <% end %>
 </div>

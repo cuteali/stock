@@ -2,14 +2,14 @@
   产品列表
 <% end %>
 <h2 class="col-sm-offset-5">
-   <a href = "/admin/products">产品列表</a>
+   <a href="/admin/products">产品列表</a>
 </h2>
 <div class="product_weight">
   <div class="row">
     <div class="col-sm-12">
       <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
         <div class="col-md-1 row pull-left">
-          <%= link_to '添加产品', new_admin_product_path, class: 'btn btn-success'%>
+          <%= link_to '添加产品', new_admin_product_path, class: 'btn btn-success' %>
         </div>
         <div class="col-md-3 row">
           <%= f.label '产品名称：' %>
@@ -44,19 +44,19 @@
           </tr>
         </thead>
         <tbody>
-          <% @products.each do |product|%>
+          <% @products.each do |product| %>
             <tr>
-              <td class="col-sm-1"><%=product.id%></td>
-              <td class="col-sm-1"><%=link_to product.name,admin_product_path(product)%></td>
-              <td class="col-sm-1"><%=product.desc%></td>
-              <td class="col-sm-1"><%=product.info%></td>
-              <% if product.detail_category.present?%>
-                <td class="col-sm-1"><%=product.detail_category.name%></td>
+              <td class="col-sm-1"><%= product.id %></td>
+              <td class="col-sm-1"><%= link_to product.name,admin_product_path(product) %></td>
+              <td class="col-sm-1"><%= product.desc %></td>
+              <td class="col-sm-1"><%= product.info %></td>
+              <% if product.detail_category.present? %>
+                <td class="col-sm-1"><%= product.detail_category.name %></td>
               <% else %>
                 <td class="col-sm-1">暂无</td>
               <% end %>
               <% if product.hot_category.present? %>
-                <td class="col-sm-1"><%=product.hot_category.name%></td>
+                <td class="col-sm-1"><%= product.hot_category.name %></td>
               <% else %>
                 <td class="col-sm-1">暂无</td>
               <% end %>
@@ -66,21 +66,21 @@
                 <td class="col-sm-1">下架</td>
               <% end %>
               <% if product.unit.present? %>
-                <td class="col-sm-1"><%=product.unit.name%></td>
+                <td class="col-sm-1"><%= product.unit.name %></td>
               <% else %>
                 <td class="col-sm-1">暂无</td>
               <% end %>
-              <td class="col-sm-1"><%=product.sale_count%></td>
-              <td class="col-sm-1"><%=product.stock_num%></td>
-              <td class="col-sm-1"><%=product.price%></td>
-              <td class="col-sm-1"><%=product.old_price%></td>
-              <td class="col-sm-1"><%=product.spec%></td>
-              <td class="col-sm-1"><%=product.unit_price%></td>
-              <td class="col-sm-1"><%=product.origin%></td>
-              <td class="col-sm-1"><%=product.remark%></td>
+              <td class="col-sm-1"><%= product.sale_count %></td>
+              <td class="col-sm-1"><%= product.stock_num %></td>
+              <td class="col-sm-1"><%= product.price %></td>
+              <td class="col-sm-1"><%= product.old_price %></td>
+              <td class="col-sm-1"><%= product.spec %></td>
+              <td class="col-sm-1"><%= product.unit_price %></td>
+              <td class="col-sm-1"><%= product.origin %></td>
+              <td class="col-sm-1"><%= product.remark %></td>
               <td class="col-sm-2">
-               <%= link_to '修改',edit_admin_product_path(product)%>|
-               <%= link_to '删除', admin_product_path(product), method: :delete, data: { confirm: '确定要删除吗？' }%> 
+               <%= link_to '修改', edit_admin_product_path(product) %>|
+               <%= link_to '删除', admin_product_path(product), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>

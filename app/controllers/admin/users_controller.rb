@@ -1,5 +1,6 @@
 class Admin::UsersController < Admin::BaseController
   before_action :set_user,only:[:edit,:update,:destroy]
+  
   def index
     @q = User.ransack(params[:q])
     @users = @q.result.page(params[:page]).per(20)

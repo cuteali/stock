@@ -9,7 +9,6 @@ if @detail_category.present?
     json.products(@products) do |product|
       json.unique_id product.unique_id.to_s
       json.name product.name.to_s
-      json.desc product.desc.to_s
       json.image Image.get_images(product).first.to_s
       json.unit product.unit.present?? product.unit.name.to_s : ""
       json.stock_num product.stock_num.to_s

@@ -1,7 +1,9 @@
 class Admin::OrdersController < Admin::BaseController
   before_action :set_order,only:[:edit,:update,:destroy,:show]
+  
   def index
-    @orders = Order.page(params[:page]).per(20)
+    @q = Order.ransack(params[:q])
+    @orders = @q.result.page(params[:page]).per(20)
   end
 
   def new
