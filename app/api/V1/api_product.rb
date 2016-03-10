@@ -47,7 +47,7 @@ module V1
       get "sub_category/:unique_id", jbuilder: 'v1/products/sub_category' do
         @sub_category = SubCategory.find_by(unique_id: params[:unique_id])
         if @sub_category
-          @products = Product.state.where(sub_category_id: @sub_category.id)
+          @products = @sub_category.products.state
         end
       end
     end
