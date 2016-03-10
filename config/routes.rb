@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root to: 'service_agreement#app_download'
+
   mount API => '/'
   get 'admin'=>'admin/welcomes#index'
 

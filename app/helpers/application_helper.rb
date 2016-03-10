@@ -1,11 +1,6 @@
 module ApplicationHelper
   def full_title(page_title)
-    base_title = "QuanZhen"
-    if page_title.empty?
-      base_title
-    else
-      "#{base_title} | #{page_title}"
-    end
+    page_title.empty? ? "要货啦" : "#{page_title}"
   end
 
   def time_show(time)
