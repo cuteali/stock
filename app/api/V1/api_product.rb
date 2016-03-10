@@ -24,7 +24,7 @@ module V1
           @category = Category.where("name like ?","%#{params[:key_word]}%").first
           AppLog.info("category:  #{@category.inspect}")
           if @category.present?
-            @products = @category.products
+            @products = @category.products.state
             AppLog.info("products:   #{@porducts.to_json}")
           else
             sub_ids = SubCategory.where("name like ?","%#{params[:key_word]}%").pluck(:id)
