@@ -77,9 +77,14 @@ module V1
           if @stock_num_result == 0
             product_arr.each do |pro_hash|
               product = Product.find_by(unique_id: pro_hash["unique_id"])
-              CartItem.create(product_id: product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+              @cart_item = CartItem.find_by(product_id: product.id, user_id: @order.user_id)
+              if @cart_item.present?
+                @cart_item.product_num += pro_hash["number"].to_i
+                @cart_item.save
+              else
+                @cart_item = CartItem.create(product_id: product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+              end
             end
-            @result = true
           end
         end
       end
