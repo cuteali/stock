@@ -19,7 +19,7 @@ module V1
       end
       post 'search',jbuilder:'v1/products/index' do
         AppLog.info("key_word :#{params[:key_word]}")
-        @products = Product.where("name like ?","%#{params[:key_word]}%")
+        @products = Product.state.where("name like ?","%#{params[:key_word]}%")
         if @products.blank?
           @category = Category.where("name like ?","%#{params[:key_word]}%").first
           AppLog.info("category:  #{@category.inspect}")
@@ -30,11 +30,11 @@ module V1
             sub_ids = SubCategory.where("name like ?","%#{params[:key_word]}%").pluck(:id)
             AppLog.info("sub_ids:  #{sub_ids}")
             if sub_ids.present?
-              @products = Product.where(sub_category_id:sub_ids)
+              @products = Product.state.where(sub_category_id:sub_ids)
             else
               detail_ids = DetailCategory.where("name like ?","%#{params[:key_word]}%").pluck(:id)
               AppLog.info("detail_ids:  #{detail_ids}")
-              @products = Product.where(detail_category_id:detail_ids)
+              @products = Product.state.where(detail_category_id:detail_ids)
             end
           end
         end
@@ -47,7 +47,7 @@ module V1
       get "sub_category/:unique_id", jbuilder: 'v1/products/sub_category' do
         @sub_category = SubCategory.find_by(unique_id: params[:unique_id])
         if @sub_category
-          @products = Product.where(sub_category_id: @sub_category.id)
+          @products = Product.state.where(sub_category_id: @sub_category.id)
         end
       end
     end

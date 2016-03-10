@@ -1,9 +1,9 @@
 require 'net/http'
 require 'uri'
 module Sms
-  def self.send_sms(mobile_encrypt, text, rand=nil)
-    mobile = AesUtil.aes_dicrypt($key,mobile_encrypt)
-    AppLog.info("mobile: #{mobile}")
+  def self.send_sms(mobile_encrypts, text, rand=nil)
+    mobiles = mobile_encrypts.map {|mobile_encrypt| AesUtil.aes_dicrypt($key,mobile_encrypt) }
+    AppLog.info("mobiles: #{mobiles}")
     params = {}
     #修改为您的apikey.可在官网（http://www.yuanpian.com)登录后用户中心首页看到
     apikey = '7c5ab5d6099fdaa4424fd0ad8ca29388'
@@ -15,7 +15,7 @@ module Sms
 
     params['apikey'] = apikey
 
-    params['mobile'] = mobile
+    params['mobile'] = mobiles.join(',')
     params['text'] = text
 
     response = Net::HTTP.post_form(send_sms_uri,params)
@@ -23,10 +23,12 @@ module Sms
     AppLog.info("response:  #{response}")
     if response["code"] == 0
       if rand
-        $redis.set(mobile_encrypt,rand)
-        $redis.expire(mobile_encrypt,1800)
+        mobile_encrypts.each do |mobile_encrypt|
+          $redis.set(mobile_encrypt,rand)
+          $redis.expire(mobile_encrypt,1800)
+          AppLog.info("#{$redis.get(mobile_encrypt)}")
+        end
       end
-      AppLog.info("#{$redis.get(mobile_encrypt)}")
       return "success"
     else
       return "error"
