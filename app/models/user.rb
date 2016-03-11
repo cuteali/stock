@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :addresses
+  has_many :addresses, dependent: :destroy
+  has_many :orders, dependent: :destroy
   has_many :images, as: :target
   has_many :cart_items
 
