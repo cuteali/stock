@@ -2,6 +2,12 @@
 	display: none;
 }
 
+.invoice {
+  @media print {
+    font-size: 8px;
+  }
+}
+
 .print-pdf-hide {
 	@media print {
   	display: none;
