@@ -10,6 +10,18 @@
 
 .print-pdf-show {
 	@media print {
-  	display: inline !important;;
+  	display: inline !important;
+  }
+}
+
+.col-md-6 {
+  @media print {
+    display: inline-block;
+  }
+}
+
+.print-left {
+  @media print {
+    margin-left:200px;
   }
 }

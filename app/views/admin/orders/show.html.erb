@@ -5,41 +5,41 @@
     </h1>
   </div>
   <center class="print-hide print-pdf-show">
-    <h1>
+    <h3>
       要货啦  送货单
-    </h1>
+    </h3>
     <h4>
       要货啦客服电话：400-0050-383
     </h4>
   </center>
   <div class="invoice">
     <div class="row">
-      <div class="col-lg-12">
-        <div class="row invoice-header">
-          <div class="text-left">
-            <h2>
-              订单号：<%= @order.order_no %>
-            </h2>
-            <h4>
-              创建时间：<%= time_show(@order.created_at) %>
-            </h4>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
       <div class="col-md-12">
         <div class="well">
-          <strong>收货人信息</strong>
-          <h3>
-            <%= @order.receive_name %>
-          </h3>
-          <p>
-            <%= @order.phone_num %>
-          </p>
-          <p>
-            <%= address_show(@order.address) %>
-          </p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              订单编号：<%= @order.order_no %>
+            </p>
+            <p>
+              客户：<%= @order.receive_name %>
+            </p>
+            <p>
+              客户地址：<%= address_show(@order.address) %>
+            </p>
+          </div>
+          <div class="col-md-6 print-left">
+            <p>
+              创建时间：<%= @order.order_no %>
+            </p>
+            <p>
+              联系人：<%= @order.receive_name %>
+            </p>
+            <p>
+              手机号：<%= @order.phone_num %>
+            </p>
+          </div>
+          </div>
         </div>
       </div>
     </div>
