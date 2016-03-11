@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
         if user.present?
           user.update(token:token)
         else
-          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜")
+          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1)
         end
         unique_id = user.unique_id
       else
@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
         if user.present?
           user.update(token:token)
         else
-          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜")
+          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1)
         end
         unique_id = user.unique_id
       else
