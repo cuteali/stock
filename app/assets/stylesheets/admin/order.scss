@@ -2,9 +2,15 @@
 	display: none;
 }
 
-.invoice {
+.print-font-size {
   @media print {
-    font-size: 8px;
+    font-size: 8px !important;
+  }
+}
+
+.well > .row {
+  @media print {
+    position:relative;
   }
 }
 
@@ -26,8 +32,14 @@
   }
 }
 
+.print-right {
+  @media print {
+    position: absolute !important;
+  }
+}
+
 .print-left {
   @media print {
-    margin-left:200px;
+    margin-left: 400px;
   }
 }
