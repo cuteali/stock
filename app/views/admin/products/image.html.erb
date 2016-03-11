@@ -5,7 +5,11 @@
   <% @product.images.each do |image| %>
   	<div>
     	<%= image_tag image.image.url, size:"200x200" %>
-    	<%= link_to '删除', delete_image_admin_product_path(image) %>
+    	<%= link_to '删除', delete_image_admin_product_path(image, product_id: @product.id) %>
     </div>
   <% end %>
 <div>
+<div class="clearfix"></div>
+<div class="modal-footer">
+  <%= link_to '返回', admin_products_path, class: 'btn btn-sm btn-primary' %>
+</div>

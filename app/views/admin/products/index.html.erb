@@ -11,7 +11,28 @@
         <div class="col-md-1 row pull-left">
           <%= link_to '添加产品', new_admin_product_path, class: 'btn btn-success' %>
         </div>
-        <div class="col-md-3 row">
+        <div class="col-md-10 row">
+          <%= f.label '大类别：' %>
+          <% options = Category.order(:id).pluck(:name, :id) %>
+          <%= f.select :category_id_eq, options.insert(0,["选择大类别",""]), { selected: @category_id }, id: 'category_id', class: "form-control" %>
+          <%= f.label '子类别：' %>
+          <%
+            if @category_id.present?
+              options = SubCategory.where(category_id: @category_id).order(:id).pluck(:name, :id)
+            else
+              options = [["选择子类别",""]]
+            end
+          %>
+          <%= f.select :sub_category_id_eq, options, { selected: @sub_category_id }, id: 'sub_category_id', class: "form-control" %>
+          <%= f.label '具体类别：' %>
+          <%
+            if @sub_category_id.present?
+              options = DetailCategory.where(sub_category_id: @sub_category_id).order(:id).pluck(:name, :id)
+            else
+              options = [["选择具体类别",""]]
+            end
+          %>
+          <%= f.select :detail_category_id_eq, options, { selected: @detail_category_id }, id: 'detail_category_id', class: "form-control" %>
           <%= f.label '产品名称：' %>
           <%= f.search_field :name_cont, class: 'input-medium', placeholder:"产品名称" %>
           <%= f.submit '查询', class: 'btn btn-primary' %>
@@ -65,3 +86,27 @@
     </div>
   <% end %>
 </div>
+<script type="text/javascript">
+$("#category_id").change(function(){
+  var set_url = "<%= select_category_admin_products_url %>" + "?category_id=" + $("#category_id").val() + "?id=sub_category_id?name=q[sub_category_id_eq]";
+  jQuery.ajax({
+    type: "GET",
+    url: set_url,
+    dataType: "json",
+    success: function(data){
+      $('#sub_category_id').html(data.html);
+    }
+  });
+});
+$("#sub_category_id").change(function(){
+  var set_url = "<%= select_sub_category_admin_products_url %>" + "?sub_category_id=" + $("#sub_category_id").val() + "?id=detail_category_id?name=q[detail_category_id_eq]";
+  jQuery.ajax({
+    type: "GET",
+    url: set_url,
+    dataType: "json",
+    success: function(data){
+      $('#detail_category_id').html(data.html);
+    }
+  });
+});
+</script>

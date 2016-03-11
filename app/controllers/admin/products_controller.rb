@@ -4,6 +4,11 @@ class Admin::ProductsController < Admin::BaseController
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result.page(params[:page]).per(20)
+    if params[:q]
+      @category_id = params[:q][:category_id_eq]
+      @sub_category_id = params[:q][:sub_category_id_eq]
+      @detail_category_id = params[:q][:detail_category_id_eq]
+    end
   end
 
   def new
@@ -42,13 +47,13 @@ class Admin::ProductsController < Admin::BaseController
 
   def select_category
     options = SubCategory.where(category_id: params[:category_id]).order(:id)
-    html = Product.get_select_category_html(options)
+    html = Product.get_select_category_html(options, params[:id], params[:name])
     render json: {html: html}
   end
 
   def select_sub_category
     options = DetailCategory.where(sub_category_id: params[:sub_category_id]).order(:id)
-    html = Product.get_select_sub_category_html(options)
+    html = Product.get_select_sub_category_html(options, params[:id], params[:name])
     render json: {html: html}
   end
 
@@ -56,7 +61,7 @@ class Admin::ProductsController < Admin::BaseController
     image = Image.find(params[:id])
     if image.delete
       image.image.file.delete
-      redirect_to admin_product_path(image.target_id)
+      redirect_to image_admin_product_path(params[:product_id])
     end
   end
 

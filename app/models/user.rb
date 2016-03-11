@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
   has_many :images, as: :target
   has_many :cart_items
 
+  def is_verified?
+    identification == 1
+  end
+
   def self.sign_in(phone_num_encrypt,rand_code)
     redis_rand_code = $redis.get(phone_num_encrypt)
     phone = AesUtil.aes_dicrypt($key, phone_num_encrypt)

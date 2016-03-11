@@ -27,7 +27,7 @@ module V1
         requires :money,type:String
       end
       post "",jbuilder:"v1/orders/create" do
-        if @token.present?
+        if @token.present? && @user.is_verified?
           AppLog.info("products : #{params[:products]}")
           address = Address.find_by(unique_id:params[:address_id])
           address_id = address.present? ? address.id : nil
