@@ -1,4 +1,4 @@
-if @info == "success"
+if @info == 'success'
   json.result 0
   json.address do
     json.unique_id @address.id.to_s
@@ -10,4 +10,5 @@ if @info == "success"
   end
 else
   json.result 1
+  json.errmsg '更新地址失败'
 end

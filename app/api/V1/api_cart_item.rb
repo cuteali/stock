@@ -40,14 +40,15 @@ module V1
       end
       post "",jbuilder:"v1/cart_items/create" do
         if @token.present?
-          product = Product.find_by(unique_id:params[:pro_unique_id])
-          @cart_item = CartItem.find_by(product_id: product.id, user_id: @user.id)
+          @product = Product.find_by(unique_id:params[:pro_unique_id])
+          @cart_item = CartItem.find_by(product_id: @product.id, user_id: @user.id)
           if @cart_item
             @cart_item.product_num += params[:product_num].to_i
             @cart_item.save
           else
-            @cart_item = CartItem.create(product_id: product.id, user_id: @user.id, product_num: params[:product_num], unique_id: SecureRandom.urlsafe_base64)
+            @cart_item = CartItem.create(product_id: @product.id, user_id: @user.id, product_num: params[:product_num], unique_id: SecureRandom.urlsafe_base64)
           end
+          @info = "success"
         end
       end
 
@@ -76,14 +77,15 @@ module V1
           @stock_num_result = Product.validate_stock_num(product_arr)
           if @stock_num_result == 0
             product_arr.each do |pro_hash|
-              product = Product.find_by(unique_id: pro_hash["unique_id"])
-              @cart_item = CartItem.find_by(product_id: product.id, user_id: @order.user_id)
+              @product = Product.find_by(unique_id: pro_hash["unique_id"])
+              @cart_item = CartItem.find_by(product_id: @product.id, user_id: @order.user_id)
               if @cart_item.present?
                 @cart_item.product_num += pro_hash["number"].to_i
                 @cart_item.save
               else
-                @cart_item = CartItem.create(product_id: product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+                @cart_item = CartItem.create(product_id: @product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
               end
+              @info = "success"
             end
           end
         end

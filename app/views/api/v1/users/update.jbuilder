@@ -1,5 +1,10 @@
 if @user.blank? && @flag != "1"
   json.result 1
+  if params[:head_portrait].present? && !@image_util
+    json.errmsg '用户头像更新失败'
+  else
+    json.errmsg '用户信息更新失败'
+  end
 else
   json.result 0
   json.unique_id @user.unique_id

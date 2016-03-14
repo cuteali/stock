@@ -10,4 +10,5 @@ if @address.present?
   end
 else
   json.result 1
+  json.errmsg '添加地址失败'
 end

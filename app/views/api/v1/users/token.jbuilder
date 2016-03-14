@@ -1,5 +1,6 @@
 if @token.blank?
   json.result 1
+  json.errmsg '参数不正确'
   json.token ""
 else
   json.result 0

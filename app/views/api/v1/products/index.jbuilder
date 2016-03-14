@@ -1,5 +1,6 @@
 if @products.blank?
   json.result 1
+  json.errmsg '产品未找到'
 else
   json.result 0
   json.products(@products) do |product|

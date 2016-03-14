@@ -3,7 +3,7 @@ class Admin::OrdersController < Admin::BaseController
   
   def index
     @q = Order.ransack(params[:q])
-    @orders = @q.result.page(params[:page]).per(20)
+    @orders = @q.result.page(params[:page]).per(10)
   end
 
   def new
@@ -48,6 +48,8 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     def order_params
-      params.require(:order).permit(:state,:phone_num,:receive_name,:delivery_time,:address_id,:complete_time,:user_id)
+      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :address_id, :complete_time, :user_id).tap do |whitelisted|
+        whitelisted[:products] = params[:order][:products].to_json
+      end
     end
 end

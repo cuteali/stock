@@ -74,7 +74,7 @@ module V1
             #@user.update(phone_num:params[:new_phone_num],user_name:params[:user_name])
             if params[:head_portrait].present?
               @user.images.destroy_all
-              ImageUtil.base64_image(params[:head_portrait],"User",@user.id)
+              @image_util = ImageUtil.base64_image(params[:head_portrait],"User",@user.id)
             end
             @flag = "1"
           end

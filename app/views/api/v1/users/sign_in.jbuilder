@@ -1,5 +1,6 @@
 if @token.blank?
   json.result 1
+  json.errmsg '登录失败，手机或验证码不正确'
   json.token ""
 else
   json.result 0
