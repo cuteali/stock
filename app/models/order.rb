@@ -6,6 +6,8 @@ class Order < ActiveRecord::Base
 
   before_create :generate_order_no
 
+  scope :latest, -> { order('created_at DESC') }
+
   def get_address
     address = self.address
     if address.present?

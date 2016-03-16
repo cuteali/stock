@@ -19,23 +19,18 @@ module V1
       end
       post 'search',jbuilder:'v1/products/index' do
         AppLog.info("key_word :#{params[:key_word]}")
-        @products = Product.state.where("name like ?","%#{params[:key_word]}%")
+        @category = Category.where("name like ?","%#{params[:key_word]}%").first
+        AppLog.info("category:  #{@category.inspect}")
+        @products = @category.products.state
         if @products.blank?
-          @category = Category.where("name like ?","%#{params[:key_word]}%").first
-          AppLog.info("category:  #{@category.inspect}")
-          if @category.present?
-            @products = @category.products.state
-            AppLog.info("products:   #{@porducts.to_json}")
-          else
-            sub_ids = SubCategory.where("name like ?","%#{params[:key_word]}%").pluck(:id)
-            AppLog.info("sub_ids:  #{sub_ids}")
-            if sub_ids.present?
-              @products = Product.state.where(sub_category_id:sub_ids)
-            else
-              detail_ids = DetailCategory.where("name like ?","%#{params[:key_word]}%").pluck(:id)
-              AppLog.info("detail_ids:  #{detail_ids}")
-              @products = Product.state.where(detail_category_id:detail_ids)
-            end
+          @sub_category = SubCategory.where("name like ?","%#{params[:key_word]}%").first
+          AppLog.info("sub_category:  #{@sub_category.inspect}")
+          @products = @sub_category.products.state
+          if @products.blank?
+            @detail_category = DetailCategory.where("name like ?","%#{params[:key_word]}%").first
+            AppLog.info("detail_category:  #{@detail_category.inspect}")
+            @products = @detail_category.products.state
+            @products = Product.state.where("name like ?","%#{params[:key_word]}%") if @products.blank?
           end
         end
       end

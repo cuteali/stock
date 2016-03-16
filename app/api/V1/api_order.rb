@@ -13,7 +13,7 @@ module V1
       get "",jbuilder:"v1/orders/index" do
         if @token.present?
           state_json = JSON.parse(params[:state].gsub("\\",""))
-          @orders = Order.where(state:state_json).where("user_id = ?",@user.id)
+          @orders = Order.where(user_id: @user.id, state: state_json).latest
         end
       end
 

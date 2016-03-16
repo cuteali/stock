@@ -3,7 +3,7 @@ class Admin::OrdersController < Admin::BaseController
   
   def index
     @q = Order.ransack(params[:q])
-    @orders = @q.result.page(params[:page]).per(10)
+    @orders = @q.result.latest.page(params[:page]).per(10)
   end
 
   def new
