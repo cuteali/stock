@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  *= require body.css
+ *= require bootstrap-datetimepicker.min 
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";

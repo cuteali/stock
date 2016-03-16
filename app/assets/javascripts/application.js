@@ -15,3 +15,10 @@
 //= require turbolinks
 //= require_tree .
 //= require bootstrap-sprockets
+
+//= require date-time/moment.min
+//= require date-time/bootstrap-clockpicker
+//= require date-time/bootstrap-datepicker.min
+//= require date-time/daterangepicker.min
+//= require date-time/bootstrap-datetimepicker
+//= require date-time/datepicker.zh

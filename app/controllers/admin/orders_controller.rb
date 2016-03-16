@@ -50,6 +50,16 @@ class Admin::OrdersController < Admin::BaseController
     def order_params
       params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :address_id, :complete_time, :user_id).tap do |whitelisted|
         whitelisted[:products] = params[:order][:products].to_json
+        whitelisted[:order_money] = update_order_money(params[:order][:products])
       end
+    end
+
+    def update_order_money(products)
+      order_money = 0
+      products.each do |p|
+        product = Product.find_by(unique_id: p[:unique_id])
+        order_money += product.price * p[:number].to_i
+      end
+      order_money
     end
 end
