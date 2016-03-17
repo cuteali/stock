@@ -1,13 +1,13 @@
 class Admin::DetailCategoriesController < Admin::BaseController
 
-  before_action :set_detail_category,only:[:edit,:update,:destroy]
+  before_action :set_detail_category, only: [:edit, :update, :destroy, :stick_top]
   
   def index
-    @categories = DetailCategory.all
+    @categories = DetailCategory.sorted
   end
 
   def new
-    @category = DetailCategory.new
+    @category = DetailCategory.new(sort: DetailCategory.init_sort)
   end
 
   def edit
@@ -36,12 +36,17 @@ class Admin::DetailCategoriesController < Admin::BaseController
     end
   end
 
+  def stick_top
+    @category.update(sort: DetailCategory.init_sort)
+    redirect_to :back, notice: '操作成功'
+  end
+
   private 
     def set_detail_category
       @category = DetailCategory.find(params[:id])
     end
 
     def category_params
-      params.require(:detail_category).permit(:name,:desc,:sub_category_id)
+      params.require(:detail_category).permit(:name, :sort, :desc, :sub_category_id)
     end
 end

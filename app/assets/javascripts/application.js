@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require_tree .
 //= require bootstrap-sprockets
+//= require rails.confirm
 
 //= require date-time/moment.min
 //= require date-time/bootstrap-clockpicker

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309045928) do
+ActiveRecord::Schema.define(version: 20160317023245) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -55,21 +55,26 @@ ActiveRecord::Schema.define(version: 20160309045928) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
+    t.integer  "sort",       limit: 4,   default: 1, null: false
     t.string   "desc",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "unique_id",  limit: 255
   end
 
+  add_index "categories", ["sort"], name: "index_categories_on_sort", using: :btree
+
   create_table "detail_categories", force: :cascade do |t|
     t.string   "name",            limit: 255
+    t.integer  "sort",            limit: 4,   default: 1, null: false
     t.integer  "sub_category_id", limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "desc",            limit: 255
     t.string   "unique_id",       limit: 255
   end
 
+  add_index "detail_categories", ["sort"], name: "index_detail_categories_on_sort", using: :btree
   add_index "detail_categories", ["sub_category_id"], name: "index_detail_categories_on_sub_category_id", using: :btree
 
   create_table "hot_categories", force: :cascade do |t|
@@ -110,6 +115,7 @@ ActiveRecord::Schema.define(version: 20160309045928) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name",               limit: 255
+    t.integer  "sort",               limit: 4,   default: 1, null: false
     t.integer  "state",              limit: 4
     t.string   "image",              limit: 255
     t.string   "unit_id",            limit: 255
@@ -135,19 +141,22 @@ ActiveRecord::Schema.define(version: 20160309045928) do
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
   add_index "products", ["detail_category_id"], name: "index_products_on_detail_category_id", using: :btree
   add_index "products", ["hot_category_id"], name: "index_products_on_hot_category_id", using: :btree
+  add_index "products", ["sort"], name: "index_products_on_sort", using: :btree
   add_index "products", ["sub_category_id"], name: "index_products_on_sub_category_id", using: :btree
   add_index "products", ["unit_id"], name: "index_products_on_unit_id", using: :btree
 
   create_table "sub_categories", force: :cascade do |t|
     t.string   "name",        limit: 255
+    t.integer  "sort",        limit: 4,   default: 1, null: false
     t.string   "desc",        limit: 255
     t.integer  "category_id", limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "unique_id",   limit: 255
   end
 
   add_index "sub_categories", ["category_id"], name: "index_sub_categories_on_category_id", using: :btree
+  add_index "sub_categories", ["sort"], name: "index_sub_categories_on_sort", using: :btree
 
   create_table "units", force: :cascade do |t|
     t.string   "name",       limit: 255

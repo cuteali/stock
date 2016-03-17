@@ -26,8 +26,9 @@
               <td class="col-sm-2"><%= category.desc %></td>
               <td class="col-sm-1"><%= category.sub_category.try(:name) || '暂无' %></td>
               <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_detail_category_path(category) %> |
-               <%= link_to '删除', admin_detail_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                <%= link_to "置顶", stick_top_admin_detail_category_path(category), method: :post, data: { confirm: "确定将该类别置顶么？" } %> |
+                <%= link_to '修改', edit_admin_detail_category_path(category) %> |
+                <%= link_to '删除', admin_detail_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>

@@ -1,13 +1,13 @@
 class Admin::SubCategoriesController < Admin::BaseController
 
-  before_action :set_sub_category,only:[:edit,:update,:destroy]
+  before_action :set_sub_category, only: [:edit, :update, :destroy, :stick_top]
   
   def index
-    @categories = SubCategory.all
+    @categories = SubCategory.sorted
   end
 
   def new
-    @category = SubCategory.new
+    @category = SubCategory.new(sort: SubCategory.init_sort)
   end
 
   def edit
@@ -36,12 +36,17 @@ class Admin::SubCategoriesController < Admin::BaseController
     end
   end
 
+  def stick_top
+    @category.update(sort: SubCategory.init_sort)
+    redirect_to :back, notice: '操作成功'
+  end
+
   private 
     def set_sub_category
       @category = SubCategory.find(params[:id])
     end
 
     def category_params
-      params.require(:sub_category).permit(:name,:desc,:category_id)
+      params.require(:sub_category).permit(:name, :sort, :desc, :category_id)
     end
 end

@@ -12,8 +12,21 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :categories
-    resources :sub_categories
+    resources :categories do
+      member do
+        post :stick_top
+      end
+    end
+    resources :sub_categories do
+      member do
+        post :stick_top
+      end
+    end
+    resources :detail_categories do
+      member do
+        post :stick_top
+      end
+    end
     resources :hot_categories
     resources :users
     resources :products do
@@ -22,13 +35,13 @@ Rails.application.routes.draw do
       end
       member do
         get :delete_image, :image
+        post :stick_top
       end
     end
     resources :addresses
     resources :orders
     resources :units
     resources :adverts
-    resources :detail_categories
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

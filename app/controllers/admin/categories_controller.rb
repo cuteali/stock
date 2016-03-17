@@ -1,13 +1,13 @@
 class Admin::CategoriesController < Admin::BaseController
 
-  before_action :set_category,only:[:edit,:update,:destroy]
+  before_action :set_category, only: [:edit, :update, :destroy, :stick_top]
   
   def index
-    @categories = Category.all
+    @categories = Category.sorted
   end
 
   def new
-    @category = Category.new
+    @category = Category.new(sort: Category.init_sort)
   end
 
   def edit
@@ -36,12 +36,17 @@ class Admin::CategoriesController < Admin::BaseController
     end
   end
 
+  def stick_top
+    @category.update(sort: Category.init_sort)
+    redirect_to :back, notice: '操作成功'
+  end
+
   private 
     def set_category
       @category = Category.find(params[:id])
     end
 
     def category_params
-      params.require(:category).permit(:name,:desc)
+      params.require(:category).permit(:name, :sort, :desc)
     end
 end

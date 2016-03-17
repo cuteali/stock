@@ -56,6 +56,13 @@
       <%= f.select :hot_category_id, hot_category_list,{},class: 'form-control'%>
     </div>
   </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">排序:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :sort, class: "form-control", maxlength: 5 %>
+    </div>
+    <label class="control-label">（值越大越排在前面）</label>
+  </div>
   <div class ="form-group">
     <label class="col-sm-2 control-label">状态:</label>
     <div class="col-sm-4">

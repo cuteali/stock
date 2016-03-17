@@ -5,7 +5,7 @@
    <a href="/admin/sub_categories">小类别列表</a>
 </h2>
 <div class="container">
-  <%= link_to '小类别列表', new_admin_sub_category_path, class: 'btn btn-success' %>
+  <%= link_to '添加小类别', new_admin_sub_category_path, class: 'btn btn-success' %>
   <% if @categories.present? %>
     <div class="panel panel-default">
       <table class="table table-hover">
@@ -26,8 +26,9 @@
               <td class="col-sm-1"><%= category.category.try(:name) || '暂无' %></td>
               <td class="col-sm-2"><%= category.desc %></td>
               <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_sub_category_path(category) %> |
-               <%= link_to '删除', admin_sub_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                <%= link_to "置顶", stick_top_admin_sub_category_path(category), method: :post, data: { confirm: "确定将该类别置顶么？" } %> |
+                <%= link_to '修改', edit_admin_sub_category_path(category) %> |
+                <%= link_to '删除', admin_sub_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>
           <% end %>

@@ -1,9 +1,9 @@
 class Admin::ProductsController < Admin::BaseController
-  before_action :set_product, only: [:edit, :update, :destroy, :show, :image]
+  before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top]
   
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.page(params[:page]).per(20)
+    @products = @q.result.sorted.page(params[:page]).per(20)
     if params[:q]
       @category_id = params[:q][:category_id_eq]
       @sub_category_id = params[:q][:sub_category_id_eq]
@@ -12,7 +12,7 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def new
-    @product = Product.new
+    @product = Product.new(sort: Product.init_sort)
   end
 
   def edit
@@ -68,12 +68,17 @@ class Admin::ProductsController < Admin::BaseController
   def image
   end
 
+  def stick_top
+    @product.update(sort: Product.init_sort)
+    redirect_to :back, notice: '操作成功'
+  end
+
   private
     def set_product
       @product = Product.find(params[:id])
     end
 
     def product_params
-      params.require(:product).permit(:name, :desc, :info, :state, :unit_id, :stock_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark)
+      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark)
     end
 end

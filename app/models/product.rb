@@ -9,6 +9,10 @@ class Product < ActiveRecord::Base
   has_many :adverts
 
   scope :state, -> { where(state: 1) }
+  scope :sorted, -> { order('sort DESC') }
+
+  validates :sort, presence: true
+  validates :sort, numericality: { only_integer: true, greater_than_or_equal_to: 1}
 
   def self.get_select_category_html(options, id, name)
     html = ""
@@ -58,5 +62,9 @@ class Product < ActiveRecord::Base
       end
     end
     pro_ids
+  end
+
+  def self.init_sort
+    Product.maximum(:sort) + 1
   end
 end
