@@ -15,12 +15,12 @@
           <%= f.label '大类别：' %>
           <% options = Category.sorted.pluck(:name, :id) %>
           <%= f.select :category_id_eq, options.insert(0,["选择大类别",""]), { selected: @category_id }, id: 'category_id', class: "form-control" %>
-          <%= f.label '子类别：' %>
+          <%= f.label '小类别：' %>
           <%
             if @category_id.present?
-              options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择子类别', ''])
+              options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择小类别', ''])
             else
-              options = [["选择子类别",""]]
+              options = [["选择小类别",""]]
             end
           %>
           <%= f.select :sub_category_id_eq, options, { selected: @sub_category_id }, id: 'sub_category_id', class: "form-control" %>
@@ -91,7 +91,7 @@
 $("#category_id").change(function(){
   var set_url = "<%= select_category_admin_products_url %>" + 
                 "?category_id=" + $("#category_id").val() + 
-                "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择子类别&class_name=SubCategory";
+                "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择小类别&class_name=SubCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,

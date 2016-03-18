@@ -15,12 +15,12 @@
           <%= f.label '大类别：' %>
           <% options = Category.sorted.pluck(:name, :id) %>
           <%= f.select :category_id_eq, options.insert(0,["选择大类别",""]), { selected: @category_id }, id: 'category_id', class: "form-control" %>
-          <%= f.label '子类别：' %>
+          <%= f.label '小类别：' %>
           <%
             if @category_id.present?
-              options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择子类别', ''])
+              options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择小类别', ''])
             else
-              options = [["选择子类别",""]]
+              options = [["选择小类别",""]]
             end
           %>
           <%= f.select :sub_category_id_eq, options, { selected: @sub_category_id }, id: 'sub_category_id', class: "form-control" %>
@@ -37,7 +37,8 @@
             <th>id</th>
             <th>类别名称</th>
             <th>类别描述</th>
-            <th>子类别</th>
+            <th>大类别</th>
+            <th>小类别</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -47,6 +48,7 @@
               <td class="col-sm-1"><%= category.id %></td>
               <td class="col-sm-1"><%= category.name %></td>
               <td class="col-sm-2"><%= category.desc %></td>
+              <td class="col-sm-1"><%= category.category.try(:name) || '暂无' %></td>
               <td class="col-sm-1"><%= category.sub_category.try(:name) || '暂无' %></td>
               <td class="col-sm-1">
                 <%= link_to "置顶", stick_top_admin_detail_category_path(category), method: :post, data: { confirm: "确定将该类别置顶么？" } %> |
@@ -67,7 +69,7 @@
 </div>
 <script type="text/javascript">
 $("#category_id").change(function(){
-  var set_url = "<%= select_category_admin_detail_categories_url %>" + "?category_id=" + $("#category_id").val() + "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择子类别";
+  var set_url = "<%= select_category_admin_detail_categories_url %>" + "?category_id=" + $("#category_id").val() + "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择小类别";
   jQuery.ajax({
     type: "GET",
     url: set_url,

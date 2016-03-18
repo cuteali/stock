@@ -20,13 +20,13 @@
     </div>
   </div>
   <div class ="form-group">
-    <label class="col-sm-2 control-label">子类别:</label>
+    <label class="col-sm-2 control-label">小类别:</label>
     <div class="col-sm-4">
       <%
         if @detail_category.category_id.present?
           options = SubCategory.where(category_id: @detail_category.category_id).order(:id).pluck(:name, :id)
         else
-          options = [["选择子类别",""]]
+          options = [["选择小类别",""]]
         end
       %>
       <%= f.select :sub_category_id, options, { selected: @detail_category.sub_category_id }, id: 'detail_category_sub_category_id', class: 'form-control' %>
@@ -53,7 +53,7 @@
 $("#detail_category_category_id").change(function(){
   var set_url = "<%= select_category_admin_detail_categories_url %>" + 
                 "?category_id=" + $("[name='detail_category[category_id]']").val() + 
-                "&id=detail_category_sub_category_id&name=detail_category[sub_category_id]&first_option=选择子类别";
+                "&id=detail_category_sub_category_id&name=detail_category[sub_category_id]&first_option=选择小类别";
   jQuery.ajax({
     type: "GET",
     url: set_url,
