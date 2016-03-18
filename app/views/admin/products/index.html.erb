@@ -13,12 +13,12 @@
         </div>
         <div class="col-md-10 row">
           <%= f.label '大类别：' %>
-          <% options = Category.order(:id).pluck(:name, :id) %>
+          <% options = Category.sorted.pluck(:name, :id) %>
           <%= f.select :category_id_eq, options.insert(0,["选择大类别",""]), { selected: @category_id }, id: 'category_id', class: "form-control" %>
           <%= f.label '子类别：' %>
           <%
             if @category_id.present?
-              options = SubCategory.where(category_id: @category_id).order(:id).pluck(:name, :id)
+              options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择子类别', ''])
             else
               options = [["选择子类别",""]]
             end
@@ -27,7 +27,7 @@
           <%= f.label '具体类别：' %>
           <%
             if @sub_category_id.present?
-              options = DetailCategory.where(sub_category_id: @sub_category_id).order(:id).pluck(:name, :id)
+              options = DetailCategory.where(sub_category_id: @sub_category_id).sorted.pluck(:name, :id).unshift(['选择具体类别', ''])
             else
               options = [["选择具体类别",""]]
             end

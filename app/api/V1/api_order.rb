@@ -44,7 +44,7 @@ module V1
               AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
               @cart_items.destroy_all if @cart_items.present?
               if @order
-                phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03']
+                phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03', 'E0AA1EF3B5026AD7854C2B15785015F2']
                 text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
                 @info = Sms.send_sms(phone_num_encrypts, text)
                 AppLog.info("info:#{@info}")

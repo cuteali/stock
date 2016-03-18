@@ -15,6 +15,7 @@ class Admin::CategoriesController < Admin::BaseController
 
   def update
     if @category.update(category_params)
+        return redirect_to session[:return_to] if session[:return_to]
         redirect_to admin_categories_path
       else
         render 'edit' 

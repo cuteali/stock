@@ -21,15 +21,15 @@ module V1
         AppLog.info("key_word :#{params[:key_word]}")
         @category = Category.where("name like ?","%#{params[:key_word]}%").first
         AppLog.info("category:  #{@category.inspect}")
-        @products = @category.products.state
+        @products = @category.products.state if @category
         if @products.blank?
           @sub_category = SubCategory.where("name like ?","%#{params[:key_word]}%").first
           AppLog.info("sub_category:  #{@sub_category.inspect}")
-          @products = @sub_category.products.state
+          @products = @sub_category.products.state if @sub_category
           if @products.blank?
             @detail_category = DetailCategory.where("name like ?","%#{params[:key_word]}%").first
             AppLog.info("detail_category:  #{@detail_category.inspect}")
-            @products = @detail_category.products.state
+            @products = @detail_category.products.state if @detail_category
             @products = Product.state.where("name like ?","%#{params[:key_word]}%") if @products.blank?
           end
         end

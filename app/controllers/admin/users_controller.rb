@@ -17,6 +17,7 @@ class Admin::UsersController < Admin::BaseController
     image_params = params[:user][:image]
     if @user.update(user_params)     
       ImageUtil.image_upload(image_params,"User",@user.id)
+      return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_users_path
     else
       render 'edit' 

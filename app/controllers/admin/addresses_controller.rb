@@ -1,5 +1,5 @@
 class Admin::AddressesController < Admin::BaseController
-  before_action :set_address,only:[:edit,:update,:destroy]
+  before_action :set_address, only: [:edit, :update, :destroy]
   
   def index
     @q = Address.ransack(params[:q])
@@ -15,6 +15,7 @@ class Admin::AddressesController < Admin::BaseController
 
   def update
     if @address.update(address_params)
+      return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_addresses_path
     else
       render 'edit' 

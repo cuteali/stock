@@ -22,6 +22,7 @@ class Admin::ProductsController < Admin::BaseController
     image_params = params[:product][:image]
     if @product.update(product_params)
         ImageUtil.image_upload(image_params, "Product", @product.id)
+        return redirect_to session[:return_to] if session[:return_to]
         redirect_to admin_products_path
       else
         render 'edit' 
@@ -39,7 +40,8 @@ class Admin::ProductsController < Admin::BaseController
     image_params = params[:product][:image]
     if @product.save
       ImageUtil.image_upload(image_params, "Product", @product.id)
-      redirect_to admin_products_path
+      # redirect_to admin_products_path
+      redirect_to :back, notice: '操作成功'
     else
       render 'new'
     end

@@ -15,6 +15,7 @@ class Admin::UnitsController < Admin::BaseController
 
   def update
     if @unit.update(unit_params)
+        return redirect_to session[:return_to] if session[:return_to]
         redirect_to admin_units_path
       else
         render 'edit' 

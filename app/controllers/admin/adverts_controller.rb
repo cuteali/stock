@@ -22,6 +22,7 @@ class Admin::AdvertsController < Admin::BaseController
     AppLog.info("image_params:   #{image_params}")
     ImageUtil.image_upload(image_params,"Advert",@advert.id)
     if @advert.update(advert_params)
+      return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_adverts_path
     else
       render 'edit' 
