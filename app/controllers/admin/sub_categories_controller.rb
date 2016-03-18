@@ -3,18 +3,22 @@ class Admin::SubCategoriesController < Admin::BaseController
   before_action :set_sub_category, only: [:edit, :update, :destroy, :stick_top]
   
   def index
-    @categories = SubCategory.sorted
+    @q = SubCategory.ransack(params[:q])
+    @sub_categories = @q.result.sorted.page(params[:page]).per(20)
+    if params[:q]
+      @category_id = params[:q][:category_id_eq]
+    end
   end
 
   def new
-    @category = SubCategory.new(sort: SubCategory.init_sort)
+    @sub_category = SubCategory.new(sort: SubCategory.init_sort)
   end
 
   def edit
   end
 
   def update
-    if @category.update(category_params)
+    if @sub_category.update(category_params)
         return redirect_to session[:return_to] if session[:return_to]
         redirect_to admin_sub_categories_path
       else
@@ -23,14 +27,14 @@ class Admin::SubCategoriesController < Admin::BaseController
   end
 
   def destroy
-    @category.destroy
+    @sub_category.destroy
     redirect_to admin_sub_categories_path
   end
 
   def create
-    @category = SubCategory.new(category_params)
-    @category.unique_id = SecureRandom.urlsafe_base64
-    if @category.save
+    @sub_category = SubCategory.new(category_params)
+    @sub_category.unique_id = SecureRandom.urlsafe_base64
+    if @sub_category.save
       redirect_to admin_sub_categories_path
     else
       render 'new'
@@ -38,13 +42,13 @@ class Admin::SubCategoriesController < Admin::BaseController
   end
 
   def stick_top
-    @category.update(sort: SubCategory.init_sort)
+    @sub_category.update(sort: SubCategory.init_sort)
     redirect_to :back, notice: '操作成功'
   end
 
   private 
     def set_sub_category
-      @category = SubCategory.find(params[:id])
+      @sub_category = SubCategory.find(params[:id])
     end
 
     def category_params

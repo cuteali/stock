@@ -89,7 +89,9 @@
 </div>
 <script type="text/javascript">
 $("#category_id").change(function(){
-  var set_url = "<%= select_category_admin_products_url %>" + "?category_id=" + $("#category_id").val() + "?id=sub_category_id?name=q[sub_category_id_eq]";
+  var set_url = "<%= select_category_admin_products_url %>" + 
+                "?category_id=" + $("#category_id").val() + 
+                "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择子类别&class_name=SubCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,
@@ -100,7 +102,9 @@ $("#category_id").change(function(){
   });
 });
 $("#sub_category_id").change(function(){
-  var set_url = "<%= select_sub_category_admin_products_url %>" + "?sub_category_id=" + $("#sub_category_id").val() + "?id=detail_category_id?name=q[detail_category_id_eq]";
+  var set_url = "<%= select_category_admin_products_url %>" + 
+                "?category_id=" + $("#sub_category_id").val() + 
+                "&id=detail_category_id&name=q[detail_category_id_eq]&first_option=选择具体类别&class_name=DetailCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,

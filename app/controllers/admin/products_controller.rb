@@ -1,4 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
+  include Admin::CategoryHelper
+
   before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top]
   
   def index
@@ -48,14 +50,8 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def select_category
-    options = SubCategory.where(category_id: params[:category_id]).order(:id)
-    html = Product.get_select_category_html(options, params[:id], params[:name])
-    render json: {html: html}
-  end
-
-  def select_sub_category
-    options = DetailCategory.where(sub_category_id: params[:sub_category_id]).order(:id)
-    html = Product.get_select_sub_category_html(options, params[:id], params[:name])
+    options = Object.const_get(params[:class_name]).where(category_id: params[:category_id]).order(:id)
+    html = get_select_category_html(options, params[:id], params[:name], params[:first_option])
     render json: {html: html}
   end
 

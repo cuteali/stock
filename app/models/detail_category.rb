@@ -1,4 +1,5 @@
 class DetailCategory < ActiveRecord::Base
+  belongs_to :category
   belongs_to :sub_category
   has_many :products, -> { order "products.sort DESC, products.updated_at DESC" }
 

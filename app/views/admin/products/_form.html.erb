@@ -143,7 +143,9 @@
 <% end %>
 <script type="text/javascript">
 $("[name='product[category_id]']").change(function(){
-  var set_url = "<%= select_category_admin_products_url %>" + "?category_id=" + $("[name='product[category_id]']").val() + "?id=product_sub_category_id?name=product[sub_category_id]";
+  var set_url = "<%= select_category_admin_products_url %>" + 
+                "?category_id=" + $("[name='product[category_id]']").val() + 
+                "&id=product_sub_category_id&name=product[sub_category_id]&first_option=选择子类别&class_name=SubCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,
@@ -154,7 +156,9 @@ $("[name='product[category_id]']").change(function(){
   });
 });
 $("[name='product[sub_category_id]']").change(function(){
-  var set_url = "<%= select_sub_category_admin_products_url %>" + "?sub_category_id=" + $("[name='product[sub_category_id]']").val() + "?id=product_detail_category_id?name=product[detail_category_id]";
+  var set_url = "<%= select_category_admin_products_url %>" + 
+                "?category_id=" + $("[name='product[sub_category_id]']").val() + 
+                "&id=product_detail_category_id&name=product[detail_category_id]&first_option=选择具体类别&class_name=DetailCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,

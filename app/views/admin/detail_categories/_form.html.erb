@@ -1,4 +1,4 @@
-<%= form_for([:admin,@category],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
+<%= form_for([:admin,@detail_category],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
   <div class ="form-group">
     <label class="col-sm-2 control-label">类别名称:</label>
     <div class="col-sm-4">
@@ -13,9 +13,23 @@
     <label class="control-label">（值越大越排在前面）</label>
   </div>
   <div class ="form-group">
+    <label class="col-sm-2 control-label">大类别:</label>
+    <div class="col-sm-4">
+      <% options = Category.order(:id).pluck(:name, :id) %>
+      <%= f.select :category_id, options.insert(0,["选择大类别",""]), { selected: @detail_category.category_id }, id: 'detail_category_category_id', class: 'form-control' %>
+    </div>
+  </div>
+  <div class ="form-group">
     <label class="col-sm-2 control-label">子类别:</label>
     <div class="col-sm-4">
-      <%= f.select :sub_category_id, sub_category_list,{},class: 'form-control'%>
+      <%
+        if @detail_category.category_id.present?
+          options = SubCategory.where(category_id: @detail_category.category_id).order(:id).pluck(:name, :id)
+        else
+          options = [["选择子类别",""]]
+        end
+      %>
+      <%= f.select :sub_category_id, options, { selected: @detail_category.sub_category_id }, id: 'detail_category_sub_category_id', class: 'form-control' %>
     </div>
   </div>
   <div class ="form-group">
@@ -35,3 +49,18 @@
     </div>
   </div>
 <% end %>
+<script type="text/javascript">
+$("#detail_category_category_id").change(function(){
+  var set_url = "<%= select_category_admin_detail_categories_url %>" + 
+                "?category_id=" + $("[name='detail_category[category_id]']").val() + 
+                "&id=detail_category_sub_category_id&name=detail_category[sub_category_id]&first_option=选择子类别";
+  jQuery.ajax({
+    type: "GET",
+    url: set_url,
+    dataType: "json",
+    success: function(data){
+      $('#detail_category_sub_category_id').html(data.html);
+    }
+  });
+});
+</script>

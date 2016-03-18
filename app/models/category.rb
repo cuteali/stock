@@ -1,5 +1,6 @@
 class Category < ActiveRecord::Base
   has_many :sub_categories
+  has_many :detail_categories
   has_many :products, -> { order "products.sort DESC, products.updated_at DESC" }
 
   scope :sorted, -> { order('sort DESC') }

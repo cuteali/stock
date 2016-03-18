@@ -23,6 +23,9 @@ Rails.application.routes.draw do
       end
     end
     resources :detail_categories do
+      collection do
+        get :select_category
+      end
       member do
         post :stick_top
       end
@@ -31,7 +34,7 @@ Rails.application.routes.draw do
     resources :users
     resources :products do
       collection do
-        get :select_category, :select_sub_category
+        get :select_category
       end
       member do
         get :delete_image, :image

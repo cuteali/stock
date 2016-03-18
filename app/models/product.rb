@@ -15,28 +15,6 @@ class Product < ActiveRecord::Base
   validates :sort, presence: true
   validates :sort, numericality: { only_integer: true, greater_than_or_equal_to: 1}
 
-  def self.get_select_category_html(options, id, name)
-    html = ""
-    html << "<select id='#{id}' name='#{name}' class='form-control'>" if options
-    html << "<option value=''>选择子类别</option>" if options
-    options.each do |option|
-      html << "<option value='#{option.id}'>#{option.name}</option>"
-    end
-    html << "</select>" if options
-    return html
-  end
-
-  def self.get_select_sub_category_html(options, id, name)
-    html = ""
-    html << "<select id='#{id}' name='#{name}' class='form-control'>" if options
-    html << "<option value=''>选择具体类别</option>" if options
-    options.each do |option|
-      html << "<option value='#{option.id}'>#{option.name}</option>"
-    end
-    html << "</select>" if options
-    return html
-  end
-
   def self.validate_stock_num(products)
     result = 0
     products.each do |p|
