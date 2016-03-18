@@ -10,6 +10,7 @@ class Product < ActiveRecord::Base
 
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }
+  scope :hot, -> { where(hot_category_id: 2) }
 
   validates :sort, presence: true
   validates :sort, numericality: { only_integer: true, greater_than_or_equal_to: 1}
