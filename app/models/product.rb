@@ -137,6 +137,7 @@ class Product < ActiveRecord::Base
       attrs[:sort] = Product.init_sort
       attrs[:state] = 1
       attrs[:hot_category_id] = 1
+      attrs[:unique_id] = SecureRandom.urlsafe_base64
       product = Product.new(attrs)
       Product.where(attrs.slice(:name, :category_id, :sub_category_id, :detail_category_id, :price)).delete_all
       if product.save # 导入产品成功
