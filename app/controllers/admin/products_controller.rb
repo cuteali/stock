@@ -71,6 +71,28 @@ class Admin::ProductsController < Admin::BaseController
     redirect_to :back, notice: '操作成功'
   end
 
+  def upload_csv
+    uploaded_file = params[:file]
+    return redirect_to :back, alert: "请导入格式为.csv的文件。" if uploaded_file.blank?
+
+    tempfile = uploaded_file.tempfile
+    return redirect_to :back, alert: "请导入格式为.csv的文件。" if uploaded_file.original_filename !~ /\.csv\z/i
+    return redirect_to :back, alert: "上传文件不能大于1M，请重新上传。" if tempfile.size > 1024 ** 2
+
+    file_name = copy_tempfile(tempfile)
+    result = Product.validate_and_import(file_name)
+
+    respond_to do |format|
+      if result.is_a?(Hash) # 产品导入失败，数据格式不正确
+        format.json { render json: result }
+        format.html { redirect_to :back, alert: result[:message] }
+      else
+        format.json { flash.notice = "文件上传成功，请于10分钟后查看数据导入情况"; render json: {} }
+        format.html { redirect_to :back, notice: "文件上传成功，请于10分钟后查看数据导入情况"  }
+      end
+    end
+  end
+
   private
     def set_product
       @product = Product.find(params[:id])
@@ -78,5 +100,13 @@ class Admin::ProductsController < Admin::BaseController
 
     def product_params
       params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark)
+    end
+
+    def copy_tempfile(tempfile)
+      dir = "#{Rails.root}/public/uploads/tmp/product_csv"
+      file_name = "#{dir}/#{Time.now.to_s(:number)}.csv"
+      FileUtils.mkdir_p dir
+      FileUtils.copy tempfile.path, file_name
+      file_name
     end
 end

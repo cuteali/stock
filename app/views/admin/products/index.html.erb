@@ -38,7 +38,11 @@
           <%= f.submit '查询', class: 'btn btn-primary' %>
         </div>
       <% end %>
+      <div class="margin-left-10 pull-left">
+        <a href="#import-vipinfo" data-toggle="modal" class="btn btn-primary btn-sm margin-top-20">导入产品信息</a>
+      </div>
     </div>
+
   </div>
   <% if @products.present? %>
     <div class="panel panel-default">
@@ -114,4 +118,94 @@ $("#sub_category_id").change(function(){
     }
   });
 });
+</script>
+
+<div class="modal fade" id="import-vipinfo">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_tag '', enctype: 'multipart/form-data', remote: true do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">导入产品信息</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-block alert-success">
+            文件大小不要超过1M
+          </div>
+          <div>
+            <a href="/templates/product-info.csv">下载模板:product-info.csv</a>
+          </div>
+          <div class="fileupload fileupload-new" data-provides="fileupload">
+            <span class="btn btn-primary btn-file">
+              <span class="fileupload-new">选择文件</span>
+              <span class="fileupload-exists">重新选择</span>
+              <%= text_field_tag :file, '', type: :file, id: :import_csv %>
+            </span>
+            <span class="fileupload-preview"></span>
+            <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+          <button type="button" id="upload_csv" class="btn btn-primary btn-sm">提交</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function() {
+    $('#import_csv').change(function(event) {
+        var fileName = $(this).val();
+        if(!/\.csv$/i.test(fileName)) {
+          alert('文件格式错误，请检查文件内容是否符合模板要求。');
+        }
+    });
+    var $uploadBtn = $('#upload_csv');
+    $uploadBtn.click(function(event) {
+        var fileName = $('#import_csv').val();
+        if(fileName.length === 0) {
+          alert('请导入格式为.csv的文件');
+          event.preventDefault();
+          return false;
+        } else if(!/\.csv$/i.test(fileName)) {
+          alert('文件格式错误，请检查文件内容是否符合模板要求。');
+          event.preventDefault();
+          return false;
+        } else if (typeof FileReader !== "undefined") {
+          $uploadBtn.prop('disabled', true);
+          var size = document.getElementById('import_csv').files[0].size;
+          if(size > 1024 * 1024) {
+            alert('上传文件不能大于1M，请重新上传。');
+            event.preventDefault();
+            return false;
+          }
+          var formdata = new FormData();
+          var file = document.getElementById('import_csv').files[0];
+          formdata.append("file", file, file.name);
+          if($('#sync').is(':checked')) {
+            formdata.append("sync", 1);
+          }
+          $.ajax({
+            url: "<%= upload_csv_admin_products_url %>",
+            type: 'POST',
+            dataType: 'json',
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+              $uploadBtn.prop('disabled', false);
+              if(data.error) {
+                alert(data.message);
+              } else {
+                alert('文件上传成功，请稍后查看数据导入情况');
+                location.reload();
+              }
+            }
+          });
+        }
+    });
+
+  });
 </script>

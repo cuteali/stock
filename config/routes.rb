@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get :select_category
+        post :upload_csv
       end
       member do
         get :delete_image, :image
