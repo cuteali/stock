@@ -52,11 +52,11 @@
 	    </p>
 	    <p>
 	      <span><b>现价：</b></span>
-	      <span><%= @product.price %></span>
+	      <span><%= number_to_currency(@product.price, unit: '') %></span>
 	    </p>
 	    <p>
 	      <span><b>原价：</b></span>
-	      <span><%= @product.old_price %></span>
+	      <span><%= number_to_currency(@product.old_price, unit: '') %></span>
 	    </p>
 	    <p>
 	      <span><b>规格：</b></span>

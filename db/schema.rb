@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319081339) do
+ActiveRecord::Schema.define(version: 20160321030906) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -121,10 +121,10 @@ ActiveRecord::Schema.define(version: 20160319081339) do
     t.text     "products",      limit: 65535
     t.integer  "address_id",    limit: 4
     t.integer  "user_id",       limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                                         null: false
+    t.datetime "updated_at",                                                         null: false
     t.string   "unique_id",     limit: 255
-    t.float    "order_money",   limit: 24
+    t.decimal  "order_money",                 precision: 12, scale: 2, default: 0.0
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
@@ -133,20 +133,20 @@ ActiveRecord::Schema.define(version: 20160319081339) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name",               limit: 255
-    t.integer  "sort",               limit: 4,   default: 1, null: false
+    t.integer  "sort",               limit: 4,                            default: 1,   null: false
     t.integer  "state",              limit: 4
     t.string   "image",              limit: 255
     t.string   "unit_id",            limit: 255
     t.integer  "stock_num",          limit: 4
-    t.float    "price",              limit: 24
-    t.float    "old_price",          limit: 24
+    t.decimal  "price",                          precision: 12, scale: 2, default: 0.0
+    t.decimal  "old_price",                      precision: 12, scale: 2, default: 0.0
     t.integer  "category_id",        limit: 4
     t.integer  "sub_category_id",    limit: 4
     t.integer  "hot_category_id",    limit: 4
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                                                            null: false
+    t.datetime "updated_at",                                                            null: false
     t.integer  "detail_category_id", limit: 4
-    t.integer  "sale_count",         limit: 4,   default: 0
+    t.integer  "sale_count",         limit: 4,                            default: 0
     t.string   "desc",               limit: 255
     t.string   "info",               limit: 255
     t.string   "spec",               limit: 255

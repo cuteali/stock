@@ -83,10 +83,10 @@
                       <%= pro_hash["number"].to_s %>
                     </td>
                     <td>
-                      &yen;<%= product.price %>
+                      &yen;<%= number_to_currency(product.price, unit: '') %>
                     </td>
                     <td>
-                      &yen;<%= product.price * pro_hash["number"].to_i %>
+                      &yen;<%= number_to_currency(product.price * pro_hash["number"].to_i, unit: '') %>
                     </td>
                   </tr>
                 <% end if @products.present? %>
@@ -103,7 +103,7 @@
                     <strong>商品总额</strong>
                   </td>
                   <td>
-                    &yen;<%= @order.order_money %>
+                    &yen;<%= number_to_currency(@order.order_money, unit: '') %>
                   </td>
                 </tr>
                 <!--tr>
@@ -130,7 +130,7 @@
                   </td>
                   <td>
                     <h5 class="text-primary">
-                      &yen;<%= @order.order_money %>
+                      &yen;<%= number_to_currency(@order.order_money, unit: '') %>
                     </h5>
                   </td>
                 </tr>

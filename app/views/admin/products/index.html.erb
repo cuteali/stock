@@ -71,7 +71,7 @@
               <td class="col-sm-1"><%= product.unit.try(:name) || '暂无' %></td>
               <td class="col-sm-1"><%= product.sale_count %></td>
               <td class="col-sm-1"><%= product.stock_num %></td>
-              <td class="col-sm-1"><%= product.price %></td>
+              <td class="col-sm-1"><%= number_to_currency(product.price, unit: '') %></td>
               <td class="col-sm-1"><%= product.remark %></td>
               <td class="col-sm-2">
                 <%= link_to "置顶", stick_top_admin_product_path(product), method: :post, data: { confirm: "确定将该产品置顶么？" } %> |
