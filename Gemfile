@@ -28,6 +28,9 @@ gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
   gem 'byebug'
+  gem 'capistrano', '~> 3.0'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-rvm'
 end
 
 group :development do
