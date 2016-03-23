@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 
 ruby '2.3.0'
 
@@ -22,7 +22,7 @@ gem 'ransack'
 gem 'redis'
 gem 'sass-rails', '~> 5.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'sprockets-rails', '~> 3.0.4'
+# gem 'sprockets-rails', '~> 3.0.3'
 gem 'therubyracer', platforms: :ruby
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
