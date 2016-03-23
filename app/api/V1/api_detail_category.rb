@@ -12,7 +12,7 @@ module V1
       get ":unique_id",jbuilder:"v1/detail_categories/index" do
         @detail_category = DetailCategory.find_by(unique_id:params[:unique_id])
         if @detail_category.present?
-          @products = @detail_category.products.state
+          @products = @detail_category.products.state.sorted
         end
       end
     end
