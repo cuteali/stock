@@ -16,5 +16,7 @@
 /config/database.yml
 
 /public/assets
+/public/uploads
+/public/*.jpg
 
 .byebug_history
