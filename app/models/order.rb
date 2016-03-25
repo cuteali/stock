@@ -26,6 +26,13 @@ class Order < ActiveRecord::Base
     order_money
   end
 
+  def restore_products
+    JSON.parse(self.products).each do |p|
+      product = Product.find_by(unique_id: p['unique_id'])
+      product.restore_stock_num(p['number'])
+    end
+  end
+
   private
     def generate_order_no
       max_order_no = Order.maximum(:order_no) || 1603030

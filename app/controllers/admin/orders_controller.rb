@@ -15,7 +15,9 @@ class Admin::OrdersController < Admin::BaseController
 
   def update
     AppLog.info("params:   #{params[:order][:complete_time]}")
+    @order.restore_products
     if @order.update(order_params)
+      Product.edit_stock_num(JSON.parse(@order.products))
       AppLog.info("order.complete_time  #{@order.id}")
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path
@@ -25,6 +27,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def destroy
+    @order.restore_products
     @order.destroy
     redirect_to admin_orders_path
   end

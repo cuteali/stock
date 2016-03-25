@@ -20,4 +20,7 @@ module Admin::OrderHelper
     state_show
   end
 
+  def edit_disabled(state)
+    [-1, 3].include?(state)
+  end
 end

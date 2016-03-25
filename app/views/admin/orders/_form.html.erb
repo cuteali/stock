@@ -64,6 +64,12 @@
   </div>
 <% end %>
 <script type="text/javascript">
+  <% if edit_disabled(@order.state) %>
+    $('input').attr('disabled', true)
+    $('select').attr('disabled', true);
+    $('button[type=submit]').attr('disabled', true);
+  <% end %>
+
   $('#order_delivery_time').datetimepicker({
     autoclose: true,
     todayBtn: true,

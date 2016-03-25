@@ -66,6 +66,12 @@ class Product < ActiveRecord::Base
     pro_ids
   end
 
+  def restore_stock_num(number)
+    self.stock_num += number.to_i
+    self.sale_count -= number.to_i
+    self.save
+  end
+
   def self.init_sort
     Product.maximum(:sort) + 1
   end
