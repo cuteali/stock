@@ -1,4 +1,6 @@
 class Admin::OrdersController < Admin::BaseController
+  include Admin::OrderHelper
+
   before_action :set_order,only:[:edit,:update,:destroy,:show]
   
   def index
@@ -17,7 +19,7 @@ class Admin::OrdersController < Admin::BaseController
     AppLog.info("params:   #{params[:order][:complete_time]}")
     @order.restore_products
     if @order.update(order_params)
-      Product.edit_stock_num(JSON.parse(@order.products))
+      Product.edit_stock_num(JSON.parse(@order.products)) if !edit_disabled(@order.state)
       AppLog.info("order.complete_time  #{@order.id}")
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path
