@@ -11,6 +11,7 @@ class Product < ActiveRecord::Base
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }
   scope :hot, -> { where(hot_category_id: 2) }
+  scope :by_page, -> (page_num) { page(page_num).per(20) if page_num }
 
   validates :sort, presence: true
   validates :sort, numericality: { only_integer: true, greater_than_or_equal_to: 1}
@@ -74,8 +75,8 @@ class Product < ActiveRecord::Base
     hash = Product.validate_data(data)
     return hash if hash[:error]
 
-    Product.insert_data(data)
-    # Product.delay.insert_data(data)
+    # Product.insert_data(data)
+    Product.delay.insert_data(data)
     data[:data].size
   rescue => e
     Rails.logger.error "product importing error: #{e.message}"

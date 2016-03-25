@@ -1,5 +1,6 @@
 if @detail_category.present?
   json.result 0
+  json.total_pages @products.total_pages if params[:page_num]
   json.detail_category do
     json.unique_id @detail_category.unique_id
     json.name @detail_category.name

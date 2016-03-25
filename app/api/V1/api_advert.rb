@@ -10,6 +10,19 @@ module V1
         @adverts = Advert.all
         @popular_product = Product.state.hot.sorted
       end
+
+      # http://localhost:3000/api/v1/adverts/advert
+      get "advert", jbuilder: 'v1/adverts/advert' do
+        @adverts = Advert.all
+      end
+
+      # http://localhost:3000/api/v1/adverts/hot_products
+      params do 
+        optional :page_num, type: String
+      end
+      get "hot_products", jbuilder: 'v1/adverts/hot_products' do
+        @popular_product = Product.state.hot.sorted.by_page(params[:page_num])
+      end
     end
   end
 end

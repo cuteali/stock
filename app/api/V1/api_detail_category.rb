@@ -7,12 +7,13 @@ module V1
 
       # http://localhost:3000/api/v1/detail_categories/:unique_id
       params do 
-        requires :unique_id,type: String
+        requires :unique_id, type: String
+        optional :page_num, type: String
       end
       get ":unique_id",jbuilder:"v1/detail_categories/index" do
         @detail_category = DetailCategory.find_by(unique_id:params[:unique_id])
         if @detail_category.present?
-          @products = @detail_category.products.state.sorted
+          @products = @detail_category.products.state.sorted.by_page(params[:page_num])
         end
       end
     end
