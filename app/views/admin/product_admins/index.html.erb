@@ -1,0 +1,60 @@
+<% content_for :title do %>
+  进货列表
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/orders">进货列表</a>
+</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-2 row pull-left">
+          <%= link_to '添加进货单', new_admin_product_admin_path, class: 'btn btn-success' %>
+        </div>
+        <div class="col-md-10 row">
+          <%= f.label '产品名称：' %>
+          <%= f.search_field :product_name_cont, class: 'input-medium', placeholder:"产品名称" %>
+          <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% if @product_admins.present? %>
+    <div class="panel panel-default">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>产品名称</th>
+            <th>进货商</th>
+            <th>进货量</th>
+            <th>进价</th>
+            <th>进货时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product_admins.each do |product_admin| %>
+            <tr>
+              <td class="col-sm-1"><%= product_admin.id %></td>
+              <td class="col-sm-1"><%= product_admin.product_name %></td>
+              <td class="col-sm-1"><%= product_admin.stock_business %></td>
+              <td class="col-sm-1"><%= product_admin.product_num %></td>
+              <td class="col-sm-1"><%= product_admin.stock_price %></td>
+              <td class="col-sm-1"><%= time_show(product_admin.stock_time) %></td>
+              <td class="col-sm-1">
+                <%= link_to '修改', edit_admin_product_admin_path(product_admin) %> |
+                <%= link_to '删除', admin_product_admin_path(product_admin), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @product_admins %>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

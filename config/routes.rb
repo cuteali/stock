@@ -42,6 +42,11 @@ Rails.application.routes.draw do
         post :stick_top
       end
     end
+    resources :product_admins do
+      collection do
+        get :select_category
+      end
+    end
     resources :addresses
     resources :orders
     resources :units

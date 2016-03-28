@@ -72,6 +72,11 @@ class Product < ActiveRecord::Base
     self.save
   end
 
+  def add_or_cut_stock_num(number)
+    self.stock_num += number.to_i
+    self.save
+  end
+
   def self.init_sort
     Product.maximum(:sort) + 1
   end
