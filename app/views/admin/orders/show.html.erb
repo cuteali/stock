@@ -13,7 +13,7 @@
     </h4>
   </center>
   <div class="invoice">
-    <div class="row">
+    <div class="row delivered">
       <div class="col-md-12">
         <div class="well">
           <div class="row print-font-size">
@@ -54,45 +54,59 @@
                   货物名称
                 </th>
                 <th>
+                  大分类
+                </th>
+                <th>
                   规格
                 </th>
                 <th width="70">
                   数量
                 </th>
-                <th width="100">
+                <th width="100" class="delivered">
                   单价
                 </th>
-                <th width="100">
+                <th width="100" class="delivered">
                   金额
                 </th>
               </thead>
               <tbody>
-                <% @order.orders_products.each_with_index do |op, index|%>
+                <% @products.each do |category_id, products|%>
                   <tr>
-                    <td>
-                      #<%= index + 1 %>
-                    </td>
-                    <td>
-                      <%= op.product.name %>
-                    </td>
-                    <td>
-                      <%= op.product.spec %>
-                    </td>
-                    <td>
-                      <%= op.product_num %>
-                    </td>
-                    <td>
-                      &yen;<%= number_to_currency(op.product.price, unit: '') %>
-                    </td>
-                    <td>
-                      &yen;<%= number_to_currency(op.product.price * op.product_num, unit: '') %>
+                    <td class="text-center" colspan="7">
+                      <%= Category.find(category_id).try(:name) %>
                     </td>
                   </tr>
-                <% end if @order.orders_products.present? %>
+                  <% products.each_with_index do |product, index| %>
+                    <% product_num = product.orders_products.find_by(order_id: @order.id).try(:product_num) %>
+                    <tr>
+                      <td>
+                        #<%= index + 1 %>
+                      </td>
+                      <td>
+                        <%= product.name %>
+                      </td>
+                      <td>
+                        <%= product.category.name %>
+                      </td>
+                      <td>
+                        <%= product.spec %>
+                      </td>
+                      <td>
+                        <%= product_num %>
+                      </td>
+                      <td class="delivered">
+                        &yen;<%= number_to_currency(product.price, unit: '') %>
+                      </td>
+                      <td class="delivered">
+                        &yen;<%= number_to_currency(product.price * product_num, unit: '') %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
               </tbody>
-              <tfoot>
+              <tfoot class="delivered">
                 <tr>
-                  <td class="text-right" colspan="3">
+                  <td class="text-right" colspan="4">
                     <strong>商品总数</strong>
                   </td>
                   <td>
@@ -122,7 +136,7 @@
                   </td>
                 </tr-->
                 <tr>
-                  <td class="text-right" colspan="5">
+                  <td class="text-right" colspan="6">
                     <h5 class="text-primary">
                       总计
                     </h5>
@@ -163,9 +177,32 @@
           <a class="btn btn-default" onclick="javascript:history.go(-1);"><i class="icon-print"></i>返回</a>
         </div>
         <div class="col-sm-1 pull-right">
-          <a class="btn btn-primary" onclick="javascript:window.print();"><i class="icon-print"></i>打印订单</a>
+          <a class="btn btn-primary" id="all-order"><i class="icon-print"></i>打印订单</a>
+        </div>
+        <div class="col-sm-2 pull-right">
+          <a class="btn btn-primary" id="delivered-order"><i class="icon-print"></i>打印调货单</a>
         </div>
       </div>
     </div>
   </div>
 </div>
+<style type="text/css" media="print" id="print"></style>
+<script type="text/javascript">
+$(function() {
+  var print_all_button = $('#all-order');
+  var print_delivered_button = $('#delivered-order');
+  var printStyle  = $('#print');
+  var style;
+
+  print_all_button.click(function() {
+    printStyle.text('');
+    window.print();
+  });
+
+  print_delivered_button.click(function() {
+    style = '.delivered { display: none };';
+    printStyle.text(style);
+    window.print();
+  });
+});
+</script>

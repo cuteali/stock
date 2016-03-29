@@ -46,6 +46,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def show
+    @products = @order.products.group_by(&:category_id)
   end
 
   private 

@@ -2,7 +2,7 @@ class Order < ActiveRecord::Base
   belongs_to :address
   belongs_to :user
   has_many :orders_products, dependent: :destroy
-  # has_many :products, through: :orders_products
+  has_many :products, through: :orders_products
   accepts_nested_attributes_for :orders_products, allow_destroy: true
 
   validates :order_no, uniqueness: true
