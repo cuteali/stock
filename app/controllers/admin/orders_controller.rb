@@ -19,7 +19,8 @@ class Admin::OrdersController < Admin::BaseController
     AppLog.info("params:   #{params[:order][:complete_time]}")
     @order.restore_products
     if @order.update(order_params)
-      Product.edit_stock_num(JSON.parse(@order.products)) if !edit_disabled(@order.state)
+      @order.update_order_money
+      @order.update_product_stock_num if !edit_disabled(@order.state)
       AppLog.info("order.complete_time  #{@order.id}")
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path
@@ -45,7 +46,6 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def show
-    @products = JSON.parse(@order.products)
   end
 
   private 
@@ -54,9 +54,6 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     def order_params
-      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :address_id, :complete_time, :user_id).tap do |whitelisted|
-        whitelisted[:products] = params[:order][:products].to_json
-        whitelisted[:order_money] = Order.update_order_money(params[:order][:products])
-      end
+      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :address_id, :complete_time, :user_id, orders_products_attributes: [:id, :product_num])
     end
 end

@@ -13,25 +13,24 @@ else
     json.complete_time @order.complete_time.present?? @order.complete_time.strftime("%Y-%m-%d %H:%M:%S").to_s : ""
     json.address @order.get_address.to_s
     json.order_money @order.order_money.to_s
-    if @order.products.present?
-      json.products(JSON.parse(@order.products)) do |pro_hash|
-        json.unique_id pro_hash["unique_id"].to_s
-        json.number pro_hash["number"].to_s
-        product = Product.find_by(unique_id:pro_hash["unique_id"])
-        if product.present?
-          json.name product.name.to_s
-          json.image Image.get_images(product).first.to_s
-          json.unit if product.unit.present?? product.unit.name.to_s : ""
-          json.stock_num product.stock_num.to_s
-          json.price product.price.to_s
-          json.old_price product.old_price.to_s
-          json.detail_category_id product.detail_category_id.to_s
-          json.hot_category_id product.hot_category_id.to_s
-          json.sale_count product.sale_count.to_s
-          json.spec product.spec.to_s
-          json.unit_price product.unit_price.to_s
-          json.origin product.origin.to_s
-          json.remark product.remark.to_s
+    if @order.orders_products.present?
+      json.products(@order.orders_products) do |op|
+        json.unique_id op.product.unique_id.to_s
+        json.number op.product_num.to_s
+        if op.product.present?
+          json.name op.product.name.to_s
+          json.image Image.get_images(op.product).first.to_s
+          json.unit if op.product.unit.present?? op.product.unit.name.to_s : ""
+          json.stock_num op.product.stock_num.to_s
+          json.price op.product.price.to_s
+          json.old_price op.product.old_price.to_s
+          json.detail_category_id op.product.detail_category_id.to_s
+          json.hot_category_id op.product.hot_category_id.to_s
+          json.sale_count op.product.sale_count.to_s
+          json.spec op.product.spec.to_s
+          json.unit_price op.product.unit_price.to_s
+          json.origin op.product.origin.to_s
+          json.remark op.product.remark.to_s
         end
       end
     end

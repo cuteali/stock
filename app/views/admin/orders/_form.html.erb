@@ -41,17 +41,18 @@
       <%= f.select :address_id, address_info,{}, class: 'form-control' %>
     </div>
   </div>
-  <% JSON.parse(@order.products).each do |item| %>
-    <%= hidden_field_tag 'order[products][][unique_id]', item['unique_id'] %>
-    <% product = Product.find_by(unique_id: item['unique_id']) %>
-    <div class="form-group">
-      <label class="col-sm-2 control-label"><%= product.try(:name) %>:</label>
-      <div class="col-sm-2">
-        <%= text_field_tag 'order[products][][number]', {}, value: item['number'], class: "form-control" %>
+  <% @order.orders_products.each_with_index do |op, i| %>
+    <%= f.fields_for :orders_products, op do |opro| %>
+      <%= opro.hidden_field :id, name: "order[orders_products_attributes][][id]" %>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><%= op.product.try(:name) %>:</label>
+        <div class="col-sm-2">
+          <%= opro.text_field :product_num, class: 'form-control', name: "order[orders_products_attributes][][product_num]" %>
+        </div>
+        <label class="control-label">个</label>
       </div>
-      <label class="control-label">个</label>
-    </div>
-  <% end if @order.products.present? %>
+    <% end %>
+  <% end %>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-4">
       <button calss="btn btn-success" type="submit">

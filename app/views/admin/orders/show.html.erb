@@ -67,29 +67,28 @@
                 </th>
               </thead>
               <tbody>
-                <% @products.each_with_index do |pro_hash, index|%>
-                  <% product = Product.find_by(unique_id: pro_hash["unique_id"]) %>
+                <% @order.orders_products.each_with_index do |op, index|%>
                   <tr>
                     <td>
                       #<%= index + 1 %>
                     </td>
                     <td>
-                      <%= product.name %>
+                      <%= op.product.name %>
                     </td>
                     <td>
-                      <%= product.spec %>
+                      <%= op.product.spec %>
                     </td>
                     <td>
-                      <%= pro_hash["number"].to_s %>
+                      <%= op.product_num %>
                     </td>
                     <td>
-                      &yen;<%= number_to_currency(product.price, unit: '') %>
+                      &yen;<%= number_to_currency(op.product.price, unit: '') %>
                     </td>
                     <td>
-                      &yen;<%= number_to_currency(product.price * pro_hash["number"].to_i, unit: '') %>
+                      &yen;<%= number_to_currency(op.product.price * op.product_num, unit: '') %>
                     </td>
                   </tr>
-                <% end if @products.present? %>
+                <% end if @order.orders_products.present? %>
               </tbody>
               <tfoot>
                 <tr>
@@ -97,7 +96,7 @@
                     <strong>商品总数</strong>
                   </td>
                   <td>
-                    <%= @products.map { |h| h["number"].to_i }.sum %>
+                    <%= @order.orders_products.sum(:product_num) %>
                   </td>
                   <td class="text-right">
                     <strong>商品总额</strong>
@@ -160,7 +159,12 @@
     </div-->
     <div class="row print-pdf-hide">
       <div class="col-lg-12">
-        <a class="btn btn-primary pull-right" onclick="javascript:window.print();"><i class="icon-print"></i>打印订单</a>
+        <div class="col-sm-1 pull-right">
+          <a class="btn btn-default" onclick="javascript:history.go(-1);"><i class="icon-print"></i>返回</a>
+        </div>
+        <div class="col-sm-1 pull-right">
+          <a class="btn btn-primary" onclick="javascript:window.print();"><i class="icon-print"></i>打印订单</a>
+        </div>
       </div>
     </div>
   </div>

@@ -35,15 +35,16 @@ module V1
           AppLog.info("products_json : #{products_json}")
           ActiveRecord::Base.transaction do 
             product_arr = JSON.parse(products_json)
-            order_money = Order.update_order_money(product_arr)
+            order_money = Order.check_order_money(product_arr)
             AppLog.info("money:#{params[:money]}")
             if order_money == params[:money].gsub(/[^\d\.]/, '').to_f
               @stock_num_result = Product.validate_stock_num(product_arr)
               if @stock_num_result == 0
-                pro_ids = Product.edit_stock_num(product_arr)
+                @order = Order.create(state: 0, phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, address_id: address_id, order_money: order_money, unique_id: SecureRandom.urlsafe_base64)
+                @order.create_orders_products(product_arr)
+                pro_ids = @order.update_product_stock_num
                 AppLog.info("pro_ids:      #{pro_ids}")
-                @order = Order.create(state: 0, phone_num: params[:phone_num], receive_name: params[:receive_name], products: products_json, user_id: @user.id, address_id: address_id, order_money: order_money, unique_id: SecureRandom.urlsafe_base64)
-                @cart_items = CartItem.where("user_id = ?",@user.id).where(product_id:pro_ids)
+                @cart_items = CartItem.where(user_id: @user.id, product_id: pro_ids)
                 AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
                 @cart_items.destroy_all if @cart_items.present?
                 if @order

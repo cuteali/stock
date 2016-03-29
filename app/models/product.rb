@@ -7,6 +7,7 @@ class Product < ActiveRecord::Base
   has_one :cart_item
   has_many :images, as: :target
   has_many :adverts
+  has_many :orders_products
 
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }
@@ -48,22 +49,6 @@ class Product < ActiveRecord::Base
       end
     end
     result
-  end
-
-  def self.edit_stock_num(products)
-    pro_ids = []
-    products.each do |p|
-      product = Product.find_by(unique_id: p["unique_id"])
-      if product.stock_num >= p["number"].to_i
-        pro_ids << product.id
-        product.stock_num -= p["number"].to_i
-        product.sale_count += p["number"].to_i
-        product.save
-      else
-        break
-      end
-    end
-    pro_ids
   end
 
   def restore_stock_num(number)

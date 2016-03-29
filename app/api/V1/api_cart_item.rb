@@ -73,17 +73,15 @@ module V1
       post "order_batch_entry", jbuilder: "v1/cart_items/order_batch_entry" do
         if @token.present?
           @order = Order.find_by(unique_id:params[:unique_id])
-          product_arr = JSON.parse(@order.products)
-          @stock_num_result = Product.validate_stock_num(product_arr)
+          @stock_num_result = @order.validate_product_stock_num
           if @stock_num_result == 0
-            product_arr.each do |pro_hash|
-              @product = Product.find_by(unique_id: pro_hash["unique_id"])
-              @cart_item = CartItem.find_by(product_id: @product.id, user_id: @order.user_id)
+            @order.orders_products.each do |op|
+              @cart_item = CartItem.find_by(product_id: op.product_id, user_id: @order.user_id)
               if @cart_item.present?
-                @cart_item.product_num += pro_hash["number"].to_i
+                @cart_item.product_num += op.product_num
                 @cart_item.save
               else
-                @cart_item = CartItem.create(product_id: @product.id, user_id: @order.user_id, product_num: pro_hash["number"], unique_id: SecureRandom.urlsafe_base64)
+                @cart_item = CartItem.create(product_id: op.product_id, user_id: @order.user_id, product_num: op.product_num, unique_id: SecureRandom.urlsafe_base64)
               end
               @info = "success"
             end
@@ -102,7 +100,7 @@ module V1
         AppLog.info("unique_ids_json:  #{unique_ids_json}")
         if @token.present?
           ActiveRecord::Base.transaction do
-            @cart_items = CartItem.where("user_id = ?",@user.id).where(unique_id:unique_ids_json)
+            @cart_items = CartItem.where(user_id: @user.id, unique_id: unique_ids_json)
             AppLog.info("ids:   #{@cart_items.pluck(:id)}") if @cart_items.present?
             @cart_items.destroy_all if @cart_items.present?
             @info = "success"
