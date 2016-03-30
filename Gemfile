@@ -14,6 +14,7 @@ gem 'grape-jbuilder'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 gem 'kaminari'
+gem 'lazy_high_charts'
 gem "mini_magick"
 gem 'mysql2', '>= 0.3.13', '< 0.5'
 gem 'passenger'

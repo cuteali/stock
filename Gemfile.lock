@@ -114,6 +114,7 @@ GEM
       jbuilder
       tilt
       tilt-jbuilder (>= 0.4.0)
+    hash-deep-merge (0.1.1)
     hashie (3.4.3)
     i18n (0.7.0)
     ice_nine (0.11.2)
@@ -128,6 +129,8 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    lazy_high_charts (1.5.5)
+      hash-deep-merge
     libv8 (3.16.14.13)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
@@ -270,6 +273,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   kaminari
+  lazy_high_charts
   mini_magick
   mysql2 (>= 0.3.13, < 0.5)
   passenger

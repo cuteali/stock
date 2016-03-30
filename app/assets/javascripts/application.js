@@ -23,3 +23,5 @@
 //= require date-time/daterangepicker.min
 //= require date-time/bootstrap-datetimepicker
 //= require date-time/datepicker.zh
+//= require highcharts/highcharts
+//= require highcharts/highcharts-more
