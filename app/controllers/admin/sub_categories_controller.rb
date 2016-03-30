@@ -4,7 +4,7 @@ class Admin::SubCategoriesController < Admin::BaseController
   
   def index
     @q = SubCategory.ransack(params[:q])
-    @sub_categories = @q.result.sorted.page(params[:page]).per(20)
+    @sub_categories = @q.result.sorted.page(params[:page])
     if params[:q]
       @category_id = params[:q][:category_id_eq]
     end

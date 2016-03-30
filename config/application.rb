@@ -28,9 +28,19 @@ module Stock
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
     config.autoload_paths += Dir[Rails.root.join('lib')]
+
     #jbuilder
     config.middleware.use(Rack::Config) do |env|
         env['api.tilt.root'] = Rails.root.join 'app', 'views', 'api'
+    end
+
+    config.generators do |generate|
+      generate.helper false
+      generate.javascript_engine false
+      generate.javascripts false
+      generate.stylesheets false
+      generate.test_framework :rspec
+      generate.view_specs false
     end
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.

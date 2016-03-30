@@ -1,11 +1,11 @@
 class Admin::OrdersController < Admin::BaseController
   include Admin::OrderHelper
 
-  before_action :set_order,only:[:edit,:update,:destroy,:show]
+  before_action :set_order, only: [:edit, :update, :destroy, :show]
   
   def index
     @q = Order.ransack(params[:q])
-    @orders = @q.result.latest.page(params[:page]).per(20)
+    @orders = @q.result.latest.page(params[:page])
   end
 
   def new

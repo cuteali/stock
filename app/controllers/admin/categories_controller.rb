@@ -3,7 +3,7 @@ class Admin::CategoriesController < Admin::BaseController
   before_action :set_category, only: [:edit, :update, :destroy, :stick_top]
   
   def index
-    @categories = Category.sorted.page(params[:page]).per(20)
+    @categories = Category.sorted.page(params[:page])
   end
 
   def new

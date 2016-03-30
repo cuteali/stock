@@ -3,7 +3,7 @@ class Admin::AddressesController < Admin::BaseController
   
   def index
     @q = Address.ransack(params[:q])
-    @address = @q.result.page(params[:page]).per(20)
+    @address = @q.result.page(params[:page])
   end
 
   def new

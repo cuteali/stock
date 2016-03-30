@@ -5,7 +5,7 @@ class Admin::ProductsController < Admin::BaseController
   
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.sorted.page(params[:page]).per(20)
+    @products = @q.result.sorted.page(params[:page])
     if params[:q]
       @category_id = params[:q][:category_id_eq]
       @sub_category_id = params[:q][:sub_category_id_eq]

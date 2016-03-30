@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     resources :orders
     resources :units
     resources :adverts
+    resources :order_stat, only: :index
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
