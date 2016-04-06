@@ -142,6 +142,7 @@ class Order < ActiveRecord::Base
     count = total.length
     order_stats = total.select('date(created_at) as created_date, count(*) as count').group('date(created_at)').order("created_at asc")
     if date == "one_days"
+      start_time = today
       h[today.try(:strftime, "%m-%d")] = 0
       categories, data = Order.get_hash_day(h, order_stats)
     elsif date == "one_weeks"
@@ -278,6 +279,7 @@ class Order < ActiveRecord::Base
     amount = total.sum(:order_money)
     order_stats = total.select('date(created_at) as created_date, sum(order_money) as amount').group('date(created_at)').order("created_at asc")
     if date == "one_days"
+      start_time = today
       h[today.try(:strftime, "%m-%d")] = 0
       categories, data = Order.get_hash_day_amount(h, order_stats)
     elsif date == "one_weeks"
