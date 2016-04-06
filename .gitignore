@@ -20,3 +20,4 @@
 /public/*.jpg
 
 .byebug_history
+.rvmrc
