@@ -49,7 +49,7 @@
             <b><%= @orders.where("date(created_at) = ?",@today-1.day).length %></b>
             <span>昨日订单</span>
           </div>
-          <div class="chartInfoHeadFooter">订单共计<%= @orders.length %>个</div>
+          <div class="chartInfoHeadFooter">共计<%= @orders.length %>个</div>
         </div>
       </div>
       <div class="chart margin-top-20 branch-record col-md-12">
@@ -72,7 +72,7 @@
             <b><%= @orders.where("date(created_at) = ?",@today-1.day).sum(:order_money) %></b>
             <span>昨日交易额</span>
           </div>
-          <div class="chartInfoHeadFooter">交易额共计<%= @orders.sum(:order_money) %>元</div>
+          <div class="chartInfoHeadFooter">共计<%= @orders.sum(:order_money) %>元</div>
         </div>
       </div>
       <div class="col-sm-12">
