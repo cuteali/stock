@@ -30,3 +30,11 @@
 .nav-active {
   background-color: #463265;
 }
+
+.alert-alert {
+  @extend .alert-warning;
+}
+
+.alert-notice {
+  @extend .alert-info;
+}

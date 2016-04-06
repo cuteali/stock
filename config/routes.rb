@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
 
-  root to: 'service_agreement#app_download'
+  devise_for :members
+  devise_scope :member do
+    get "/admin" => "devise/sessions#new"
+  end
+
+  root to: 'admin/welcomes#index'
 
   mount API => '/'
-  get 'admin'=>'admin/welcomes#index'
+  get 'admin'=>'devise/sessions#new'
 
   resources :service_agreement, only: :index do
     collection do

@@ -75,4 +75,12 @@ module ApplicationHelper
     users += User.all.collect{|t| [t.user_name,t.id]}
   end
 
+  def sessions_new_path?
+    controller_name == 'sessions' && action_name == 'new'
+  end
+
+  def welcomes_path?
+    controller_name == 'welcomes'
+  end
+
 end

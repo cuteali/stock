@@ -73,7 +73,7 @@ class Product < ActiveRecord::Base
 
     # Product.insert_data(data)
     Product.delay.insert_data(data)
-    data[:data].size
+    # data[:data].size
   rescue => e
     Rails.logger.error "product importing error: #{e.message}"
     Rails.logger.error e.backtrace
@@ -132,7 +132,7 @@ class Product < ActiveRecord::Base
       line = attrs.delete(:line)
       image = attrs.delete(:image)
       attrs[:sort] = Product.init_sort
-      attrs[:state] = 1
+      # attrs[:state] = 1
       attrs[:hot_category_id] = 1
       attrs[:unique_id] = SecureRandom.urlsafe_base64
       product = Product.new(attrs)

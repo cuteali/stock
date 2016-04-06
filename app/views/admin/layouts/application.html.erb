@@ -7,9 +7,20 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div>
-    <%= render "admin/share/head"%>
+  <% unless welcomes_path? || sessions_new_path? %>
+    <div>
+      <%= render "admin/share/head"%>
+    </div>
+  <% end %>
+
+  <div class="container">
+    <% flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>">
+        <%= value %>
+      </div>
+    <% end %>
   </div>
+
   <div class="container">
     <%= yield %>
   </div>
