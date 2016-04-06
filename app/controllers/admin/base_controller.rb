@@ -1,8 +1,7 @@
 class Admin::BaseController < ApplicationController
   include MonthFilteringForBase
   
-  # http_basic_authenticate_with name: "stock", password: "hiyaohuola666"
-  # layout 'admin/layouts/application'
+  # http_basic_authenticate_with name: "tsingcloud@tsingcloud.cc", password: "hiyaohuola666"
   before_filter :filter_current_member
 
   def filter_current_member
