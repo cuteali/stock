@@ -16,7 +16,7 @@
         <div class="col-md-5">
           <%= form_tag admin_order_stat_index_path ,:method => :get do %>
             <div class="input-group width-240px pull-left">
-               <span class="input-group-addon">
+              <span class="input-group-addon">
                 <i class="icon-calendar"></i>
               </span>
               <%= text_field_tag :start_time, params[:start_time], class: 'datepicker input-small'  %>
@@ -85,11 +85,11 @@
             </tr>
           </thead>
           <tbody>
-            <% if @order_stats.each do |stat| %>
+            <% if @order_stats.each do |key, value| %>
               <tr>
-                <td><%= stat.created_date %></td>
-                <td><%= stat.count %></td>
-                <td><%= stat.money %></td>
+                <td><%= key %></td>
+                <td><%= value[0] %></td>
+                <td><%= value[1] %></td>
               </tr>
             <% end.blank? %>
               <tr><td colspan="3" class="green text-center">无记录</td></tr>
@@ -102,11 +102,12 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
-    $('.datepicker').attr('readonly', 'readonly').datepicker({
+    $('input[class*="datepicker"]').attr('readonly', 'readonly').datepicker({
       todayBtn: "linked",
       autoclose: true,
+
+      format: "yyyy-mm-dd"
     });
-    $('.datepicker').datepicker( "option", "dateFormat", "yy-mm-dd" );
     <%if @chart%>
       $('#chart-1').append("<%= escape_javascript(high_chart('chart_basic_line1', @chart)) -%>");
     <%end%>

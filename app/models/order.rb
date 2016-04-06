@@ -79,6 +79,18 @@ class Order < ActiveRecord::Base
     result
   end
 
+  def self.get_order_stats(total, start_time, end_time)
+    h = {}
+    order_stats = total.select('date(created_at) as created_date, count(*) as count, sum(order_money) as money').group('date(created_at)').order("created_at asc")
+    (start_time..end_time).to_a.reverse.each do |day|
+      h[day.try(:strftime, "%Y-%m-%d")] = 0
+    end
+    order_stats.each do |value|
+      h[value.created_date.try(:strftime, "%Y-%m-%d")] = [value.count, value.money]
+    end
+    h.take(31)
+  end
+
   def self.chart_data(orders, date, today, select_time, params)
     count = 0
     series = []
@@ -88,13 +100,13 @@ class Order < ActiveRecord::Base
     if select_time
       start_time = Date.parse(params[:start_time])
       end_time = Date.parse(params[:end_time])
-      categories, hash['data'], count = Order.get_select_date(orders, start_time, end_time, count)
+      categories, hash['data'], count, total = Order.get_select_date(orders, start_time, end_time, count)
     else
-      categories, hash['data'], count, start_time, end_time = Order.get_date(orders, date, today, count)
+      categories, hash['data'], count, start_time, end_time, total = Order.get_date(orders, date, today, count)
     end
     series << hash
     min_tick = categories.length > 7 ? 6 : nil
-    [categories, series, start_time, end_time, count, min_tick]
+    [categories, series, start_time, end_time, count, min_tick, total]
   end
 
   def self.get_select_date(orders, start_time, end_time, count)
@@ -121,7 +133,7 @@ class Order < ActiveRecord::Base
       end
       categories, data = Order.get_hash_year(h, order_stats)
     end
-    return categories, data, count
+    return categories, data, count, total
   end
 
   def self.get_date(orders, date, today, count)
@@ -145,7 +157,7 @@ class Order < ActiveRecord::Base
       end
       categories, data = Order.get_hash_day(h, order_stats)
     end
-    return categories, data, count, start_time, today
+    return categories, data, count, start_time, today, total
   end
 
   def self.get_hash_day(h, order_stats)

@@ -25,10 +25,12 @@
         <thead>
           <tr>
             <th>id</th>
-            <th>昵称</th>
-            <th>省</th>
+            <th>用户名</th>
+            <th>收货人</th>
+            <th>电话</th>
+            <!--th>省</th>
             <th>市</th>
-            <th>区</th>
+            <th>区</th-->
             <th>区域</th>
             <th>详细地址</th>
             <th>操作</th>
@@ -43,9 +45,11 @@
               <% else %>
                 <td class="col-sm-1">无</td>
               <% end %>
-              <td class="col-sm-1"><%= add.province %></td>
-              <td class="col-sm-1"><%= add.city %></td>
-              <td class="col-sm-1"><%= add.region %></td>
+              <td class="col-sm-1"><%= add.receive_name %></td>
+              <td class="col-sm-1"><%= add.receive_phone %></td>
+              <!--td class="col-sm-1"><%#= add.province %></td>
+              <td class="col-sm-1"><%#= add.city %></td>
+              <td class="col-sm-1"><%#= add.region %></td-->
               <td class="col-sm-1"><%= add.area %></td>
               <td class="col-sm-2"><%= add.detail %></td>
               <td class="col-sm-1">

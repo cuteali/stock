@@ -81,8 +81,8 @@
     todayBtn: true,
     language: "zh"
   });
-  $("#order_delivery_time" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
-  $("#order_complete_time" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+  $("#order_delivery_time" ).datetimepicker( "option", "dateFormat", "yy-mm-dd" );
+  $("#order_complete_time" ).datetimepicker( "option", "dateFormat", "yy-mm-dd" );
   var delivery_time = '<%= @order.delivery_time.try(:strftime, "%Y-%m-%d %H:%M") %>'
   if(delivery_time != null && delivery_time != ""){
     $("#order_delivery_time" ).val(delivery_time)

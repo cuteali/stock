@@ -43,6 +43,6 @@ class Admin::AddressesController < Admin::BaseController
     end
 
     def address_params
-      params.require(:address).permit(:province,:city,:region,:detail,:user_id)
+      params.require(:address).permit(:province, :city, :region, :detail, :user_id, :receive_name, :receive_phone)
     end
 end
