@@ -35,7 +35,7 @@ class Order < ActiveRecord::Base
 
   def update_order_money
     new_order_money = orders_products.to_a.sum do |op|
-      op.product.price * op.product_num
+      op.product_price * op.product_num
     end
     self.update(order_money: new_order_money)
   end
@@ -49,7 +49,7 @@ class Order < ActiveRecord::Base
   def create_orders_products(products)
     products.each do |p|
       product = Product.find_by(unique_id: p['unique_id'])
-      self.orders_products.where(product_id: product.try(:id), product_num: p['number']).first_or_create
+      self.orders_products.where(product_id: product.try(:id), product_num: p['number'], product_price: product.try(:price)).first_or_create
     end
   end
 

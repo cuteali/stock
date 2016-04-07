@@ -77,7 +77,7 @@
                     </td>
                   </tr>
                   <% products.each_with_index do |product, index| %>
-                    <% product_num = product.orders_products.find_by(order_id: @order.id).try(:product_num) %>
+                    <% orders_product = product.orders_products.find_by(order_id: @order.id) %>
                     <tr>
                       <td>
                         #<%= index + 1 %>
@@ -92,13 +92,13 @@
                         <%= product.spec %>
                       </td>
                       <td>
-                        <%= product_num %>
+                        <%= orders_product.try(:product_num) %>
                       </td>
                       <td class="delivered">
-                        &yen;<%= number_to_currency(product.price, unit: '') %>
+                        &yen;<%= number_to_currency(orders_product.try(:product_price), unit: '') %>
                       </td>
                       <td class="delivered">
-                        &yen;<%= number_to_currency(product.price * product_num, unit: '') %>
+                        &yen;<%= number_to_currency(orders_product.try(:product_price) * orders_product.try(:product_num), unit: '') %>
                       </td>
                     </tr>
                   <% end %>
