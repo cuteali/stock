@@ -71,7 +71,7 @@ Rails.application.configure do
   config.action_mailer.default :charset => "utf-8"
   config.action_mailer.smtp_settings = {
     address:              'smtp.exmail.qq.com',
-    port:                 465,
+    port:                 25,
     domain:               'exmail.qq.com',
     user_name:            'tsingcloud@tsingcloud.cc',
     password:             'Yaohuola654987',

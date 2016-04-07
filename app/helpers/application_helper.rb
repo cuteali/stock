@@ -79,5 +79,6 @@ module ApplicationHelper
     return true if controller_name == 'welcomes'
     return true if controller_name == 'sessions' && action_name == 'new'
     return true if controller_name == 'passwords' && action_name == 'new'
+    return true if controller_name == 'passwords' && action_name == 'edit'
   end
 end
