@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407024107) do
+ActiveRecord::Schema.define(version: 20160407054431) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20160407024107) do
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.integer  "role",                   limit: 4
   end
 
   add_index "members", ["email"], name: "index_members_on_email", unique: true, using: :btree

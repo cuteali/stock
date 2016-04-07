@@ -20,6 +20,7 @@ gem 'lazy_high_charts'
 gem "mini_magick"
 gem 'mysql2', '>= 0.3.13', '< 0.5'
 gem 'passenger'
+gem 'pundit'
 gem 'rails', '4.2.5'
 gem 'ransack'
 gem 'redis'

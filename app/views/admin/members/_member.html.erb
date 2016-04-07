@@ -1,0 +1,6 @@
+<td class="col-sm-1">
+  <%= form_for([:admin,member]) do |f| %>
+    <%= f.select :role, [["普通用户", "user"], ["管理员", "editor"], ["超级管理员", "admin"]], {}, class: 'input-sm' %>
+    <%= f.submit "保存", class: 'btn btn-info btn-xs' %>
+  <% end %>
+</td>

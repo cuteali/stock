@@ -1,0 +1,42 @@
+<% content_for :title do %>
+  系统管理
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/members">管理员列表</a>
+</h2>
+<div class="container">
+  <% if @members.present? %>
+    <div class="panel panel-default margin-top-10">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>角色</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @members.each do |member|%>
+            <tr>
+              <td class="col-sm-1"><%= member.id %></td>
+              <td class="col-sm-1"><%= member.name %></td>
+              <td class="col-sm-1"><%= member.email %></td>
+              <%= render member %>
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_member_path(member) %> |
+               <%= link_to '删除', admin_member_path(member), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @members %>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <% unless welcomes_path? || sessions_new_path? %>
+  <% unless invalid_path? %>
     <div>
       <%= render "admin/share/head"%>
     </div>

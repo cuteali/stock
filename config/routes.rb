@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  devise_for :members
+  devise_for :members, controllers: { registrations: "registrations" }
   devise_scope :member do
     get "/admin" => "devise/sessions#new"
   end
@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     resources :units
     resources :adverts
     resources :order_stat, only: :index
+    resources :members
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
