@@ -4,92 +4,90 @@
 <h2 class="col-sm-offset-5">
    <a href="/admin/products">产品列表</a>
 </h2>
-<div class="product_weight">
-  <div class="row">
-    <div class="col-sm-12">
-      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
-        <div class="col-md-1 row pull-left">
-          <%= link_to '添加产品', new_admin_product_path, class: 'btn btn-success' %>
-        </div>
-        <div class="col-md-10 row">
-          <%= f.label '大类别：' %>
-          <% options = Category.sorted.pluck(:name, :id) %>
-          <%= f.select :category_id_eq, options.insert(0,["选择大类别",""]), { selected: @category_id }, id: 'category_id', class: "form-control" %>
-          <%= f.label '小类别：' %>
-          <%
-            if @category_id.present?
-              options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择小类别', ''])
-            else
-              options = [["选择小类别",""]]
-            end
-          %>
-          <%= f.select :sub_category_id_eq, options, { selected: @sub_category_id }, id: 'sub_category_id', class: "form-control" %>
-          <%= f.label '具体类别：' %>
-          <%
-            if @sub_category_id.present?
-              options = DetailCategory.where(sub_category_id: @sub_category_id).sorted.pluck(:name, :id).unshift(['选择具体类别', ''])
-            else
-              options = [["选择具体类别",""]]
-            end
-          %>
-          <%= f.select :detail_category_id_eq, options, { selected: @detail_category_id }, id: 'detail_category_id', class: "form-control" %>
-          <%= f.label '产品名称：' %>
-          <%= f.search_field :name_cont, class: 'input-medium', placeholder:"产品名称" %>
-          <%= f.submit '查询', class: 'btn btn-primary' %>
-        </div>
-        <div class="col-md-1 row pull-right">
-          <a href="#import-vipinfo" data-toggle="modal" class="btn btn-primary btn-sm">导入产品信息</a>
-        </div>
-      <% end %>
-    </div>
+<div class="row">
+  <div class="col-sm-12">
+    <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+      <div class="col-md-1 row pull-left">
+        <%= link_to '添加产品', new_admin_product_path, class: 'btn btn-success' %>
+      </div>
+      <div class="col-md-10 row">
+        <%= f.label '大类别：' %>
+        <% options = Category.sorted.pluck(:name, :id) %>
+        <%= f.select :category_id_eq, options.insert(0,["选择大类别",""]), { selected: @category_id }, id: 'category_id', class: "form-control" %>
+        <%= f.label '小类别：' %>
+        <%
+          if @category_id.present?
+            options = SubCategory.where(category_id: @category_id).sorted.pluck(:name, :id).unshift(['选择小类别', ''])
+          else
+            options = [["选择小类别",""]]
+          end
+        %>
+        <%= f.select :sub_category_id_eq, options, { selected: @sub_category_id }, id: 'sub_category_id', class: "form-control" %>
+        <%= f.label '具体类别：' %>
+        <%
+          if @sub_category_id.present?
+            options = DetailCategory.where(sub_category_id: @sub_category_id).sorted.pluck(:name, :id).unshift(['选择具体类别', ''])
+          else
+            options = [["选择具体类别",""]]
+          end
+        %>
+        <%= f.select :detail_category_id_eq, options, { selected: @detail_category_id }, id: 'detail_category_id', class: "form-control" %>
+        <%= f.label '产品名称：' %>
+        <%= f.search_field :name_cont, class: 'input-medium', placeholder:"产品名称" %>
+        <%= f.submit '查询', class: 'btn btn-primary' %>
+      </div>
+      <div class="col-md-1 row pull-right">
+        <a href="#import-vipinfo" data-toggle="modal" class="btn btn-primary btn-sm">导入产品信息</a>
+      </div>
+    <% end %>
   </div>
-  <% if @products.present? %>
-    <div class="panel panel-default margin-top-10">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>产品名称</th>
-            <th>具体类别</th>
-            <th>状态</th>
-            <th>单位</th>
-            <th>销量</th>
-            <th>库存数量</th>
-            <th>现价</th>
-            <th>备注</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @products.each do |product| %>
-            <tr>
-              <td class="col-sm-1"><%= product.id %></td>
-              <td class="col-sm-1"><%= link_to product.name, image_admin_product_path(product) %></td>
-              <td class="col-sm-1"><%= product.detail_category.try(:name) || '暂无' %></td>
-              <td class="col-sm-1"><%= product.state == 1 ? '上架' : '下架' %></td>
-              <td class="col-sm-1"><%= product.unit.try(:name) || '暂无' %></td>
-              <td class="col-sm-1"><%= product.sale_count %></td>
-              <td class="col-sm-1"><%= product.stock_num %></td>
-              <td class="col-sm-1"><%= number_to_currency(product.price, unit: '') %></td>
-              <td class="col-sm-1"><%= product.remark %></td>
-              <td class="col-sm-2">
-                <%= link_to "置顶", stick_top_admin_product_path(product), method: :post, data: { confirm: "确定将该产品置顶么？" } %> |
-                <%= link_to '详情', admin_product_path(product) %> |
-                <%= link_to '修改', edit_admin_product_path(product) %> |
-                <%= link_to '删除', admin_product_path(product), method: :delete, data: { confirm: '确定要删除吗？' } %> 
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <%= paginate @products %>
-  <% else %>
-    <div class="col-sm-offset-2">
-      <h2>暂无</h2>
-    </div>
-  <% end %>
 </div>
+<% if @products.present? %>
+  <div class="panel panel-default margin-top-10">
+    <table class="table table-hover table-striped table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>产品名称</th>
+          <th>具体类别</th>
+          <th>状态</th>
+          <th>单位</th>
+          <th>销量</th>
+          <th>库存数量</th>
+          <th>现价</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td><%= product.id %></td>
+            <td class="col-sm-3"><%= link_to product.name, image_admin_product_path(product) %></td>
+            <td class="col-sm-1"><%= product.detail_category.try(:name) || '暂无' %></td>
+            <td class="col-sm-1"><%= product.state == 1 ? '上架' : '下架' %></td>
+            <td class="col-sm-1"><%= product.unit.try(:name) || '暂无' %></td>
+            <td class="col-sm-1"><%= product.sale_count %></td>
+            <td class="col-sm-1"><%= product.stock_num %></td>
+            <td class="col-sm-1"><%= number_to_currency(product.price, unit: '') %></td>
+            <td class="col-sm-1"><%= product.remark %></td>
+            <td class="col-sm-2">
+              <%= link_to "置顶", stick_top_admin_product_path(product), method: :post, data: { confirm: "确定将该产品置顶么？" } %>
+              <%= link_to '详情', admin_product_path(product) %>
+              <%= link_to '修改', edit_admin_product_path(product) %>
+              <%= link_to '删除', admin_product_path(product), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= paginate @products %>
+<% else %>
+  <div class="col-sm-offset-2">
+    <h2>暂无</h2>
+  </div>
+<% end %>
 <script type="text/javascript">
 $("#category_id").change(function(){
   var set_url = "<%= select_category_admin_products_url %>" + 

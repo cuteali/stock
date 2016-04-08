@@ -13,9 +13,9 @@ class Member < ActiveRecord::Base
 
   def role_name
     if user?
-      return '普通用户'
+      return '普通管理员'
     elsif editor?
-      return '管理员'
+      return '一级管理员'
     elsif admin?
       return '超级管理员'
     end

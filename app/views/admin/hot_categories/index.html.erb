@@ -6,9 +6,9 @@
 </h2>
 <div class="container">
   <%= link_to '添加热门类别', new_admin_hot_category_path, class: 'btn btn-success' %>
-  <% if @categories.present? %>
+  <% if @hot_categories.present? %>
     <div class="panel panel-default margin-top-10">
-      <table class="table table-hover">
+      <table class="table table-hover table-striped table-bordered table-condensed">
         <thead>
           <tr>
             <th>id</th>
@@ -18,13 +18,13 @@
           </tr>
         </thead>
         <tbody>
-          <% @categories.each do |category| %>
+          <% @hot_categories.each do |category| %>
             <tr>
-              <td class="col-sm-1"><%= category.id %></td>
-              <td class="col-sm-1"><%= category.name %></td>
-              <td class="col-sm-2"><%= category.desc %></td>
-              <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_hot_category_path(category) %> |
+              <td><%= category.id %></td>
+              <td class="col-sm-3"><%= category.name %></td>
+              <td class="col-sm-6"><%= category.desc %></td>
+              <td class="col-sm-2">
+               <%= link_to '修改', edit_admin_hot_category_path(category) %>
                <%= link_to '删除', admin_hot_category_path(category), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>

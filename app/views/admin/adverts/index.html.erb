@@ -8,7 +8,7 @@
   <%= link_to '添加广告', new_admin_advert_path, class: 'btn btn-success'%>
   <% if @adverts.present? %>
     <div class="panel panel-default margin-top-10">
-      <table class="table table-hover">
+      <table class="table table-hover table-striped table-bordered table-condensed">
         <thead>
           <tr>
             <th>id</th>
@@ -21,11 +21,11 @@
         <tbody>
           <% @adverts.each do |advert|%>
             <tr>
-              <td class="col-sm-2"><%= advert.id %></td>
-              <td class="col-sm-2"><%= advert.product.try(:name) || '暂无' %></td>
+              <td><%= advert.id %></td>
+              <td class="col-sm-8"><%= advert.product.try(:name) || '暂无' %></td>
               <td class="col-sm-2"><%= link_to "图片", admin_advert_path(advert) %></td>
               <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_advert_path(advert) %> |
+               <%= link_to '修改', edit_admin_advert_path(advert) %>
                <%= link_to '删除', admin_advert_path(advert), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>

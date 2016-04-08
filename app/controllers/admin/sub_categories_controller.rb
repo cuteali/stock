@@ -1,6 +1,8 @@
 class Admin::SubCategoriesController < Admin::BaseController
 
   before_action :set_sub_category, only: [:edit, :update, :destroy, :stick_top]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
     @q = SubCategory.ransack(params[:q])
@@ -27,6 +29,7 @@ class Admin::SubCategoriesController < Admin::BaseController
   end
 
   def destroy
+    authorize @sub_category
     @sub_category.destroy
     redirect_to admin_sub_categories_path
   end

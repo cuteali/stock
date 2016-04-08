@@ -7,8 +7,8 @@
 <div class="container">
   <% if @members.present? %>
     <div class="panel panel-default margin-top-10">
-      <table class="table table-hover">
-        <thead>
+      <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead class="thead-inverse">
           <tr>
             <th>id</th>
             <th>用户名</th>
@@ -20,13 +20,13 @@
         <tbody>
           <% @members.each do |member|%>
             <tr>
-              <td class="col-sm-1"><%= member.id %></td>
-              <td class="col-sm-1"><%= member.name %></td>
-              <td class="col-sm-1"><%= member.email %></td>
+              <td><%= member.id %></td>
+              <td class="col-sm-3"><%= member.name %></td>
+              <td class="col-sm-3"><%= member.email %></td>
               <%= render member %>
               <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_member_path(member) %> |
-               <%= link_to '删除', admin_member_path(member), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+               <%= link_to '修改', edit_admin_member_path(member) %>
+               <%= link_to '删除', admin_member_path(member), method: :delete, data: { confirm: '确定要删除吗？' } unless member == current_member %> 
               </td>
             </tr>
           <% end %>

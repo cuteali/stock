@@ -2,6 +2,8 @@ class Admin::ProductsController < Admin::BaseController
   include Admin::CategoryHelper
 
   before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
     @q = Product.ransack(params[:q])
@@ -32,6 +34,7 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def destroy
+    authorize @product
     @product.destroy
     redirect_to admin_products_path
   end

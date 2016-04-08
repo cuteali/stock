@@ -1,20 +1,32 @@
 class Admin::HotCategoriesController < Admin::BaseController
 
-  before_action :set_hot_category,only:[:edit,:update,:destroy]
+  before_action :set_hot_category, only:[:edit, :update, :destroy]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
-    @categories = HotCategory.all
+    @hot_categories = HotCategory.all
   end
 
   def new
-    @category = HotCategory.new
+    @hot_category = HotCategory.new
+  end
+
+  def create
+    @hot_category = HotCategory.new(category_params)
+    @hot_category.unique_id = SecureRandom.urlsafe_base64
+    if @hot_category.save
+      redirect_to admin_hot_categories_path
+    else
+      render 'new'
+    end
   end
 
   def edit
   end
 
   def update
-    if @category.update(category_params)
+    if @hot_category.update(category_params)
         return redirect_to session[:return_to] if session[:return_to]
         redirect_to admin_hot_categories_path
       else
@@ -23,23 +35,14 @@ class Admin::HotCategoriesController < Admin::BaseController
   end
 
   def destroy
-    @category.destroy
+    authorize @hot_category
+    @hot_category.destroy
     redirect_to admin_hot_categories_path
-  end
-
-  def create
-    @category = HotCategory.new(category_params)
-    @category.unique_id = SecureRandom.urlsafe_base64
-    if @category.save
-      redirect_to admin_hot_categories_path
-    else
-      render 'new'
-    end
   end
 
   private 
     def set_hot_category
-      @category = HotCategory.find(params[:id])
+      @hot_category = HotCategory.find(params[:id])
     end
 
     def category_params

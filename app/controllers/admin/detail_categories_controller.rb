@@ -2,6 +2,8 @@ class Admin::DetailCategoriesController < Admin::BaseController
   include Admin::CategoryHelper
 
   before_action :set_detail_category, only: [:edit, :update, :destroy, :stick_top]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
     @q = DetailCategory.ransack(params[:q])
@@ -29,6 +31,7 @@ class Admin::DetailCategoriesController < Admin::BaseController
   end
 
   def destroy
+    authorize @detail_category
     @detail_category.destroy
     redirect_to admin_detail_categories_path
   end

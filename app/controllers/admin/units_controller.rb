@@ -1,6 +1,8 @@
 class Admin::UnitsController < Admin::BaseController
 
   before_action :set_unit,only:[:edit,:update,:destroy]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
     @units = Unit.all
@@ -23,6 +25,7 @@ class Admin::UnitsController < Admin::BaseController
   end
 
   def destroy
+    authorize @unit
     @unit.destroy
     redirect_to admin_units_path
   end

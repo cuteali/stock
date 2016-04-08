@@ -1,6 +1,8 @@
 class Admin::CategoriesController < Admin::BaseController
 
   before_action :set_category, only: [:edit, :update, :destroy, :stick_top]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
     @categories = Category.sorted.page(params[:page])
@@ -23,6 +25,7 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   def destroy
+    authorize @category
     @category.destroy
     redirect_to admin_categories_path
   end

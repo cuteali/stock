@@ -21,7 +21,7 @@
   </div>
   <% if @address.present? %>
     <div class="panel panel-default margin-top-10">
-      <table class="table table-hover">
+      <table class="table table-hover table-striped table-bordered table-condensed">
         <thead>
           <tr>
             <th>id</th>
@@ -39,21 +39,17 @@
         <tbody>
           <% @address.each do |add| %>
             <tr>
-              <td class="col-sm-1"><%= add.id %></td>
-              <% if add.user.present? %>
-                <td class="col-sm-1"><%= add.user.user_name %></td>
-              <% else %>
-                <td class="col-sm-1">无</td>
-              <% end %>
+              <td><%= add.id %></td>
+              <td class="col-sm-2"><%= add.user.try(:user_name) %></td>
               <td class="col-sm-1"><%= add.receive_name %></td>
               <td class="col-sm-1"><%= add.receive_phone %></td>
               <!--td class="col-sm-1"><%#= add.province %></td>
               <td class="col-sm-1"><%#= add.city %></td>
               <td class="col-sm-1"><%#= add.region %></td-->
-              <td class="col-sm-1"><%= add.area %></td>
-              <td class="col-sm-2"><%= add.detail %></td>
+              <td class="col-sm-2"><%= add.area %></td>
+              <td class="col-sm-4"><%= add.detail %></td>
               <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_address_path(add) %> |
+               <%= link_to '修改', edit_admin_address_path(add) %>
                <%= link_to '删除', admin_address_path(add), method: :delete, data: { confirm: '确定要删除吗？' } %> 
               </td>
             </tr>

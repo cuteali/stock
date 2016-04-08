@@ -1,8 +1,3 @@
-.product_weight {
-  width: 1600px;
-  margin-left: -200px;
-}
-
 .center {
   width: auto;
   display: table;
@@ -11,6 +6,15 @@
 }
 .text-center {
   text-align: center;
+}
+
+.navbar {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.pagination {
+  margin: 0 0 20px;
 }
 
 .navbar-default {

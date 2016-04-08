@@ -2,6 +2,8 @@ class Admin::OrdersController < Admin::BaseController
   include Admin::OrderHelper
 
   before_action :set_order, only: [:edit, :update, :destroy, :show]
+  before_filter :authenticate_member!
+  after_action :verify_authorized, only: :destroy
   
   def index
     @q = Order.ransack(params[:q])
@@ -30,6 +32,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def destroy
+    authorize @order
     @order.restore_products
     @order.destroy
     redirect_to admin_orders_path

@@ -10,7 +10,16 @@ class MemberPolicy
     @current_member.admin?
   end
 
+  def edit?
+    @current_member.admin?
+  end
+
+  def update?
+    @current_member.admin?
+  end
+
   def destroy?
+    return false if @current_member == @member
     @current_member.admin?
   end
 end
