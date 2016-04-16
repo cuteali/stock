@@ -1,4 +1,6 @@
 class ServiceAgreementController < ApplicationController
+  layout false
+  
   def index
   end
 
