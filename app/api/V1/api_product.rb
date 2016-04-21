@@ -36,6 +36,16 @@ module V1
         end
       end
 
+      #http://localhost:3000/api/v1/products/search_name
+      params do 
+        requires :key_word, type: String
+        optional :page_num, type: String
+      end
+      post 'search_name',jbuilder:'v1/products/index' do
+        AppLog.info("key_word :#{params[:key_word]}")
+        @products = Product.state.where("name like ?","%#{params[:key_word]}%").sorted.by_page(params[:page_num])
+      end
+
       # http://localhost:3000/api/v1/products/sub_category/:unique_id
       params do
         requires :unique_id, type: String

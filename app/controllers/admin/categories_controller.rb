@@ -6,6 +6,14 @@ class Admin::CategoriesController < Admin::BaseController
   
   def index
     @categories = Category.sorted.page(params[:page])
+    respond_to do |format|
+      format.html
+      format.xls {
+                send_data(ExportXls.export_excel,
+                :type => "text/excel;charset=utf-8; header=present",
+                :filename => Time.now.to_s(:db).to_s.gsub(/[\s|\t|\:]/,'_') + rand(99999).to_s + ".xls")
+              }
+    end
   end
 
   def new

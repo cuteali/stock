@@ -6,6 +6,7 @@
 </h2>
 <div class="container">
   <%= link_to '添加大类别', new_admin_category_path, class: 'btn btn-success' %>
+  <%= link_to '导出EXCEL', admin_categories_path(:format => :xls) , class: 'btn btn-primary btn-filter' %>
   <% if @categories.present? %>
     <div class="panel panel-default margin-top-10">
       <table class="table table-hover table-striped table-bordered table-condensed">
