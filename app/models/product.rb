@@ -11,6 +11,7 @@ class Product < ActiveRecord::Base
 
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }
+  scope :order_sale, -> { order('sale_count DESC') }
   scope :hot, -> { where(hot_category_id: 2) }
   scope :by_page, -> (page_num) { page(page_num) if page_num }
 
