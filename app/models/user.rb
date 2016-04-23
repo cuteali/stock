@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :orders, dependent: :destroy
   has_many :images, as: :target
   has_many :cart_items
+  has_many :favorites
 
   def is_verified?
     identification == 1

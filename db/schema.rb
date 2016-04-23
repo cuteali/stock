@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407054431) do
+ActiveRecord::Schema.define(version: 20160423055307) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -94,6 +94,17 @@ ActiveRecord::Schema.define(version: 20160407054431) do
   add_index "detail_categories", ["category_id"], name: "index_detail_categories_on_category_id", using: :btree
   add_index "detail_categories", ["sort"], name: "index_detail_categories_on_sort", using: :btree
   add_index "detail_categories", ["sub_category_id"], name: "index_detail_categories_on_sub_category_id", using: :btree
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "product_id", limit: 4
+    t.string   "unique_id",  limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "favorites", ["product_id"], name: "index_favorites_on_product_id", using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "hot_categories", force: :cascade do |t|
     t.string   "name",       limit: 255
