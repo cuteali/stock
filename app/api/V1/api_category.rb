@@ -5,9 +5,13 @@ module V1
 
     resources 'categories' do
       # http://localhost:3000/api/v1/categories
+      params do 
+        optional :unique_id,type: String
+      end
       get "", jbuilder: 'v1/categories/index' do
         @categories = Category.sorted
-        @category = @categories.first
+        @category = Category.find_by(unique_id:params[:unique_id])
+        @category ||= @categories.first
       end
 
       # http://localhost:3000/api/v1/categories/:unique_id
