@@ -15,6 +15,7 @@ if @categories.present?
           json.unique_id det_category.unique_id.to_s
           json.name det_category.name.to_s
           json.desc det_category.desc.to_s
+          json.image Image.get_images(det_category).first.to_s
         end
       end
     end
