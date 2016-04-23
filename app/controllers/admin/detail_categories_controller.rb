@@ -22,7 +22,9 @@ class Admin::DetailCategoriesController < Admin::BaseController
   end
 
   def update
+    image_params = params[:detail_category][:image]
     if @detail_category.update(category_params)
+        ImageUtil.image_upload(image_params,"DetailCategory",@detail_category.id)
         return redirect_to session[:return_to] if session[:return_to]
         redirect_to admin_detail_categories_path
       else
@@ -37,9 +39,11 @@ class Admin::DetailCategoriesController < Admin::BaseController
   end
 
   def create
+    image_params = params[:detail_category][:image]
     @detail_category = DetailCategory.new(category_params)
     @detail_category.unique_id = SecureRandom.urlsafe_base64
     if @detail_category.save
+      ImageUtil.image_upload(image_params,"DetailCategory",@detail_category.id)
       redirect_to admin_detail_categories_path
     else
       render 'new'
