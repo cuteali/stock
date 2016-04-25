@@ -48,7 +48,7 @@
             <tr>
               <td><%= category.id %></td>
               <td class="col-sm-2"><%= category.name %></td>
-              <td class="col-sm-1"><%= image_tag category.images.first.image.url.thumb if category.images.present? %></td>
+              <td class="col-sm-1"><%= image_tag Image.get_images(category).first.to_s %></td>
               <td class="col-sm-3"><%= category.desc %></td>
               <td class="col-sm-2"><%= category.category.try(:name) || '暂无' %></td>
               <td class="col-sm-2"><%= category.sub_category.try(:name) || '暂无' %></td>
