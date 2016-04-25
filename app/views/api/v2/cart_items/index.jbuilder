@@ -7,7 +7,6 @@ else
     json.set! 'list' do
       json.array! values do |cart_item|
         json.unique_id cart_item.unique_id.to_s
-        json.user_unique_id cart_item.user.present? ? cart_item.user.unique_id.to_s : ""
         json.product_unique_id cart_item.product.present? ? cart_item.product.unique_id.to_s : ""
         json.product_num cart_item.product_num.to_s
         json.product_name cart_item.product.name.to_s
