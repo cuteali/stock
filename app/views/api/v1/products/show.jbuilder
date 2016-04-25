@@ -18,6 +18,7 @@ if @product.present?
     json.origin @product.origin
     json.remark @product.remark
     json.favorites @favorite.present? ? '已收藏' : ''
+    json.favorite_unique_id @favorite.present? ? @favorite.unique_id : ''
   end
 else
   json.result 1
