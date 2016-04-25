@@ -49,7 +49,7 @@ module V1
         if @token.present?
           favorites = @user.favorites
           if favorites.present?
-            @favorites = favorite.destroy_all
+            @favorites = favorites.destroy_all
           end
         end
       end
