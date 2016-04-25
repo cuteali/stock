@@ -1,6 +1,7 @@
 if @favorites
   json.result 0
   json.errmsg '获取收藏宝贝成功'
+  json.total_pages @favorites.total_pages if params[:page_num]
   json.favorites(@favorites) do |favorite|
     json.unique_id favorite.unique_id
     json.product_unique_id favorite.product.unique_id
