@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160423055307) do
+ActiveRecord::Schema.define(version: 20160425061335) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -147,6 +147,8 @@ ActiveRecord::Schema.define(version: 20160423055307) do
     t.string   "order_no",      limit: 255
     t.string   "phone_num",     limit: 255
     t.string   "receive_name",  limit: 255
+    t.string   "area",          limit: 255
+    t.string   "detail",        limit: 255
     t.datetime "delivery_time"
     t.datetime "complete_time"
     t.integer  "address_id",    limit: 4

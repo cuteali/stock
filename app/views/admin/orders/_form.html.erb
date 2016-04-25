@@ -24,6 +24,18 @@
     </div>
   </div>
   <div class ="form-group">
+    <label class="col-sm-2 control-label">所在区域:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :area, class: 'form-control' %>
+    </div>
+  </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">详细地址:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :detail, class: 'form-control' %>
+    </div>
+  </div>
+  <div class ="form-group">
     <label class="col-sm-2 control-label">发货时间:</label>
     <div class="col-sm-4">
       <%= f.text_field :delivery_time, class: "form-control datetimepicker" %>
@@ -33,12 +45,6 @@
     <label class="col-sm-2 control-label">完成时间:</label>
     <div class="col-sm-4">
       <%= f.text_field :complete_time, class: "form-control datetimepicker" %>
-    </div>
-  </div>
-  <div class ="form-group">
-    <label class="col-sm-2 control-label">地址:</label>
-    <div class="col-sm-4">
-      <%= f.select :address_id, address_info,{}, class: 'form-control' %>
     </div>
   </div>
   <% @order.orders_products.each_with_index do |op, i| %>

@@ -16,12 +16,7 @@ class Order < ActiveRecord::Base
   scope :select_time, ->(start_time,end_time) { where("date(created_at) >= ? and date(created_at) <= ?", start_time, end_time) }
 
   def get_address
-    address = self.address
-    if address.present?
-      address.area.to_s + address.detail.to_s
-    else
-      ""
-    end
+    area.to_s + detail.to_s
   end
 
   def self.check_order_money(products)

@@ -53,7 +53,7 @@
               <td class="col-sm-1"><%= order_state_show(order.state) %></td>
               <td class="col-sm-1"><%= order.receive_name %></td>
               <td class="col-sm-1"><%= order.phone_num %></td>
-              <td class="col-sm-3"><%= address_show(order.address) %></td>
+              <td class="col-sm-3"><%= order.get_address %></td>
               <!--td class="col-sm-2"></td-->
               <td class="col-sm-1"><%= time_show(order.created_at) %></td>
               <td class="col-sm-1"><%= time_show(order.delivery_time) %></td>

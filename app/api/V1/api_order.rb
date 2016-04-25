@@ -30,7 +30,6 @@ module V1
         if @token.present? && @user.is_verified?
           AppLog.info("products : #{params[:products]}")
           address = Address.find_by(unique_id:params[:address_id])
-          address_id = address.present? ? address.id : nil
           products_json = params[:products].gsub("\\","")
           AppLog.info("products_json : #{products_json}")
           ActiveRecord::Base.transaction do 
@@ -40,7 +39,7 @@ module V1
             if order_money == params[:money].gsub(/[^\d\.]/, '').to_f
               @stock_num_result = Product.validate_stock_num(product_arr)
               if @stock_num_result == 0
-                @order = Order.create(state: 0, phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, address_id: address_id, order_money: order_money, unique_id: SecureRandom.urlsafe_base64)
+                @order = Order.create(state: 0, phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, area: address.try(:area), detail: address.try(:detail), order_money: order_money, unique_id: SecureRandom.urlsafe_base64)
                 @order.create_orders_products(product_arr)
                 pro_ids = @order.update_product_stock_num
                 AppLog.info("pro_ids:      #{pro_ids}")
@@ -48,7 +47,7 @@ module V1
                 AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
                 @cart_items.destroy_all if @cart_items.present?
                 if @order
-                  phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03']
+                  phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03', 'B31193480E86B34F22A7DAE61A6AA1A0']
                   text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
                   @info = Sms.send_sms(phone_num_encrypts, text)
                   AppLog.info("info:#{@info}")
