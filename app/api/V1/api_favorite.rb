@@ -40,6 +40,19 @@ module V1
           end
         end
       end
+
+      #http://localhost:3000/api/v1/favorites/delete_all
+      params do 
+        requires :token, type: String
+      end
+      get 'delete_all', jbuilder: 'v1/favorites/delete_all' do
+        if @token.present?
+          favorites = @user.favorites
+          if favorites.present?
+            @favorites = favorite.destroy_all
+          end
+        end
+      end
     end
   end
 end
