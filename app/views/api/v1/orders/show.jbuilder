@@ -14,7 +14,7 @@ else
     json.address @order.get_address.to_s
     json.order_money @order.order_money.to_s
     if @order.orders_products.present?
-      json.products(@order.orders_products) do |op|
+      json.products(@products) do |op|
         json.unique_id op.product.unique_id.to_s
         json.number op.product_num.to_s
         if op.product.present?

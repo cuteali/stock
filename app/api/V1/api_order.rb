@@ -67,6 +67,7 @@ module V1
       get ":unique_id",jbuilder:"v1/orders/show" do
         if @token.present?
           @order = Order.find_by(unique_id:params[:unique_id])
+          @products = @order.orders_products.joins(:product).order('products.category_id ASC')
         end
       end
     end
