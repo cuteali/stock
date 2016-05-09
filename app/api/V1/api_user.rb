@@ -52,6 +52,7 @@ module V1
           @token = SecureRandom.urlsafe_base64
           redis_token = @user.phone_num + @user.unique_id
           $redis.set(redis_token,@token)
+          $redis.expire(redis_token,24*3600*15)
           @user.update(token:@token)
         else
           @token = nil
