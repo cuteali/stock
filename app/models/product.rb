@@ -7,7 +7,7 @@ class Product < ActiveRecord::Base
   has_one :cart_item
   has_many :images, as: :target
   has_many :adverts
-  has_many :orders_products
+  has_many :orders_products, dependent: :destroy
 
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }
