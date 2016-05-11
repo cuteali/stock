@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   has_many :cart_items
   has_many :favorites
 
+  scope :latest, -> { order('created_at DESC') }
+
   def is_verified?
     identification == 1
   end

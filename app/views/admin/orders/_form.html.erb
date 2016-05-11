@@ -51,18 +51,21 @@
     <%= f.fields_for :orders_products, op do |opro| %>
       <%= opro.hidden_field :id, name: "order[orders_products_attributes][][id]" %>
       <div class="form-group col-sm-7">
+        <div class="col-sm-1 control-label">
+          <%= link_to '', delete_order_product_admin_order_path(opro.object), class: 'glyphicon glyphicon-remove', method: 'delete', data: { confirm: '确定要删除吗？' } %>
+        </div>
         <label class="col-sm-4"><%= op.product.try(:name) %>:</label>
         <div class="col-sm-2">
           <%= opro.text_field :product_num, class: 'form-control', name: "order[orders_products_attributes][][product_num]" %>
         </div>
-        <label class="col-sm-1 control-label">个</label>
+        <label class="control-label">个</label>
       </div>
       <div class="form-group col-sm-5">
         <label class="col-sm-2 text-left">单价:</label>
         <div class="col-sm-3">
           <%= opro.text_field :product_price, class: 'form-control', name: "order[orders_products_attributes][][product_price]" %>
         </div>
-        <label class="col-sm-1 control-label">元</label>
+        <label class="control-label">元</label>
       </div>
     <% end %>
   <% end %>
@@ -105,3 +108,4 @@
     $("#order_complete_time" ).val(complete_time)
   }
 </script>
+<%= render 'add_product' %>

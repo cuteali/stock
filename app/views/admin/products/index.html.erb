@@ -37,7 +37,7 @@
         <%= f.submit '查询', class: 'btn btn-primary' %>
       </div>
       <div class="col-md-1 row pull-right">
-        <a href="#import-vipinfo" data-toggle="modal" class="btn btn-primary btn-sm">导入产品信息</a>
+        <a href="#import-product" data-toggle="modal" class="btn btn-primary btn-sm">导入产品信息</a>
       </div>
     <% end %>
   </div>
@@ -117,7 +117,7 @@ $("#sub_category_id").change(function(){
 });
 </script>
 
-<div class="modal fade" id="import-vipinfo">
+<div class="modal fade" id="import-product">
   <div class="modal-dialog">
     <div class="modal-content">
       <%= form_tag '', enctype: 'multipart/form-data', remote: true do %>
@@ -143,8 +143,8 @@ $("#sub_category_id").change(function(){
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
           <button type="button" id="upload_csv" class="btn btn-primary btn-sm">提交</button>
+          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
         </div>
       <% end %>
     </div>

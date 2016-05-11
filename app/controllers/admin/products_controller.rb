@@ -57,6 +57,8 @@ class Admin::ProductsController < Admin::BaseController
       options = Object.const_get(params[:class_name]).where(category_id: params[:category_id]).order(:id)
     elsif params[:sub_category_id]
       options = Object.const_get(params[:class_name]).where(sub_category_id: params[:sub_category_id]).order(:id)
+    elsif params[:detail_category_id]
+      options = Object.const_get(params[:class_name]).where(detail_category_id: params[:detail_category_id]).sorted
     end
     html = get_select_category_html(options, params[:id], params[:name], params[:first_option])
     render json: {html: html}

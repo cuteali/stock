@@ -23,4 +23,8 @@ module Admin::OrderHelper
   def edit_disabled(state)
     [-1, 3].include?(state)
   end
+
+  def get_select_product_html(product)
+    return "<input type='text' name='product_price' id='product_price' class='form-control' value='#{product.price}'>"
+  end
 end

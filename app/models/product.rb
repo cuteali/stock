@@ -58,6 +58,12 @@ class Product < ActiveRecord::Base
     self.save
   end
 
+  def add_sale_count(number)
+    self.stock_num -= number.to_i
+    self.sale_count += number.to_i
+    self.save
+  end
+
   def add_or_cut_stock_num(number)
     self.stock_num += number.to_i
     self.save

@@ -53,9 +53,7 @@ class Order < ActiveRecord::Base
     orders_products.each do |op|
       if op.product.stock_num >= op.product_num
         pro_ids << op.product_id
-        op.product.stock_num -= op.product_num
-        op.product.sale_count += op.product_num
-        op.product.save
+        op.product.add_sale_count(op.product_num)
       else
         break
       end

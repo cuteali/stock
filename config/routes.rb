@@ -53,7 +53,13 @@ Rails.application.routes.draw do
       end
     end
     resources :addresses
-    resources :orders
+    resources :orders do
+      delete :delete_order_product, on: :member
+      collection do
+        post :add_order_product
+        get :select_product
+      end
+    end
     resources :units
     resources :adverts
     resources :order_stat, only: :index

@@ -1,7 +1,7 @@
 class Admin::OrdersController < Admin::BaseController
   include Admin::OrderHelper
 
-  before_action :set_order, only: [:edit, :update, :destroy, :show]
+  before_action :set_order, only: [:edit, :update, :destroy, :show, :add_order_product]
   before_filter :authenticate_member!
   after_action :verify_authorized, only: :destroy
   
@@ -50,6 +50,35 @@ class Admin::OrdersController < Admin::BaseController
 
   def show
     @products = @order.products.group_by(&:category_id)
+  end
+
+  def delete_order_product
+    order_product = OrdersProduct.find(params[:id])
+    order_product.product.restore_stock_num(order_product.product_num)
+    order_product.destroy
+    redirect_to :back
+  end
+
+  def add_order_product
+    product = Product.find(params[:product_id])
+    orders_product = @order.orders_products.new(product_id: product.id, product_num: params[:product_num], product_price: params[:product_price])
+    if params[:product_num].to_i > product.stock_num
+      flash[:alert] = "保存失败，产品库存不足"
+      render js: 'location.reload()'
+    elsif orders_product.save
+      @order.update_order_money
+      orders_product.product.add_sale_count(orders_product.product_num)
+      flash[:notice] = "保存成功"
+      render js: 'location.reload()'
+    else
+      redirect_to :back, alert: '保存失败'
+    end
+  end
+
+  def select_product
+    product = Product.find(params[:product_id])
+    html = get_select_product_html(product)
+    render json: {html: html}
   end
 
   private 
