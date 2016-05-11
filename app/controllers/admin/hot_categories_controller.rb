@@ -37,7 +37,7 @@ class Admin::HotCategoriesController < Admin::BaseController
   def destroy
     authorize @hot_category
     @hot_category.destroy
-    redirect_to admin_hot_categories_path
+    redirect_to :back
   end
 
   private 

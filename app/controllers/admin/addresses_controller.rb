@@ -24,7 +24,7 @@ class Admin::AddressesController < Admin::BaseController
 
   def destroy
     @address.destroy
-    redirect_to admin_addresses_path
+    redirect_to :back
   end
 
   def create

@@ -35,7 +35,7 @@ class Admin::OrdersController < Admin::BaseController
     authorize @order
     @order.restore_products
     @order.destroy
-    redirect_to admin_orders_path
+    redirect_to :back
   end
 
   def create

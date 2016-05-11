@@ -31,7 +31,7 @@ class Admin::AdvertsController < Admin::BaseController
 
   def destroy
     @advert.destroy
-    redirect_to admin_adverts_path
+    redirect_to :back
   end
 
   def create

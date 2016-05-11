@@ -26,7 +26,7 @@ class Admin::UsersController < Admin::BaseController
 
   def destroy
     @user.destroy
-    redirect_to admin_users_path
+    redirect_to :back
   end
 
   def create

@@ -31,7 +31,7 @@ class Admin::SubCategoriesController < Admin::BaseController
   def destroy
     authorize @sub_category
     @sub_category.destroy
-    redirect_to admin_sub_categories_path
+    redirect_to :back
   end
 
   def create

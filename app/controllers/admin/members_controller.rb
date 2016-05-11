@@ -23,7 +23,7 @@ class Admin::MembersController < Admin::BaseController
   def destroy
     authorize @member
     @member.destroy
-    redirect_to admin_members_path
+    redirect_to :back
   end
 
   private 

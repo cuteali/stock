@@ -36,7 +36,7 @@ class Admin::ProductsController < Admin::BaseController
   def destroy
     authorize @product
     @product.destroy
-    redirect_to admin_products_path
+    redirect_to :back
   end
 
   def create

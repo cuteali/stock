@@ -27,7 +27,7 @@ class Admin::UnitsController < Admin::BaseController
   def destroy
     authorize @unit
     @unit.destroy
-    redirect_to admin_units_path
+    redirect_to :back
   end
 
   def create

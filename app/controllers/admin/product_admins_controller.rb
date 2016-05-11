@@ -42,8 +42,7 @@ class Admin::ProductAdminsController < Admin::BaseController
     authorize @product_admin
     @product_admin.product.add_or_cut_stock_num(-@product_admin.product_num)
     @product_admin.destroy
-    redirect_to admin_product_admins_path
-    # render inline: "<script>location.reload();</script>"
+    redirect_to :back
   end
 
   def select_category
