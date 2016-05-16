@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::BaseController
-  before_action :set_user,only:[:edit,:update,:destroy]
+  before_action :set_user, only: [:edit, :update, :destroy, :user_statistics]
   
   def index
     @q = User.ransack(params[:q])
@@ -41,6 +41,18 @@ class Admin::UsersController < Admin::BaseController
     else
       render 'new'
     end
+  end
+
+  def user_statistics
+    @orders = @user.orders.latest
+    select_time = true if params[:start_time].present? && params[:end_time].present?
+    @date = params[:created_date].present? ? params[:created_date] : "one_days"
+    @today = Date.today
+    @categories, @series, @start_time, @end_time, @count, @min_tick, @total = Order.chart_data(@orders, @date, @today, select_time, params)
+    @order_stats = Order.get_order_stats(@total, @start_time, @end_time)
+    @chart = Order.chart_base_line(@categories, @series, @min_tick) if @categories.present?
+    @categories_amount, @series_amount, start_time, end_time, @amount, @min_tick_amount = Order.chart_data_amount(@orders, @date, @today, select_time, params)
+    @chart_amount = Order.chart_base_line_amount(@categories_amount, @series_amount, @min_tick_amount) if @categories_amount.present?
   end
 
   private 

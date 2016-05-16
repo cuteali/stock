@@ -1,0 +1,64 @@
+<% content_for :title do %>
+  推广人员列表
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/promoters">推广人员列表</a>
+</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-2 row pull-left">
+          <%= link_to '添加推广人员', new_admin_promoter_path, class: 'btn btn-success' %>
+        </div>
+        <div class="col-md-6 row">
+          <%= f.label '姓名：' %>
+          <%= f.search_field :name_cont, class: 'input-medium', placeholder:"昵称" %>
+          <%= f.label '电话：' %>
+          <%= f.search_field :phone_cont, class: 'input-medium', placeholder:"电话" %>
+          <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% if @promoters.present? %>
+    <div class="panel panel-default margin-top-10">
+      <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>姓名</th>
+            <th>头像</th>
+            <th>电话</th>
+            <th>性别</th>
+            <th>身份证</th>
+            <th>材料数量</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @promoters.each do |promoter|%>
+            <tr>
+              <td><%= promoter.id %></td>
+              <td class="col-sm-1"><%= promoter.name %></td>
+              <td class="col-sm-1"><%= image_tag user_image(promoter), size:"100x100" if promoter.images.present? %></td>
+              <td class="col-sm-1"><%= promoter.phone %></td>
+              <td class="col-sm-1"><%= promoter.sex_name %></td>
+              <td class="col-sm-2"><%= promoter.id_card %></td>
+              <td class="col-sm-2"><%= promoter.material %></td>
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_promoter_path(promoter) %>
+               <%= link_to '删除', admin_promoter_path(promoter), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @promoters %>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

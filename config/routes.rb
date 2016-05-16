@@ -36,7 +36,11 @@ Rails.application.routes.draw do
       end
     end
     resources :hot_categories
-    resources :users
+    resources :users do
+      member do
+        get :user_statistics
+      end
+    end
     resources :products do
       collection do
         get :select_category
@@ -64,6 +68,7 @@ Rails.application.routes.draw do
     resources :adverts
     resources :order_stat, only: :index
     resources :members
+    resources :promoters
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

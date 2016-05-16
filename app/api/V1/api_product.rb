@@ -12,15 +12,15 @@ module V1
       end
       get ":unique_id", jbuilder: 'v1/products/show' do
         @product = Product.find_by(unique_id:params[:unique_id])
-        if params[:token]
-          user = User.find_by(token: params[:token])
-          @favorite = user.favorites.find_by(product_id: @product.try(:id)) if user
+        if @token.present?
+          @favorite = @user.favorites.find_by(product_id: @product.try(:id))
         end
       end
 
       #http://localhost:3000/api/v1/products/search
       params do 
         requires :key_word, type: String
+        optional :token, type: String
         optional :page_num, type: String
       end
       post 'search',jbuilder:'v1/products/index' do
@@ -44,6 +44,7 @@ module V1
       #http://localhost:3000/api/v1/products/search_name
       params do 
         requires :key_word, type: String
+        optional :token, type: String
         optional :page_num, type: String
       end
       post 'search_name',jbuilder:'v1/products/index' do
@@ -54,6 +55,7 @@ module V1
       # http://localhost:3000/api/v1/products/sub_category/:unique_id
       params do
         requires :unique_id, type: String
+        optional :token, type: String
         optional :page_num, type: String
       end
       get "sub_category/:unique_id", jbuilder: 'v1/products/sub_category' do

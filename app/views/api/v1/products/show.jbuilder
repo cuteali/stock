@@ -19,6 +19,11 @@ if @product.present?
     json.remark @product.remark
     json.favorites @favorite.present? ? 0 : 1
     json.favorite_unique_id @favorite.present? ? @favorite.unique_id : ''
+    if @user
+      cart_item = @product.cart_items.where(user_id: @user.id).first
+      json.cart_item_unique_id cart_item.try(:unique_id)
+      json.number cart_item.try(:product_num)
+    end
   end
 else
   json.result 1

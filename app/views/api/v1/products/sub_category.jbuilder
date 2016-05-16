@@ -19,5 +19,10 @@ else
     json.unit_price product.unit_price.to_s
     json.origin product.origin.to_s
     json.remark product.remark.to_s
+    if @user
+      cart_item = product.cart_items.where(user_id: @user.id).first
+      json.cart_item_unique_id cart_item.try(:unique_id)
+      json.number cart_item.try(:product_num)
+    end
   end
 end

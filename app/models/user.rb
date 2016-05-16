@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  belongs_to :promoter
   has_many :addresses, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :images, as: :target

@@ -18,6 +18,10 @@ module ApiHelpers
     end
     [@token,@user]
   end
+
+  def skip_valid_token
+    request.url =~ /hot_products|products|detail_categories/
+  end
 end
 require 'V1/api_category'
 require 'V1/api_advert'
@@ -45,7 +49,7 @@ class API < Grape::API
   before do
     if params[:token]
       @token,@user = current_user
-      error!(result: 2) unless @token
+      error!(result: 2) if @token.blank? && skip_valid_token.blank?
     end
   end
 

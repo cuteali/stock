@@ -8,6 +8,7 @@ module V1
       # http://localhost:3000/api/v1/detail_categories/:unique_id
       params do 
         requires :unique_id, type: String
+        optional :token, type: String
         optional :page_num, type: String
       end
       get ":unique_id",jbuilder:"v1/detail_categories/index" do

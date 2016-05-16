@@ -17,7 +17,8 @@ module V1
       end
 
       # http://localhost:3000/api/v1/adverts/hot_products
-      params do 
+      params do
+        optional :token, type: String
         optional :page_num, type: String
       end
       get "hot_products", jbuilder: 'v1/adverts/hot_products' do

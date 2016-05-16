@@ -24,6 +24,8 @@
             end
           %>
           <%= f.select :sub_category_id_eq, options, { selected: @sub_category_id }, id: 'sub_category_id', class: "form-control" %>
+          <%= f.label '具体类别名称：' %>
+          <%= f.search_field :name_cont, class: 'input-medium', placeholder: '具体类别名称' %>
           <%= f.submit '查询', class: 'btn btn-primary' %>
         </div>
       <% end %>
@@ -48,7 +50,7 @@
             <tr>
               <td><%= category.id %></td>
               <td class="col-sm-2"><%= category.name %></td>
-              <td class="col-sm-1"><%= image_tag Image.get_images(category).first.to_s %></td>
+              <td class="col-sm-1"><%= image_tag Image.get_images(category).first.to_s, size:"100x100" %></td>
               <td class="col-sm-3"><%= category.desc %></td>
               <td class="col-sm-2"><%= category.category.try(:name) || '暂无' %></td>
               <td class="col-sm-2"><%= category.sub_category.try(:name) || '暂无' %></td>

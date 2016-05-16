@@ -19,5 +19,10 @@ else
     json.hot_category_id pop_product.hot_category_id.to_s
     json.sale_count pop_product.sale_count.to_s
     json.spec pop_product.spec.to_s
+    if @user
+      cart_item = pop_product.cart_items.where(user_id: @user.id).first
+      json.cart_item_unique_id cart_item.try(:unique_id)
+      json.number cart_item.try(:product_num)
+    end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425061335) do
+ActiveRecord::Schema.define(version: 20160516050822) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -220,6 +220,18 @@ ActiveRecord::Schema.define(version: 20160425061335) do
   add_index "products", ["sub_category_id"], name: "index_products_on_sub_category_id", using: :btree
   add_index "products", ["unit_id"], name: "index_products_on_unit_id", using: :btree
 
+  create_table "promoters", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "phone",      limit: 255
+    t.string   "id_card",    limit: 255
+    t.integer  "sex",        limit: 1,   default: 0, null: false
+    t.string   "material",   limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "promoters", ["name"], name: "index_promoters_on_name", using: :btree
+
   create_table "sub_categories", force: :cascade do |t|
     t.string   "name",        limit: 255
     t.integer  "sort",        limit: 4,   default: 1, null: false
@@ -249,6 +261,7 @@ ActiveRecord::Schema.define(version: 20160425061335) do
     t.string   "phone_num",      limit: 255
     t.string   "phone",          limit: 255
     t.string   "rand",           limit: 255
+    t.integer  "promoter_id",    limit: 4
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.integer  "address_id",     limit: 4
@@ -258,6 +271,7 @@ ActiveRecord::Schema.define(version: 20160425061335) do
 
   add_index "users", ["address_id"], name: "index_users_on_address_id", using: :btree
   add_index "users", ["phone"], name: "index_users_on_phone", using: :btree
+  add_index "users", ["promoter_id"], name: "index_users_on_promoter_id", using: :btree
 
   add_foreign_key "addresses", "users"
   add_foreign_key "adverts", "products"

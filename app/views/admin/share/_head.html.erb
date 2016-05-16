@@ -8,6 +8,7 @@
       <li class="<%= 'nav-active' if controller_name == 'orders' %>"><a href="/admin/orders">订单管理</a></li>
       <% if current_member.admin? %>
         <li class="<%= 'nav-active' if controller_name == 'users' %>"><a href="/admin/users">用户管理</a></li>
+        <li class="<%= 'nav-active' if controller_name == 'promoters' %>"><a href="/admin/promoters">推广管理</a></li>
         <li class="<%= 'nav-active' if controller_name == 'addresses' %>"><a href="/admin/addresses">地址管理</a></li>
         <li class="<%= 'nav-active' if controller_name == 'adverts' %>"><a href="/admin/adverts">广告管理</a></li>
       <% end %>
