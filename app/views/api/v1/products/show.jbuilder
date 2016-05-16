@@ -21,8 +21,8 @@ if @product.present?
     json.favorite_unique_id @favorite.present? ? @favorite.unique_id : ''
     if @user
       cart_item = @product.cart_items.where(user_id: @user.id).first
-      json.cart_item_unique_id cart_item.try(:unique_id)
-      json.number cart_item.try(:product_num)
+      json.cart_item_unique_id cart_item.try(:unique_id).to_s
+      json.number cart_item.try(:product_num).to_s
     end
   end
 else

@@ -24,8 +24,8 @@ if @detail_category.present?
       json.remark product.remark.to_s
       if @user
         cart_item = product.cart_items.where(user_id: @user.id).first
-        json.cart_item_unique_id cart_item.try(:unique_id)
-        json.number cart_item.try(:product_num)
+        json.cart_item_unique_id cart_item.try(:unique_id).to_s
+        json.number cart_item.try(:product_num).to_s
       end
     end
   end
