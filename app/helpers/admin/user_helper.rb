@@ -3,9 +3,9 @@ module Admin::UserHelper
     [["铜","铜"],["银","银"],["金","金"],["钻","钻"]]
   end
 
-  def user_image(user)
-    if user.images.present?
-      image = user.images.first
+  def get_image_url(obj)
+    if obj.images.present?
+      image = obj.images.latest.first
       image.image.url
     end
   end

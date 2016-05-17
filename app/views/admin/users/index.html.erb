@@ -44,7 +44,7 @@
             <tr>
               <td><%= user.id %></td>
               <td class="col-sm-1"><%= user.user_name %></td>
-              <td class="col-sm-1"><%= image_tag user_image(user), size:"100x100" if user.images.present? %></td>
+              <td class="col-sm-1"><%= image_tag get_image_url(user), size:"100x100" if user.images.present? %></td>
               <% if user.identification == 0 %>
                 <td>未认证</td>
               <% else %>

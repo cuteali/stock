@@ -41,7 +41,7 @@
             <tr>
               <td><%= promoter.id %></td>
               <td class="col-sm-1"><%= promoter.name %></td>
-              <td class="col-sm-1"><%= image_tag user_image(promoter), size:"100x100" if promoter.images.present? %></td>
+              <td class="col-sm-1"><%= image_tag get_image_url(promoter), size:"100x100" if promoter.images.present? %></td>
               <td class="col-sm-1"><%= promoter.phone %></td>
               <td class="col-sm-1"><%= promoter.sex_name %></td>
               <td class="col-sm-2"><%= promoter.id_card %></td>
