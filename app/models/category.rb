@@ -2,6 +2,7 @@ class Category < ActiveRecord::Base
   has_many :sub_categories
   has_many :detail_categories
   has_many :products, -> { order "products.sort DESC, products.updated_at DESC" }
+  has_many :images, as: :target, dependent: :destroy
 
   scope :sorted, -> { order('sort DESC') }
 

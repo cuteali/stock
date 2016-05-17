@@ -24,12 +24,14 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   def update
+    image_params = params[:category][:image]
     if @category.update(category_params)
-        return redirect_to session[:return_to] if session[:return_to]
-        redirect_to admin_categories_path
-      else
-        render 'edit' 
-      end
+      ImageUtil.image_upload(image_params,"Category",@category.id)
+      return redirect_to session[:return_to] if session[:return_to]
+      redirect_to admin_categories_path
+    else
+      render 'edit' 
+    end
   end
 
   def destroy
@@ -39,9 +41,11 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   def create
+    image_params = params[:category][:image]
     @category = Category.new(category_params)
     @category.unique_id = SecureRandom.urlsafe_base64
     if @category.save
+      ImageUtil.image_upload(image_params,"Category",@category.id)
       redirect_to admin_categories_path
     else
       render 'new'

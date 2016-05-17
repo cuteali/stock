@@ -5,7 +5,7 @@ class Product < ActiveRecord::Base
   belongs_to :hot_category
   belongs_to :unit
   has_many :cart_items
-  has_many :images, as: :target
+  has_many :images, as: :target, dependent: :destroy
   has_many :adverts
   has_many :orders_products, dependent: :destroy
 

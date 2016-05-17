@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   belongs_to :promoter
   has_many :addresses, dependent: :destroy
   has_many :orders, dependent: :destroy
-  has_many :images, as: :target
+  has_many :images, as: :target, dependent: :destroy
   has_many :cart_items
   has_many :favorites
 

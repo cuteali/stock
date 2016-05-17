@@ -2,7 +2,7 @@ class DetailCategory < ActiveRecord::Base
   belongs_to :category
   belongs_to :sub_category
   has_many :products, -> { order "products.sort DESC, products.updated_at DESC" }
-  has_many :images, as: :target
+  has_many :images, as: :target, dependent: :destroy
 
   scope :sorted, -> { order('sort DESC') }
 

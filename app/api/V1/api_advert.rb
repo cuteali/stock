@@ -14,6 +14,7 @@ module V1
       # http://localhost:3000/api/v1/adverts/advert
       get "advert", jbuilder: 'v1/adverts/advert' do
         @adverts = Advert.all
+        @categories = Category.sorted.take(8)
       end
 
       # http://localhost:3000/api/v1/adverts/hot_products
