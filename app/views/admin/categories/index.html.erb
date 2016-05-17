@@ -24,8 +24,8 @@
             <tr>
               <td><%= category.id %></td>
               <td class="col-sm-3"><%= category.name %></td>
-              <td class="col-sm-6"><%= category.desc %></td>
-              <td class="col-sm-1"><%= image_tag get_image_url(category), size:"100x100" if category.images.present? %></td>
+              <td class="col-sm-3"><%= category.desc %></td>
+              <td class="col-sm-3"><%= image_tag get_image_url(category), size:"100x100" if category.images.present? %></td>
               <td class="col-sm-2">
                 <%= link_to "置顶", stick_top_admin_category_path(category), method: :post, data: { confirm: "确定将该类别置顶么？" } %>
                 <%= link_to '修改', edit_admin_category_path(category) %>
