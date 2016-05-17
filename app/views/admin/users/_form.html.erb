@@ -41,6 +41,13 @@
       <%= f.select :address_id, address_info,{},class: 'form-control'%>
     </div>
   </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">推广人员:</label>
+    <div class="col-sm-4">
+      <% options = Promoter.latest.pluck(:name, :id) %>
+      <%= f.select :promoter_id, options.insert(0,["选择推广人员",""]), {}, class: 'form-control' %>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-4">
       <button calss="btn btn-success" type="submit">

@@ -1,5 +1,6 @@
 if @info == 'success'
   json.result 0
+  json.unique_id @cart_item.try(:unique_id).to_s
 else
   json.result 1
   if @product.blank?

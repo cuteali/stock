@@ -68,6 +68,6 @@ class Admin::UsersController < Admin::BaseController
     end
 
     def user_params
-      params.require(:user).permit(:user_name,:identification,:token,:address_id,:phone,:rand,:address_id)
+      params.require(:user).permit(:user_name, :identification, :token, :address_id, :phone, :rand, :promoter_id)
     end
 end
