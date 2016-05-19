@@ -8,10 +8,6 @@ class Admin::DetailCategoriesController < Admin::BaseController
   def index
     @q = DetailCategory.ransack(params[:q])
     @detail_categories = @q.result.sorted.page(params[:page])
-    if params[:q]
-      @category_id = params[:q][:category_id_eq]
-      @sub_category_id = params[:q][:sub_category_id_eq]
-    end
   end
 
   def new
