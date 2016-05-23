@@ -36,7 +36,7 @@ module V1
             @detail_category = DetailCategory.where("name like ?","%#{params[:key_word]}%").first
             AppLog.info("detail_category:  #{@detail_category.inspect}")
             @products = @detail_category.products.state.sorted.by_page(params[:page_num]) if @detail_category
-            @products = Product.state.where("name like ?","%#{params[:key_word]}%").sorted.by_page(params[:page_num]) if @products.blank?
+            @products, @total_pages = Product.search_with_name_like(params[:key_word], params[:page_num]) if @products.blank?
           end
         end
       end
@@ -49,7 +49,7 @@ module V1
       end
       post 'search_name',jbuilder:'v1/products/index' do
         AppLog.info("key_word :#{params[:key_word]}")
-        @products = Product.state.where("name like ?","%#{params[:key_word]}%").order_sale.by_page(params[:page_num])
+        @products, @total_pages = Product.search_with_name_like(params[:key_word], params[:page_num])
       end
 
       # http://localhost:3000/api/v1/products/sub_category/:unique_id

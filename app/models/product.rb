@@ -40,6 +40,16 @@ class Product < ActiveRecord::Base
     '备注'      => :remark
   }
 
+  def self.search_with_name_like(name_like, page)
+    products = Product.state.where("name like ?","%#{name_like}%").order_sale.by_page(page)
+    total_pages = products.total_pages.to_i
+    if products.blank?
+      name_str = name_like.split('').join('|')
+      products = Product.where("name REGEXP ?", /^#{name_str}$/).sort_by {|u| u.name.count(name_like)}.reverse!.take(100)
+    end
+    [products, total_pages]
+  end
+
   def self.validate_stock_num(products)
     result = 0
     products.each do |p|

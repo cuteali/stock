@@ -3,7 +3,7 @@ if @products.blank?
   json.errmsg '产品未找到'
 else
   json.result 0
-  json.total_pages @products.total_pages if params[:page_num]
+  json.total_pages (@total_pages || @products.total_pages) if params[:page_num]
   json.products(@products) do |product|
     json.unique_id product.unique_id.to_s
     json.name product.name.to_s
