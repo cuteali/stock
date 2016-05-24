@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       collection do
         post :add_order_product
         get :select_product
+        get :search_product
       end
     end
     resources :units

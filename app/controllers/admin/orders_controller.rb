@@ -1,5 +1,6 @@
 class Admin::OrdersController < Admin::BaseController
   include Admin::OrderHelper
+  include Admin::CategoryHelper
 
   before_action :set_order, only: [:edit, :update, :destroy, :show, :add_order_product]
   before_filter :authenticate_member!
@@ -76,8 +77,14 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def select_product
-    product = Product.find(params[:product_id])
+    product = Product.find_by(id: params[:product_id])
     html = get_select_product_html(product)
+    render json: {html: html, product_id: product.id}
+  end
+
+  def search_product
+    options = Product.where("name like ?", "%#{params[:product_name]}%").sorted
+    html = get_select_category_html(options, params[:id], params[:name], params[:first_option])
     render json: {html: html}
   end
 
