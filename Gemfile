@@ -17,7 +17,7 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'kaminari'
 gem 'lazy_high_charts'
-gem "mini_magick"
+gem 'mini_magick'
 gem 'mysql2', '>= 0.3.13', '< 0.5'
 gem 'passenger'
 gem 'pundit'
@@ -27,6 +27,7 @@ gem 'redis'
 gem 'sass-rails', '~> 5.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'spreadsheet'
+gem 'squeel'
 gem 'therubyracer', platforms: :ruby
 gem 'to_xls-rails'
 gem 'turbolinks'

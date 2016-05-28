@@ -41,11 +41,17 @@ class Product < ActiveRecord::Base
   }
 
   def self.search_with_name_like(name_like, page)
-    products = Product.state.where("name like ?","%#{name_like}%").order_sale.by_page(page)
+    products = Product.state.joins(:category, :sub_category, :detail_category).
+                              where{
+                                (name.like "%#{name_like}%") | 
+                                (category.name.like "%#{name_like}%") | 
+                                (sub_category.name.like "%#{name_like}%") | 
+                                (detail_category.name.like "%#{name_like}%")
+                              }.order_sale.by_page(page)
     total_pages = products.total_pages.to_i
     if products.blank?
-      name_arr = name_like.split('').map {|val| "name like '%#{val}%'" }
-      products = Product.state.where(name_arr.join(" or ")).order_sale.sort_by {|u| u.name.count(name_like)}.reverse!.take(100)
+      name_arr = name_like.split('').map {|val| "detail_categories.name like '%#{val}%' or products.name like '%#{val}%'" }
+      products = Product.state.joins(:detail_category).where(name_arr.join(" or ")).order_sale.sort_by {|u| u.name.count(name_like)}.reverse!.take(100)
     end
     [products, total_pages]
   end
