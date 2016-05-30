@@ -65,11 +65,15 @@ Rails.application.routes.draw do
         get :search_product
       end
     end
+    resources :promoters do
+      member do
+        get :statistics
+      end
+    end
     resources :units
     resources :adverts
     resources :order_stat, only: :index
     resources :members
-    resources :promoters
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
