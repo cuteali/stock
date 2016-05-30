@@ -19,13 +19,22 @@ class Order < ActiveRecord::Base
     area.to_s + detail.to_s
   end
 
-  def self.check_order_money(products)
+  def self.check_order_money(user, products)
     order_money = 0
+    is_restricting = false
     products.each do |p|
       product = Product.find_by(unique_id: p['unique_id'])
-      order_money += product.price * p['number'].to_i
+      op = user.orders_products.where("product_id = ? and DATE(created_at) = ?", product.try(:id), Date.today).first
+      op_product_num = op.try(:product_num).to_i + p['number'].to_i
+      restricting_num = product.try(:restricting_num)
+      if restricting_num.present? && (op_product_num > restricting_num.to_i)
+        is_restricting = true
+        break
+      else
+        order_money += product.price * p['number'].to_i
+      end
     end
-    order_money
+    [order_money, is_restricting]
   end
 
   def update_order_money
@@ -41,10 +50,10 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def create_orders_products(products)
+  def create_orders_products(user, products)
     products.each do |p|
       product = Product.find_by(unique_id: p['unique_id'])
-      self.orders_products.where(product_id: product.try(:id), product_num: p['number'], product_price: product.try(:price)).first_or_create
+      self.orders_products.where(user_id: user.id, product_id: product.try(:id), product_num: p['number'], product_price: product.try(:price)).first_or_create
     end
   end
 

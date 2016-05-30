@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :images, as: :target, dependent: :destroy
   has_many :cart_items
   has_many :favorites
+  has_many :orders_products
 
   scope :latest, -> { order('created_at DESC') }
 

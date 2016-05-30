@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160516050822) do
+ActiveRecord::Schema.define(version: 20160528065251) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 20160516050822) do
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "orders_products", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4
     t.integer  "order_id",      limit: 4
     t.integer  "product_id",    limit: 4
     t.integer  "product_num",   limit: 4
@@ -174,6 +175,7 @@ ActiveRecord::Schema.define(version: 20160516050822) do
 
   add_index "orders_products", ["order_id"], name: "index_orders_products_on_order_id", using: :btree
   add_index "orders_products", ["product_id"], name: "index_orders_products_on_product_id", using: :btree
+  add_index "orders_products", ["user_id"], name: "index_orders_products_on_user_id", using: :btree
 
   create_table "product_admins", force: :cascade do |t|
     t.integer  "product_id",     limit: 4
@@ -195,6 +197,7 @@ ActiveRecord::Schema.define(version: 20160516050822) do
     t.string   "image",              limit: 255
     t.string   "unit_id",            limit: 255
     t.integer  "stock_num",          limit: 4
+    t.integer  "restricting_num",    limit: 4
     t.decimal  "price",                          precision: 12, scale: 2, default: 0.0
     t.decimal  "old_price",                      precision: 12, scale: 2, default: 0.0
     t.integer  "category_id",        limit: 4

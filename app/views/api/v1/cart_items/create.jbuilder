@@ -1,6 +1,10 @@
-if @info == 'success'
+if @is_restricting
+  json.result 1
+  json.errmsg '产品已达每日限购数量'
+elsif @info == 'success'
   json.result 0
   json.unique_id @cart_item.try(:unique_id).to_s
+  json.cart_total_num @cart_item_total_num
 else
   json.result 1
   if @product.blank?

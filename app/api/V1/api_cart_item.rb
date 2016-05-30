@@ -26,13 +26,17 @@ module V1
         if @token.present?
           @product = Product.find_by(unique_id:params[:pro_unique_id])
           @cart_item = CartItem.find_by(product_id: @product.id, user_id: @user.id)
-          if @cart_item
-            @cart_item.product_num += params[:product_num].to_i
-            @cart_item.save
-          else
-            @cart_item = CartItem.create(product_id: @product.id, user_id: @user.id, product_num: params[:product_num], unique_id: SecureRandom.urlsafe_base64)
+          @is_restricting = CartItem.create_items_restricting(@cart_item, @user, @product, params[:product_num])
+          if !@is_restricting
+            if @cart_item
+              @cart_item.product_num += params[:product_num].to_i
+              @cart_item.save
+            else
+              @cart_item = CartItem.create(product_id: @product.id, user_id: @user.id, product_num: params[:product_num], unique_id: SecureRandom.urlsafe_base64)
+            end
+            @cart_item_total_num = CartItem.total_product_num(@user)
+            @info = "success"
           end
-          @info = "success"
         end
       end
 
@@ -45,7 +49,14 @@ module V1
       post "edit_product_num", jbuilder: "v1/cart_items/edit_product_num" do
         if @token.present?
           @cart_item = CartItem.find_by(user_id: @user.id, unique_id: params[:unique_id])
-          @cart_item.product_num = params[:product_num] if @cart_item
+          if @cart_item
+            @is_restricting = CartItem.edit_items_restricting(@user, @cart_item.product, params[:product_num])
+            if !@is_restricting
+              @cart_item.product_num = params[:product_num]
+              @result = @cart_item.save
+              @cart_item_total_num = CartItem.total_product_num(@user)
+            end
+          end
         end
       end
 
@@ -59,13 +70,19 @@ module V1
           @order = Order.find_by(unique_id:params[:unique_id])
           @stock_num_result = @order.validate_product_stock_num
           if @stock_num_result == 0
+            @restricting_pro_num = 0
             @order.orders_products.each do |op|
               @cart_item = CartItem.find_by(product_id: op.product_id, user_id: @order.user_id)
-              if @cart_item.present?
-                @cart_item.product_num += op.product_num
-                @cart_item.save
+              @is_restricting = CartItem.again_items_restricting(@cart_item, @user, op)
+              if @is_restricting
+                @restricting_pro_num += 1
               else
-                @cart_item = CartItem.create(product_id: op.product_id, user_id: @order.user_id, product_num: op.product_num, unique_id: SecureRandom.urlsafe_base64)
+                if @cart_item.present?
+                  @cart_item.product_num += op.product_num
+                  @cart_item.save
+                else
+                  @cart_item = CartItem.create(product_id: op.product_id, user_id: @order.user_id, product_num: op.product_num, unique_id: SecureRandom.urlsafe_base64)
+                end
               end
               @info = "success"
             end
@@ -87,6 +104,7 @@ module V1
             @cart_items = CartItem.where(user_id: @user.id, unique_id: unique_ids_json)
             AppLog.info("ids:   #{@cart_items.pluck(:id)}") if @cart_items.present?
             @cart_items.destroy_all if @cart_items.present?
+            @cart_item_total_num = CartItem.total_product_num(@user)
             @info = "success"
           end
         end

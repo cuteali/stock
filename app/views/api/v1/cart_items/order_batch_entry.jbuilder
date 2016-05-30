@@ -1,4 +1,7 @@
-if @info == 'success'
+if @restricting_pro_num > 0
+  json.result 1
+  json.errmsg "该订单包含限购商品\n部分商品添加到购物车失败！"
+elsif @info == 'success'
   json.result 0
 elsif @stock_num_result == 3
   json.result 3

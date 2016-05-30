@@ -111,13 +111,19 @@
       <%= f.text_field :origin,class:"form-control"%>
     </div>
   </div>
-    <div class ="form-group">
+  <div class ="form-group">
     <label class="col-sm-2 control-label">备注:</label>
     <div class="col-sm-4">
       <%= f.text_field :remark,class:"form-control"%>
     </div>
   </div>
-
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">每日限购数量:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :restricting_num,class:"form-control"%>
+    </div>
+    <label class="control-label">（不填为不限购）</label>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-4">
       <button class="btn btn-success" type="submit">

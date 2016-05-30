@@ -2,6 +2,7 @@ if @cart_items.blank?
   json.result 1
 else
   json.result 0
+  json.cart_total_num @cart_item_total_num
   json.cart_items(@cart_items) do |key, values|
     json.category_name key
     json.set! 'list' do

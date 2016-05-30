@@ -40,6 +40,14 @@ class Product < ActiveRecord::Base
     '备注'      => :remark
   }
 
+  def update_cart_items_num
+    if restricting_num.present?
+      cart_items.each do |item|
+        item.update(product_num: restricting_num) if item.product_num > restricting_num
+      end
+    end
+  end
+
   def self.search_with_name_like(name_like, page)
     products = Product.state.joins(:category, :sub_category, :detail_category).
                               where{

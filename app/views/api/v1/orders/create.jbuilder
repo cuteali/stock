@@ -1,6 +1,9 @@
 if !@user.is_verified?
   json.result 4
   json.errmsg '用户未认证'
+elsif @is_restricting
+  json.result 1
+  json.errmsg '产品已达每日限购数量'
 elsif @stock_num_result == 3
   json.result 3
   json.errmsg '产品库存不足'
