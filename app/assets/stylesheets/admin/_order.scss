@@ -40,7 +40,7 @@
 
 .print-left {
   @media print {
-    margin-left: 400px;
+    margin-left: 350px;
   }
 }
 
@@ -53,5 +53,24 @@
     tfoot > tr > td {
       padding: 2px !important;
     }
+  }
+}
+
+.pdf-row {
+  @media print {
+    height: 70px;
+  }
+}
+
+.pdf-well {
+  @media print {
+    min-height: 0;
+    padding: 0;
+    margin-bottom: 0;
+    background-color: 0;
+    border: 0;
+    border-radius: 0;
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
   }
 }
