@@ -15,8 +15,15 @@ class Admin::MembersController < Admin::BaseController
 
   def update
     authorize @member
+    if params[:member][:password]
+      @member.password = params[:member][:password]
+      @member.password_confirmation = params[:member][:password]
+    end
     if @member.update(member_params)
-      redirect_to :back, notice: '操作成功'
+      redirect_to :back, notice: '修改成功'
+    else
+      flash[:alert] = '修改失败'
+      redirect_to :back
     end
   end
 
