@@ -3,6 +3,27 @@ module V1
 
     version 'v1', using: :path
 
+    helpers do
+      def send_to_shop(order)
+        phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03', 'B31193480E86B34F22A7DAE61A6AA1A0']
+        text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
+        info = Sms.send_sms(phone_num_encrypts, text)
+        AppLog.info("info:#{info}")
+      end
+
+      def send_to_user(user, order)
+        reg = /^1[3|4|5|8][0-9]\d{8}$/
+        phone_num_encrypts = []
+        phone_num_encrypts << AesUtil.aes_encrypt($key, user.phone) if user.phone =~ reg
+        phone_num_encrypts << AesUtil.aes_encrypt($key, order.phone_num) if order.phone_num =~ reg
+        if phone_num_encrypts.present?
+          text = "【要货啦】您好，已经收到您的订单，正在为您准备货物，请保持手机畅通，如有疑问，请拨打客服电话 400-0050-383。"
+          info = Sms.send_sms(phone_num_encrypts.uniq, text)
+          AppLog.info("info:#{info}")
+        end
+      end
+    end
+
     resources 'orders' do
       # http://localhost:3000/api/v1/orders
       # bcb67d8860d033061090fbbf9f4c605c
@@ -48,10 +69,8 @@ module V1
                   AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
                   @cart_items.destroy_all if @cart_items.present?
                   if @order
-                    phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03', 'B31193480E86B34F22A7DAE61A6AA1A0']
-                    text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
-                    @info = Sms.send_sms(phone_num_encrypts, text)
-                    AppLog.info("info:#{@info}")
+                    send_to_shop(@order)
+                    send_to_user(@user, @order)
                   end
                 end
               end
