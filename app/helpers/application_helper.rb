@@ -81,4 +81,32 @@ module ApplicationHelper
     return true if controller_name == 'passwords' && action_name == 'new'
     return true if controller_name == 'passwords' && action_name == 'edit'
   end
+
+  def statistics_th_text(start_time, end_time, date)
+    if start_time.present? && end_time.present?
+      "#{start_time} - #{end_time}"
+    else
+      if date == 'one_days'
+        '今日'
+      elsif date == 'one_weeks'
+        '最近7天'
+      elsif date == 'one_months'
+        '最近一个月'
+      end
+    end
+  end
+
+  def statistics_user_order_money(user, start_time, end_time, date, today)
+    if start_time.present? && end_time.present?
+      user.orders.select_time(start_time, end_time).sum(:order_money)
+    else
+      if date == 'one_days'
+        user.orders.one_days(today).sum(:order_money)
+      elsif date == 'one_weeks'
+        user.orders.one_weeks(today).sum(:order_money)
+      elsif date == 'one_months'
+        user.orders.one_months(today).sum(:order_money)
+      end
+    end
+  end
 end

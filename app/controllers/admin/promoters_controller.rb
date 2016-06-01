@@ -42,10 +42,10 @@ class Admin::PromotersController < Admin::BaseController
 
   def statistics
     @users = @promoter.users.latest
-    select_time = true if params[:start_time].present? && params[:end_time].present?
+    @select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"
     @today = Date.today
-    @categories, @series, @start_time, @end_time, @count, @min_tick, @total = User.chart_data(@users, @date, @today, select_time, params)
+    @categories, @series, @start_time, @end_time, @count, @min_tick, @total = User.chart_data(@users, @date, @today, @select_time, params)
     @chart = User.chart_base_line(@categories, @series, @min_tick) if @categories.present?
     @user_stats = @users.page(params[:page])
   end
