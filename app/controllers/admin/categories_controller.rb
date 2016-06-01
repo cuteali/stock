@@ -1,6 +1,6 @@
 class Admin::CategoriesController < Admin::BaseController
 
-  before_action :set_category, only: [:edit, :update, :destroy, :stick_top]
+  before_action :set_category, only: [:edit, :update, :destroy, :stick_top, :export_product]
   before_filter :authenticate_member!
   after_action :verify_authorized, only: :destroy
   
@@ -55,6 +55,16 @@ class Admin::CategoriesController < Admin::BaseController
   def stick_top
     @category.update(sort: Category.init_sort)
     redirect_to :back, notice: '操作成功'
+  end
+
+  def export_product
+    respond_to do |format|
+      format.xls {
+                send_data(ExportXls.export_product_excel(@category),
+                :type => "text/excel;charset=utf-8; header=present",
+                :filename => Time.now.to_s(:db).to_s.gsub(/[\s|\t|\:]/,'_') + rand(99999).to_s + ".xls")
+              }
+    end
   end
 
   private 

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :categories do
       member do
         post :stick_top
+        get :export_product
       end
     end
     resources :sub_categories do

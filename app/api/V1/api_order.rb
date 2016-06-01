@@ -59,8 +59,8 @@ module V1
             AppLog.info("money:#{params[:money]}")
             if !@is_restricting
               if order_money == params[:money].gsub(/[^\d\.]/, '').to_f
-                @stock_num_result = Product.validate_stock_num(product_arr)
-                if @stock_num_result == 0
+                @stock_num_result, @is_sold_off = Product.validate_stock_num(product_arr)
+                if @stock_num_result == 0 && !@is_sold_off
                   @order = Order.create(state: 0, phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, area: address.try(:area), detail: address.try(:detail), order_money: order_money, unique_id: SecureRandom.urlsafe_base64)
                   @order.create_orders_products(@user, product_arr)
                   pro_ids = @order.update_product_stock_num

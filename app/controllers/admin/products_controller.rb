@@ -20,6 +20,7 @@ class Admin::ProductsController < Admin::BaseController
   def update
     image_params = params[:product][:image]
     if @product.update(product_params)
+      CartItem.product_sold_off(@product.id) if product_params[:state] == '0'
       ImageUtil.image_upload(image_params, "Product", @product.id)
       @product.update_cart_items_num
       return redirect_to session[:return_to] if session[:return_to]

@@ -2,6 +2,10 @@ class CartItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :product
 
+  def self.product_sold_off(product_id)
+    CartItem.where(product_id: product_id).destroy_all
+  end
+
   def self.create_items_restricting(cart_item, user, product, product_num)
     is_restricting = false
     if product.try(:restricting_num).present?
@@ -43,6 +47,6 @@ class CartItem < ActiveRecord::Base
   end
 
   def self.total_product_num(user)
-    user.cart_items.sum(:product_num)
+    user.cart_items.joins(:product).sum(:product_num)
   end
 end

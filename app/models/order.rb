@@ -71,11 +71,12 @@ class Order < ActiveRecord::Base
   end
 
   def validate_product_stock_num
-    result = 0
+    result = []
     orders_products.each do |op|
-      if op.product.stock_num < op.product_num
-        result = 3
-        break
+      if op.product.stock_num < op.product_num || op.product.is_sold_off?
+        next
+      else
+        result << op
       end
     end
     result

@@ -40,6 +40,10 @@ class Product < ActiveRecord::Base
     '备注'      => :remark
   }
 
+  def is_sold_off?
+    state == 0
+  end
+
   def update_cart_items_num
     if restricting_num.present?
       cart_items.each do |item|
@@ -66,14 +70,19 @@ class Product < ActiveRecord::Base
 
   def self.validate_stock_num(products)
     result = 0
+    is_sold_off = false
     products.each do |p|
       product = Product.find_by(unique_id: p["unique_id"])
+      if product.is_sold_off?
+        is_sold_off = true
+        break
+      end
       if product.stock_num < p["number"].to_i
         result = 3
         break
       end
     end
-    result
+    [result, is_sold_off]
   end
 
   def restore_stock_num(number)

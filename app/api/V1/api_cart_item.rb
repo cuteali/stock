@@ -68,10 +68,10 @@ module V1
       post "order_batch_entry", jbuilder: "v1/cart_items/order_batch_entry" do
         if @token.present?
           @order = Order.find_by(unique_id:params[:unique_id])
-          @stock_num_result = @order.validate_product_stock_num
-          if @stock_num_result == 0
-            @restricting_pro_num = 0
-            @order.orders_products.each do |op|
+          @orders_products = @order.validate_product_stock_num
+          @restricting_pro_num = 0
+          if @orders_products.present?
+            @orders_products.each do |op|
               @cart_item = CartItem.find_by(product_id: op.product_id, user_id: @order.user_id)
               @is_restricting = CartItem.again_items_restricting(@cart_item, @user, op)
               if @is_restricting

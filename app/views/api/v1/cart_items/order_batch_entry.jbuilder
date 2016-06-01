@@ -3,9 +3,9 @@ if @restricting_pro_num > 0
   json.errmsg "该订单包含限购商品\n部分商品添加到购物车失败！"
 elsif @info == 'success'
   json.result 0
-elsif @stock_num_result == 3
+elsif @orders_products.blank?
   json.result 3
-  json.errmsg '产品库存不足'
+  json.errmsg '订单产品已失效'
 else
   json.result 1
   if @order.blank?
