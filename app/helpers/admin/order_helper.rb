@@ -24,6 +24,8 @@ module Admin::OrderHelper
     state_color = ""
     case state
     when 0
+      state_color = "danger"
+    when 1
       state_color = "info"
     when 2
       state_color = "success"
