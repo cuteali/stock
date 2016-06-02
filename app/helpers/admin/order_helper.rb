@@ -20,6 +20,19 @@ module Admin::OrderHelper
     state_show
   end
 
+  def get_tr_color(state)
+    state_color = ""
+    case state
+    when 0
+      state_color = "info"
+    when 2
+      state_color = "success"
+    when 3
+      state_color = "warning"
+    end
+    state_color
+  end
+
   def edit_disabled(state)
     [-1, 3].include?(state)
   end

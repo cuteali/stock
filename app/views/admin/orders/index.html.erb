@@ -46,7 +46,7 @@
         </thead>
         <tbody>
           <% @orders.each do |order| %>
-            <tr>
+            <tr class="<%= get_tr_color(order.state) %>">
               <td><%= order.id %></td>
               <!--td class="col-sm-1"><%#= order.user.try(:user_name) %></td-->
               <td class="col-sm-1"><%= order.order_no %></td>
