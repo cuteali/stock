@@ -55,7 +55,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def delete_order_product
     order_product = OrdersProduct.find(params[:id])
-    order_product.product.restore_stock_num(order_product.product_num)
+    order_product.product.restore_stock_num(order_product.product_num) if order_product.product
     order_product.destroy
     redirect_to :back
   end
