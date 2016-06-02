@@ -1,8 +1,24 @@
 <%= form_for([:admin,@advert],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
-  <div class ="form-group">
+  <%= f.hidden_field :product_id %>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">产品名称:</label>
+    <div class="col-sm-8">
+      <%= text_field_tag :product_name, nil, class: "form-control" %>
+    </div>
+    <div class="col-sm-1">
+      <button type="button" id="search_name" class="btn btn-primary btn-sm">查询</button>
+    </div>
+  </div>
+  <div class="form-group">
     <label class="col-sm-2 control-label">产品:</label>
-    <div class="col-sm-4">
-      <%= f.select :product_id, product_list,{},class: 'form-control'%>
+    <div class="col-sm-8">
+      <%= select_tag :select_product_id, options_for_select([["选择产品",""]]), class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">选择的产品:</label>
+    <div class="col-sm-8">
+      <p class="form-control-static"><%= f.object.product.try(:name) %></p>
     </div>
   </div>
   <div class ="form-group">
@@ -22,3 +38,23 @@
     </div>
   </div>
 <% end %>
+<script>
+  $("#search_name").click(function(){
+    var set_url = "<%= search_product_admin_orders_url %>" + 
+                  "?product_name=" + $("#product_name").val() + 
+                  "&id=select_product_id&name=select_product_id&first_option=选择产品&class_name=Product";
+    jQuery.ajax({
+      type: "GET",
+      url: set_url,
+      dataType: "json",
+      success: function(data){
+        $('#select_product_id').html(data.html);
+      }
+    });
+  });
+  $("#select_product_id").change(function(){
+    var $this=$(this);
+    $('#advert_product_id').val($this.val());
+    $('.form-control-static').text($this.find("option:selected").text());
+  });
+</script>
