@@ -83,10 +83,10 @@
                         <%= orders_product.try(:product_num) %>
                       </td>
                       <td class="delivered">
-                        &yen;<%= number_to_currency(orders_product.try(:product_price), unit: '') %>
+                        &yen;<%= number_to_currency(orders_product.try(:product_price), unit: '') if orders_product.try(:product_price) %>
                       </td>
                       <td class="delivered">
-                        &yen;<%= number_to_currency(orders_product.try(:product_price) * orders_product.try(:product_num), unit: '') %>
+                        &yen;<%= number_to_currency(orders_product.try(:product_price) * orders_product.try(:product_num).to_i, unit: '') if orders_product.try(:product_price) %>
                       </td>
                     </tr>
                   <% end %>
