@@ -55,9 +55,9 @@ module V1
           AppLog.info("products_json : #{products_json}")
           ActiveRecord::Base.transaction do 
             product_arr = JSON.parse(products_json)
-            order_money, @is_restricting = Order.check_order_money(@user, product_arr)
+            order_money, @is_restricting, @is_send_out = Order.check_order_money(@user, product_arr)
             AppLog.info("money:#{params[:money]}")
-            if !@is_restricting
+            if !@is_restricting && !@is_send_out
               if order_money == params[:money].gsub(/[^\d\.]/, '').to_f
                 @stock_num_result, @is_sold_off = Product.validate_stock_num(product_arr)
                 if @stock_num_result == 0 && !@is_sold_off

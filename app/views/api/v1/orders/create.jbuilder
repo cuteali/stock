@@ -4,6 +4,9 @@ if !@user.is_verified?
 elsif @is_restricting
   json.result 1
   json.errmsg '产品已达每日限购数量'
+elsif @is_send_out
+  json.result 1
+  json.errmsg '您好，冷饮5件以上起送！'
 elsif @stock_num_result == 3
   json.result 3
   json.errmsg '产品库存不足'

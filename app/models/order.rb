@@ -22,6 +22,7 @@ class Order < ActiveRecord::Base
   def self.check_order_money(user, products)
     order_money = 0
     is_restricting = false
+    is_send_out = false
     products.each do |p|
       product = Product.find_by(unique_id: p['unique_id'])
       op = user.orders_products.where("product_id = ? and DATE(created_at) = ?", product.try(:id), Date.today).first
@@ -30,11 +31,14 @@ class Order < ActiveRecord::Base
       if restricting_num.present? && (op_product_num > restricting_num.to_i)
         is_restricting = true
         break
+      elsif product.category.try(:name) == '冷饮雪糕' && p['number'].to_i < 5
+        is_send_out = true
+        break
       else
         order_money += product.price * p['number'].to_i
       end
     end
-    [order_money, is_restricting]
+    [order_money, is_restricting, is_send_out]
   end
 
   def update_order_money
