@@ -1,6 +1,18 @@
 <td class="col-sm-4">
   <%= form_for([:admin,member]) do |f| %>
-    <%= f.select :role, [["普通管理员", "user"], ["一级管理员", "editor"], ["超级管理员", "admin"]], {}, class: 'input-sm' %>
+    <%= f.select :role, [["推广管理员", "spreader"], ["普通管理员", "user"], ["一级管理员", "editor"], ["超级管理员", "admin"]], {}, class: 'input-sm' %>
+    <% options = Promoter.latest.pluck(:name, :id) %>
+    <%= f.select :promoter_id, options.insert(0,["选择推广人员",""]), {}, class: "input-sm #{'hidden' if !f.object.spreader?}" %>
     <%= f.submit "保存", class: 'btn btn-info btn-xs' %>
   <% end %>
 </td>
+<script>
+  $("[name='member[role]']").change(function(){
+    var $this=$(this);
+    $this.next('.input-sm').removeClass('hidden');
+    if ($this.val() != 'spreader') {
+      $this.next('.input-sm').addClass('hidden');
+      $this.next('.input-sm').val('');
+    }
+  });
+</script>

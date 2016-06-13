@@ -39,6 +39,6 @@ class Admin::MembersController < Admin::BaseController
     end
 
     def member_params
-      params.require(:member).permit(:name, :email, :role)
+      params.require(:member).permit(:name, :email, :role, :promoter_id)
     end
 end

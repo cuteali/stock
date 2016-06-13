@@ -20,9 +20,25 @@
   </div>
 
   <div class="form-group">
+    <label class="col-sm-2 control-label">角色:</label>
+    <div class="col-sm-4">
+      <%= f.select :role, [["推广管理员", "spreader"], ["普通管理员", "user"], ["一级管理员", "editor"], ["超级管理员", "admin"]], {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">推广人员:</label>
+    <div class="col-sm-4">
+      <% options = Promoter.latest.pluck(:name, :id) %>
+      <%= f.select :promoter_id, options.insert(0,["选择推广人员",""]), {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
     <label class="col-sm-2 control-label">密码:</label>
     <div class="col-sm-4">
       <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+      <label class="control-label">（密码至少为8位）</label>
     </div>
     <% if @validatable %>
       <span class="help-block"><%= @minimum_password_length %> characters minimum</span>
@@ -42,5 +58,13 @@
     </div>
   </div>
 <% end %>
-
-<%#= render "devise/shared/links" %>
+<script>
+  $("#member_role").change(function(){
+    $('.form-group').removeClass('hidden');
+    var $this=$(this);
+    if ($this.val() != 'spreader') {
+      $('#member_promoter_id').parent().parent().addClass('hidden');
+      $('#member_promoter_id').val('');
+    }
+  });
+</script>

@@ -4,7 +4,9 @@
   </div>
   <div>
     <ul class="nav navbar-nav">
-      <li class="<%= 'nav-active' if controller_name == 'products' %>"><a href="/admin/products">产品管理</a></li>
+      <% if !current_member.spreader? %>
+        <li class="<%= 'nav-active' if controller_name == 'products' %>"><a href="/admin/products">产品管理</a></li>
+      <% end %>
       <li class="<%= 'nav-active' if controller_name == 'orders' %>"><a href="/admin/orders">订单管理</a></li>
       <% if current_member.admin? %>
         <li class="<%= 'nav-active' if controller_name == 'users' %>"><a href="/admin/users">用户管理</a></li>
@@ -12,23 +14,27 @@
         <li class="<%= 'nav-active' if controller_name == 'addresses' %>"><a href="/admin/addresses">地址管理</a></li>
         <li class="<%= 'nav-active' if controller_name == 'adverts' %>"><a href="/admin/adverts">广告管理</a></li>
       <% end %>
-      <li class="<%= 'nav-active' if controller_name == 'units' %>"><a href="/admin/units">单位管理</a></li>
-      <li class="dropdown <%= 'nav-active' if %w(categories sub_categories hot_categories detail_categories).include?(controller_name) %>">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          类别管理
-          <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="/admin/categories">大类别</a></li>
-          <li><a href="/admin/sub_categories">小类别</a></li>
-          <li><a href="/admin/detail_categories">具体类别</a></li>
-          <li><a href="/admin/hot_categories">热门类别</a></li>
-        </ul>
-      </li>
-      <li class="<%= 'nav-active' if controller_name == 'product_admins' %>"><a href="/admin/product_admins">进货管理</a></li>
-      <% if current_member.admin? || current_member.editor? %>
+      <% if !current_member.spreader? %>
+        <li class="<%= 'nav-active' if controller_name == 'units' %>"><a href="/admin/units">单位管理</a></li>
+        <li class="dropdown <%= 'nav-active' if %w(categories sub_categories hot_categories detail_categories).include?(controller_name) %>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            类别管理
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/admin/categories">大类别</a></li>
+            <li><a href="/admin/sub_categories">小类别</a></li>
+            <li><a href="/admin/detail_categories">具体类别</a></li>
+            <li><a href="/admin/hot_categories">热门类别</a></li>
+          </ul>
+        </li>
+        <li class="<%= 'nav-active' if controller_name == 'product_admins' %>"><a href="/admin/product_admins">进货管理</a></li>
+      <% end %>
+      <% if current_member.admin? || current_member.editor? || current_member.spreader? %>
         <li class="<%= 'nav-active' if controller_name == 'order_stat' %>"><a href="/admin/order_stat">交易统计</a></li>
-        <li class="<%= 'nav-active' if controller_name == 'product_stat' %>"><a href="/admin/product_stat">销量统计</a></li>
+        <% if !current_member.spreader? %>
+          <li class="<%= 'nav-active' if controller_name == 'product_stat' %>"><a href="/admin/product_stat">销量统计</a></li>
+        <% end %>
       <% end %>
       <% if current_member.admin? %>
         <li class="<%= 'nav-active' if controller_name == 'members' %>"><a href="/admin/members">系统管理</a></li>

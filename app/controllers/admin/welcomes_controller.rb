@@ -3,7 +3,11 @@ class Admin::WelcomesController < Admin::BaseController
 
   def index
     if current_member && current_member.is_a?(Member)
-      redirect_to admin_products_url
+      if current_member.spreader?
+        redirect_to admin_orders_url
+      else
+        redirect_to admin_products_url
+      end
     elsif request.referrer =~ /admin/i || request.referrer =~ /members/i
       redirect_to admin_url
     else

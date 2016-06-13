@@ -1,6 +1,8 @@
 class Member < ActiveRecord::Base
   attr_accessor :login
 
+  belongs_to :promoter
+
   validates :name,
   presence: true,
   uniqueness: {
@@ -8,11 +10,11 @@ class Member < ActiveRecord::Base
     case_sensitive: false
   }
 
-  enum role: [:user, :editor, :admin]
+  enum role: [:user, :editor, :admin, :spreader]
   after_initialize :set_default_role, :if => :new_record?
 
   def set_default_role
-    self.role ||= :user
+    self.role ||= :spreader
   end
 
   # Include default devise modules. Others available are:
@@ -27,6 +29,8 @@ class Member < ActiveRecord::Base
       return '一级管理员'
     elsif admin?
       return '超级管理员'
+    elsif spreader?
+      return '推广管理员'
     end
   end
 

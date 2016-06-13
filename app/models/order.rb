@@ -10,6 +10,7 @@ class Order < ActiveRecord::Base
   before_create :generate_order_no
 
   scope :latest, -> { order('created_at DESC') }
+  scope :user_orders, ->(ids) { where(user_id: ids) }
   scope :one_days, ->(today) { where("date(created_at) = ?", today) }
   scope :one_weeks, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 6.day), today) }
   scope :one_months, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 1.month), today) }

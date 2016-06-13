@@ -7,7 +7,12 @@ class Admin::OrdersController < Admin::BaseController
   after_action :verify_authorized, only: :destroy
   
   def index
-    @q = Order.ransack(params[:q])
+    if current_member.spreader?
+      user_ids = current_member.promoter.users.pluck(:id)
+      @q = Order.user_orders(user_ids).ransack(params[:q])
+    else
+      @q = Order.ransack(params[:q])
+    end
     @orders = @q.result.latest.page(params[:page])
   end
 
