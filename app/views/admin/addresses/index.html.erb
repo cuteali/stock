@@ -12,6 +12,8 @@
           <%= link_to '添加地址', new_admin_address_path, class: 'btn btn-success' %>
         </div>
         <div class="col-md-8 row">
+          <%= f.label '收货人电话：' %>
+          <%= f.search_field :receive_phone_cont, class: 'input-medium', placeholder:"收货人电话" %>
           <%= f.label '详细地址：' %>
           <%= f.search_field :detail_cont, class: 'input-medium', placeholder:"详细地址" %>
           <%= f.submit '查询', class: 'btn btn-primary' %>
@@ -25,9 +27,9 @@
         <thead>
           <tr>
             <th>id</th>
-            <th>用户名</th>
+            <th>用户电话</th>
             <th>收货人</th>
-            <th>电话</th>
+            <th>收货人电话</th>
             <!--th>省</th>
             <th>市</th>
             <th>区</th-->
@@ -40,8 +42,8 @@
           <% @address.each do |add| %>
             <tr>
               <td><%= add.id %></td>
-              <td class="col-sm-2"><%= add.user.try(:user_name) %></td>
-              <td class="col-sm-1"><%= add.receive_name %></td>
+              <td class="col-sm-1"><%= add.user.try(:phone) %></td>
+              <td class="col-sm-2"><%= add.receive_name %></td>
               <td class="col-sm-1"><%= add.receive_phone %></td>
               <!--td class="col-sm-1"><%#= add.province %></td>
               <td class="col-sm-1"><%#= add.city %></td>

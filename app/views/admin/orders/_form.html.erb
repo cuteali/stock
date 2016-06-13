@@ -1,8 +1,14 @@
 <%= form_for([:admin,@order],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
   <div class ="form-group">
-    <label class="col-sm-2 control-label">用户:</label>
+    <label class="col-sm-2 control-label">用户名:</label>
     <div class="col-sm-4">
-      <%= f.select :user_id, user_list,{}, class: 'form-control' %>
+      <p class="form-control-static"><%= f.object.user.user_name.blank? ? '暂无' : f.object.user.user_name %></p>
+    </div>
+  </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">用户电话:</label>
+    <div class="col-sm-4">
+      <p class="form-control-static"><%= f.object.user.phone %></p>
     </div>
   </div>
   <div class ="form-group">
@@ -12,15 +18,15 @@
     </div>
   </div>
   <div class ="form-group">
-    <label class="col-sm-2 control-label">电话:</label>
-    <div class="col-sm-4">
-      <%= f.text_field :phone_num, class:"form-control" %>
-    </div>
-  </div>
-  <div class ="form-group">
     <label class="col-sm-2 control-label">收货人名称:</label>
     <div class="col-sm-4">
       <%= f.text_field :receive_name, class:"form-control" %>
+    </div>
+  </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">收货人电话:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :phone_num, class:"form-control" %>
     </div>
   </div>
   <div class ="form-group">
