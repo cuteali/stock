@@ -53,7 +53,7 @@
             </tr>
           </thead>
           <tbody>
-            <% if @total.each do |op| %>
+            <% if @total.take(100).each do |op| %>
               <tr>
                 <td><%= op.name %></td>
                 <td><%= op.num %></td>

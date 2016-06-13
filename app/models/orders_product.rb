@@ -3,6 +3,7 @@ class OrdersProduct < ActiveRecord::Base
   belongs_to :order
   belongs_to :product
 
+  scope :latest, -> { order('orders_products.created_at DESC') }
   scope :by_pro_ids, -> (ids) { where(product_id: ids) }
   scope :one_days, ->(today) { where("date(orders_products.created_at) = ?", today) }
   scope :one_weeks, ->(today) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", (today - 6.day), today) }
