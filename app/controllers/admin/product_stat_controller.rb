@@ -11,5 +11,6 @@ class Admin::ProductStatController < Admin::BaseController
     @date = params[:created_date].present? ? params[:created_date] : "one_days"
     @today = Date.today
     @start_time, @end_time, @total = OrdersProduct.chart_data(@orders_products, @date, @today, select_time, params)
+    @orders_products_stats = @total.page(params[:page])
   end
 end

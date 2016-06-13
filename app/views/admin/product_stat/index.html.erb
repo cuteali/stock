@@ -53,7 +53,7 @@
             </tr>
           </thead>
           <tbody>
-            <% if @total.take(100).each do |op| %>
+            <% if @orders_products_stats.each do |op| %>
               <tr>
                 <td><%= op.name %></td>
                 <td><%= op.num %></td>
@@ -64,6 +64,7 @@
           </tbody>
         </table>
       </div>
+      <%= paginate @orders_products_stats %>
     </div>
   </div>
 </div>
