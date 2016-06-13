@@ -1,0 +1,95 @@
+<% content_for :title do %>
+  产品销量统计
+<% end %>
+<h2 class="col-sm-offset-4">
+  <%= link_to "#{@product.name}（销量统计）", statistics_admin_product_path(@product) %>
+</h2>
+<div class="container">
+  <div class="main-content">
+    <div class="page-content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="col-md-4 row">
+            <%{"今天" => "one_days", "最近7天" => "one_weeks", "最近一月" => "one_months"}.each do |key, value|%>
+              <a href="<%= statistics_admin_product_path(@product, created_date: value) %>" class="btn btn-primary btn-sm btn-filter btn-filter-tab <%= "active" if @date == value %>">
+                <%= key %>
+              </a>
+            <%end%>
+          </div>
+          <div class="col-md-5">
+            <%= form_tag statistics_admin_product_path(@product) ,:method => :get do %>
+              <div class="input-group width-240px pull-left">
+                <span class="input-group-addon">
+                  <i class="icon-calendar"></i>
+                </span>
+                <%= text_field_tag :start_time, params[:start_time], class: 'datepicker input-small'  %>
+                <span class="input-group-addon">
+                  <i class="">-</i>
+                </span>
+                <%= text_field_tag :end_time, params[:end_time], class: 'datepicker input-small' %>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm btn-filter margin-left-5">查询</button>
+            <% end %>
+          </div>
+        </div>
+        <div class="chart margin-top-20 branch-record col-md-12">
+          <div class="col-md-10 highCharts">
+            <div class="chart" id="chart-1"></div>
+            <div>
+              <span><%= @start_time %></span>
+              <span class="margin-left-10">到</span>
+              <span class="margin-left-10"><%= @end_time %></span>
+              <span class="margin-left-20">销量： <%= @count %></span>
+            </div>
+          </div>
+          <div class="well" style="width:173px; margin-left:10px;">
+            <div class="chartInfoHead">销量</div>
+            <div class="chartInfoCon1 text-warning">
+              <b><%= @orders_products.where("date(created_at) = ?",@today).sum(:product_num) %></b>
+              <span>今日销量</span>
+            </div>
+            <div class="chartInfoCon2 text-info ">
+              <b><%= @orders_products.where("date(created_at) = ?",@today-1.day).sum(:product_num) %></b>
+              <span>昨日销量</span>
+            </div>
+            <div class="chartInfoHeadFooter">总销量<%= @orders_products.sum(:product_num) %>个</div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <table class="table table-hover table-striped table-bordered table-condensed dataTable">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>销量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @orders_products_stats.each do |key, value| %>
+                <tr>
+                  <td><%= key %></td>
+                  <td><%= value %></td>
+                </tr>
+              <% end.blank? %>
+                <tr><td colspan="2" class="green text-center">无记录</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('input[class*="datepicker"]').attr('readonly', 'readonly').datepicker({
+      todayBtn: "linked",
+      autoclose: true,
+
+      format: "yyyy-mm-dd"
+    });
+    <%if @chart%>
+      $('#chart-1').append("<%= escape_javascript(high_chart('chart_basic_line1', @chart)) -%>");
+    <%end%>
+  });
+  
+</script>

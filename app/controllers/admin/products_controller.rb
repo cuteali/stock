@@ -1,7 +1,7 @@
 class Admin::ProductsController < Admin::BaseController
   include Admin::CategoryHelper
 
-  before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top]
+  before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top, :statistics]
   before_filter :authenticate_member!
   after_action :verify_authorized, only: :destroy
   
@@ -97,6 +97,16 @@ class Admin::ProductsController < Admin::BaseController
         format.html { redirect_to :back, notice: "文件上传成功，请于10分钟后查看数据导入情况"  }
       end
     end
+  end
+
+  def statistics
+    @orders_products = @product.orders_products
+    @select_time = true if params[:start_time].present? && params[:end_time].present?
+    @date = params[:created_date].present? ? params[:created_date] : "one_days"
+    @today = Date.today
+    @categories, @series, @start_time, @end_time, @count, @min_tick, @total = OrdersProduct.chart_pro_data(@orders_products, @date, @today, @select_time, params)
+    @chart = OrdersProduct.chart_base_line(@categories, @series, @min_tick) if @categories.present?
+    @orders_products_stats = OrdersProduct.get_product_stats(@total, @start_time, @end_time)
   end
 
   private

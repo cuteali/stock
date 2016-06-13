@@ -48,7 +48,7 @@ Rails.application.routes.draw do
         post :upload_csv
       end
       member do
-        get :delete_image, :image
+        get :delete_image, :image, :statistics
         post :stick_top
       end
     end
@@ -74,6 +74,7 @@ Rails.application.routes.draw do
     resources :units
     resources :adverts
     resources :order_stat, only: :index
+    resources :product_stat, only: :index
     resources :members
   end
 

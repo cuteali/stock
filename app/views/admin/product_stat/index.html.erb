@@ -1,0 +1,105 @@
+<% content_for :title do %>
+  销量统计
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/product_stat">销量统计</a>
+</h2>
+<div class="container">
+  <div class="main-content">
+    <div class="page-content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="col-md-3 row">
+            <%{"今天" => "one_days", "最近7天" => "one_weeks", "最近一月" => "one_months"}.each do |key, value|%>
+              <a href="<%= admin_product_stat_index_path(created_date: value, q: params[:q]) %>" class="btn btn-primary btn-sm btn-filter btn-filter-tab <%= "active" if @date == value %>">
+                <%= key %>
+              </a>
+            <%end%>
+          </div>
+          <div class="col-md-9">
+            <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+              <%= hidden_field_tag :created_date, params[:created_date] %>
+              <% category_options = Category.sorted.pluck(:name, :id) %>
+              <%= f.select :category_id_eq, category_options.insert(0,["选择大类别",""]), {}, id: 'category_id', class: "form-control" %>
+              <% sub_category_options = SubCategory.where(category_id: f.object.category_id_eq).sorted.pluck(:name, :id).unshift(['选择小类别', '']) %>
+              <%= f.select :sub_category_id_eq, sub_category_options, {}, id: 'sub_category_id', class: "form-control" %>
+              <% detail_category_options = DetailCategory.where(sub_category_id: f.object.sub_category_id_eq).sorted.pluck(:name, :id).unshift(['选择具体类别', '']) %>
+              <%= f.select :detail_category_id_eq, detail_category_options, {}, id: 'detail_category_id', class: "form-control" %>
+              <div class="input-group width-240px">
+                <span class="input-group-addon">
+                  <i class="icon-calendar"></i>
+                </span>
+                <%= text_field_tag :start_time, params[:start_time], class: 'datepicker input-small'  %>
+                <span class="input-group-addon">
+                  <i class="">-</i>
+                </span>
+                <%= text_field_tag :end_time, params[:end_time], class: 'datepicker input-small' %>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-sm btn-filter margin-left-5">查询</button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default margin-top-10">
+        <span><%= @start_time %></span>
+        <span class="margin-left-10">至</span>
+        <span class="margin-left-10"><%= @end_time %></span>
+        <table class="table table-hover table-striped table-bordered table-condensed dataTable">
+          <thead>
+            <tr>
+              <th>产品名称</th>
+              <th>销量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @total.each do |op| %>
+              <tr>
+                <td><%= op.name %></td>
+                <td><%= op.num %></td>
+              </tr>
+            <% end.blank? %>
+              <tr><td colspan="2" class="green text-center">无记录</td></tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('input[class*="datepicker"]').attr('readonly', 'readonly').datepicker({
+      todayBtn: "linked",
+      autoclose: true,
+
+      format: "yyyy-mm-dd"
+    });
+  });
+  $("#category_id").change(function(){
+    var set_url = "<%= select_category_admin_products_url %>" + 
+                  "?category_id=" + $("#category_id").val() + 
+                  "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择小类别&class_name=SubCategory";
+    jQuery.ajax({
+      type: "GET",
+      url: set_url,
+      dataType: "json",
+      success: function(data){
+        $('#sub_category_id').html(data.html);
+      }
+    });
+  });
+  $("#sub_category_id").change(function(){
+    var set_url = "<%= select_category_admin_products_url %>" + 
+                  "?sub_category_id=" + $("#sub_category_id").val() + 
+                  "&id=detail_category_id&name=q[detail_category_id_eq]&first_option=选择具体类别&class_name=DetailCategory";
+    jQuery.ajax({
+      type: "GET",
+      url: set_url,
+      dataType: "json",
+      success: function(data){
+        $('#detail_category_id').html(data.html);
+      }
+    });
+  });
+</script>

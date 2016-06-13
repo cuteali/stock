@@ -28,6 +28,7 @@
       <li class="<%= 'nav-active' if controller_name == 'product_admins' %>"><a href="/admin/product_admins">进货管理</a></li>
       <% if current_member.admin? || current_member.editor? %>
         <li class="<%= 'nav-active' if controller_name == 'order_stat' %>"><a href="/admin/order_stat">交易统计</a></li>
+        <li class="<%= 'nav-active' if controller_name == 'product_stat' %>"><a href="/admin/product_stat">销量统计</a></li>
       <% end %>
       <% if current_member.admin? %>
         <li class="<%= 'nav-active' if controller_name == 'members' %>"><a href="/admin/members">系统管理</a></li>
