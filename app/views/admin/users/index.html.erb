@@ -11,11 +11,13 @@
         <div class="col-md-2 row pull-left">
           <%= link_to '添加用户', new_admin_user_path, class: 'btn btn-success' %>
         </div>
-        <div class="col-md-6 row">
+        <div class="col-md-10 row">
           <%= f.label '用户名：' %>
           <%= f.search_field :user_name_cont, class: 'input-medium', placeholder:"昵称" %>
           <%= f.label '电话：' %>
           <%= f.search_field :phone_cont, class: 'input-medium', placeholder:"电话" %>
+          <%= check_box_tag :by_money, 'order_money', params[:by_money] == 'order_money', class: "ace" %>
+          <span class="lbl">按用户订单金额排序</span>
           <%= f.submit '查询', class: 'btn btn-primary' %>
         </div>
       <% end %>

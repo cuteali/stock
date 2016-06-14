@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   scope :one_weeks, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 6.day), today) }
   scope :one_months, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(created_at) >= ? and date(created_at) <= ?", start_time, end_time) }
+  scope :order_by_money, ->(is_true) { joins("left join orders on orders.user_id=users.id").group("users.id").order("sum(orders.order_money) DESC, users.created_at DESC") if is_true }
 
   def is_verified?
     identification == 1
