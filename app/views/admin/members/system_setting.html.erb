@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="col-sm-offset-3">
+    <h2>系统设置</h2>
+  </div>
+  <%= form_for(@system_setting, url: update_system_setting_admin_member_path(@member), html: {class: "form-horizontal", role: "form", multipart: true, method: :post}) do |f| %>
+    <div class ="form-group">
+      <label class="col-sm-2 control-label">起送价格:</label>
+      <div class="col-sm-4">
+        <%= f.text_field :delivery_price, class:"form-control"%>
+        <label class="control-label">（留空为不设置起送价格）</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-4">
+        <button class="btn btn-success" type="submit">
+          <span class="glyphicon glyphicon-floppy-save">保存</span>
+        </button>
+        <button class="btn btn-success" type="button" onclick="javascript:history.go(-1);">
+          <span class="glyphicon glyphicon-hand-left">返回</span>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>

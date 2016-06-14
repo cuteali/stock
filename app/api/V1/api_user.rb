@@ -30,22 +30,24 @@ module V1
       params do
         requires :phone_num, type: String
         requires :rand_code, type: String
+        optional :client_type, type: String
       end
       post "sign_in",jbuilder:"v1/users/sign_in" do
         phone_num_encrypt = params[:phone_num]
         rand_code = params[:rand_code]
-        @token,unique_id = User.sign_in(phone_num_encrypt,rand_code)
+        @token, unique_id = User.sign_in(phone_num_encrypt, rand_code, params[:client_type])
         if @token.present?
           redis_token = phone_num_encrypt + unique_id
           $redis.set(redis_token,@token)
           $redis.expire(redis_token,24*3600*15)
-          # cookies[phone_num_encrypt] = {value:@token,expires:10.day.from_now}
+          @delivery_price = SystemSetting.first.try(:delivery_price)
         end
       end
 
       #http://localhost:3000/api/v1/users/token
       params do
         requires :token, type: String
+        optional :client_type, type: String
       end
       post 'token',jbuilder:"v1/users/token" do
         if @token.present?
@@ -53,7 +55,8 @@ module V1
           redis_token = @user.phone_num + @user.unique_id
           $redis.set(redis_token,@token)
           $redis.expire(redis_token,24*3600*15)
-          @user.update(token:@token)
+          @user.update(token: @token, client_type: params[:client_type])
+          @delivery_price = SystemSetting.first.try(:delivery_price)
         else
           @token = nil
         end

@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     identification == 1
   end
 
-  def self.sign_in(phone_num_encrypt,rand_code)
+  def self.sign_in(phone_num_encrypt, rand_code, client_type)
     redis_rand_code = $redis.get(phone_num_encrypt)
     phone = AesUtil.aes_dicrypt($key, phone_num_encrypt)
     token = nil
@@ -28,9 +28,9 @@ class User < ActiveRecord::Base
         token = SecureRandom.urlsafe_base64
         user = User.find_by(phone_num:phone_num_encrypt)
         if user.present?
-          user.update(token:token)
+          user.update(token: token, client_type: client_type)
         else
-          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1)
+          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1, client_type: client_type)
         end
         unique_id = user.unique_id
       else
@@ -42,9 +42,9 @@ class User < ActiveRecord::Base
         token = SecureRandom.urlsafe_base64
         user = User.find_by(phone_num:phone_num_encrypt)
         if user.present?
-          user.update(token:token)
+          user.update(token:token, client_type: client_type)
         else
-          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1)
+          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1, client_type: client_type)
         end
         unique_id = user.unique_id
       else

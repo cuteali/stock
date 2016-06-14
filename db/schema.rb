@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613075814) do
+ActiveRecord::Schema.define(version: 20160614024204) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -250,6 +250,12 @@ ActiveRecord::Schema.define(version: 20160613075814) do
   add_index "sub_categories", ["category_id"], name: "index_sub_categories_on_category_id", using: :btree
   add_index "sub_categories", ["sort"], name: "index_sub_categories_on_sort", using: :btree
 
+  create_table "system_settings", force: :cascade do |t|
+    t.decimal  "delivery_price", precision: 12, scale: 2, default: 0.0
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+  end
+
   create_table "units", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -258,6 +264,7 @@ ActiveRecord::Schema.define(version: 20160613075814) do
 
   create_table "users", force: :cascade do |t|
     t.string   "user_id",        limit: 255
+    t.string   "client_type",    limit: 255
     t.string   "user_name",      limit: 255
     t.string   "head_portrait",  limit: 255
     t.integer  "identification", limit: 4,   default: 0

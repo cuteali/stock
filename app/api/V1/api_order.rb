@@ -58,7 +58,9 @@ module V1
             order_money, @is_restricting, @is_send_out = Order.check_order_money(@user, product_arr)
             AppLog.info("money:#{params[:money]}")
             if !@is_restricting && !@is_send_out
-              if order_money == params[:money].gsub(/[^\d\.]/, '').to_f
+              @delivery_price = SystemSetting.first.try(:delivery_price)
+              @is_sending_price = order_money >= @delivery_price.to_f
+              if (order_money == params[:money].gsub(/[^\d\.]/, '').to_f) && @is_sending_price
                 @stock_num_result, @is_sold_off = Product.validate_stock_num(product_arr)
                 if @stock_num_result == 0 && !@is_sold_off
                   @order = Order.create(state: 0, phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, area: address.try(:area), detail: address.try(:detail), order_money: order_money, unique_id: SecureRandom.urlsafe_base64)

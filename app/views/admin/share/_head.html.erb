@@ -50,6 +50,7 @@
           <ul class="dropdown-menu" role="menu">
             <% if current_member.admin? %>
               <li><%= link_to '注册管理员', new_member_registration_path %></li>
+              <li><%= link_to '系统设置', system_setting_admin_member_path(current_member) %></li>
             <% end %>
             <li><%= link_to '个人信息', edit_member_registration_path %></li>
             <li><%= link_to '退出', destroy_member_session_path, method: :delete %></li>

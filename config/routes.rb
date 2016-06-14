@@ -71,11 +71,16 @@ Rails.application.routes.draw do
         get :statistics
       end
     end
+    resources :members do
+      member do
+        get :system_setting
+        post :update_system_setting
+      end
+    end
     resources :units
     resources :adverts
     resources :order_stat, only: :index
     resources :product_stat, only: :index
-    resources :members
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

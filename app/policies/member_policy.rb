@@ -22,4 +22,12 @@ class MemberPolicy
     return false if @current_member == @member
     @current_member.admin?
   end
+
+  def system_setting?
+    @current_member.admin?
+  end
+
+  def update_system_setting?
+    @current_member.admin?
+  end
 end
