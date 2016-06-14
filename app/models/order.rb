@@ -15,6 +15,13 @@ class Order < ActiveRecord::Base
   scope :one_weeks, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 6.day), today) }
   scope :one_months, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(created_at) >= ? and date(created_at) <= ?", start_time, end_time) }
+  scope :normal_orders, -> { where(state: [0, 1, 2]) }
+
+  def change_orders_products_status(status)
+    orders_products.each do |op|
+      op.update(status: status)
+    end
+  end
 
   def get_address
     area.to_s + detail.to_s

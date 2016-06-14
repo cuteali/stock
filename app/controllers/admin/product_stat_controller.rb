@@ -3,9 +3,9 @@ class Admin::ProductStatController < Admin::BaseController
     @q = Product.ransack(params[:q])
     product_ids = @q.result.pluck(:id)
     if params[:q] && params[:q][:category_id_eq]
-      @orders_products = OrdersProduct.by_pro_ids(product_ids)
+      @orders_products = OrdersProduct.normal.by_pro_ids(product_ids)
     else
-      @orders_products = OrdersProduct.all
+      @orders_products = OrdersProduct.normal
     end
     select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"

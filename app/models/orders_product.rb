@@ -10,6 +10,8 @@ class OrdersProduct < ActiveRecord::Base
   scope :one_months, ->(today) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", start_time, end_time) }
 
+  enum status: [ :normal, :deleted ]
+
   def self.chart_data(orders_products, date, today, select_time, params)
     if select_time
       start_time = Date.parse(params[:start_time])

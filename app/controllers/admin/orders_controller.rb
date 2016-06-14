@@ -28,7 +28,10 @@ class Admin::OrdersController < Admin::BaseController
     @order.restore_products
     if @order.update(order_params)
       @order.update_order_money
-      @order.update_product_stock_num if !edit_disabled(@order.state)
+      is_bad_order = edit_disabled(@order.state)
+      @order.update_product_stock_num if !is_bad_order
+      status = is_bad_order ? 'deleted' : 'normal'
+      @order.change_orders_products_status(status)
       AppLog.info("order.complete_time  #{@order.id}")
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path
