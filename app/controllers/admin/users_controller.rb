@@ -3,7 +3,11 @@ class Admin::UsersController < Admin::BaseController
   
   def index
     @q = User.ransack(params[:q])
-    @users = @q.result.order_by_money(params[:by_money]).page(params[:page])
+    if params[:by_money]
+      @users = @q.result.order_by_money.page(params[:page])
+    else
+      @users = @q.result.latest.page(params[:page])
+    end
   end
 
   def new
