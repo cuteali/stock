@@ -48,7 +48,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def user_statistics
-    @orders = @user.orders.latest
+    @orders = @user.orders.normal_orders.latest
     select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"
     @today = Date.today
