@@ -13,6 +13,7 @@ else
     json.complete_time @order.complete_time.present?? @order.complete_time.strftime("%Y-%m-%d %H:%M:%S").to_s : ""
     json.address @order.get_address.to_s
     json.order_money @order.order_money.to_s
+    json.remarks @order.remarks.to_s
     if @order.orders_products.present?
       json.products(@products) do |op|
         json.unique_id op.product.unique_id.to_s

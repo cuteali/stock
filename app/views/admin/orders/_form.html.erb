@@ -53,6 +53,12 @@
       <%= f.text_field :complete_time, class: "form-control datetimepicker" %>
     </div>
   </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">备注:</label>
+    <div class="col-sm-4">
+      <%= f.text_area :remarks, class: "form-control" %>
+    </div>
+  </div>
   <% @order.orders_products.each_with_index do |op, i| %>
     <%= f.fields_for :orders_products, op do |opro| %>
       <%= opro.hidden_field :id, name: "order[orders_products_attributes][][id]" %>
@@ -90,6 +96,7 @@
   <% if edit_disabled(@order.state) %>
     $('input').attr('disabled', true)
     $('select').attr('disabled', true);
+    $('textarea').attr('disabled', true);
     $('button[type=submit]').attr('disabled', true);
   <% end %>
 
