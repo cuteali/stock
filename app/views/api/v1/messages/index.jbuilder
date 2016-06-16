@@ -2,7 +2,7 @@ if @messages.present?
   json.result 0
   json.total_pages @messages.total_pages if params[:page_num]
   json.messages(@messages) do |message|
-    json.message_id message.message_id
+    json.message_id message.id
     json.title message.title
     json.info message.info
     json.is_new message.is_new_to_i
