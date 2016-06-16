@@ -1,6 +1,7 @@
 class Order < ActiveRecord::Base
   belongs_to :address
   belongs_to :user
+  has_many :messages, as: :messageable
   has_many :orders_products, dependent: :destroy
   has_many :products, through: :orders_products
   accepts_nested_attributes_for :orders_products, allow_destroy: true
@@ -15,7 +16,22 @@ class Order < ActiveRecord::Base
   scope :one_weeks, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 6.day), today) }
   scope :one_months, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(created_at) >= ? and date(created_at) <= ?", start_time, end_time) }
-  scope :normal_orders, -> { where(state: [0, 1, 2]) }
+  scope :normal_orders, -> { where(state: [0, 1, 2, 4, 5]) }
+  scope :by_state, ->(state_arr) { 
+    if state_arr.include?(2)
+      where(state: 2)
+    else
+      where(state: [0, 1, 4, 5])
+    end
+  }
+
+  def order_push_message
+    if [1, 2].include?(state)
+      info = state == 1 ? '您好，您的订单已经配货完成，现在送货中，请保持电话畅通！' : '您好，您的订单已经完成，如有问题，请联系客服。客服电话：400-0050-383 转1。'
+      message = messages.where(user_id: user_id, title: '要货啦', info: info).first_or_create
+      message.push_message
+    end
+  end
 
   def change_orders_products_status(status)
     orders_products.each do |op|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615020712) do
+ActiveRecord::Schema.define(version: 20160615084244) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -144,6 +144,21 @@ ActiveRecord::Schema.define(version: 20160615020712) do
   add_index "members", ["promoter_id"], name: "index_members_on_promoter_id", using: :btree
   add_index "members", ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true, using: :btree
 
+  create_table "messages", force: :cascade do |t|
+    t.integer  "user_id",          limit: 4
+    t.integer  "messageable_id",   limit: 4
+    t.string   "messageable_type", limit: 255
+    t.string   "title",            limit: 255
+    t.string   "info",             limit: 255
+    t.integer  "is_new",           limit: 1,   default: 0, null: false
+    t.integer  "status",           limit: 1,   default: 0, null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
+  add_index "messages", ["messageable_id", "messageable_type"], name: "messageable_index", using: :btree
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
+
   create_table "orders", force: :cascade do |t|
     t.integer  "state",         limit: 4
     t.string   "order_no",      limit: 255
@@ -267,6 +282,7 @@ ActiveRecord::Schema.define(version: 20160615020712) do
   create_table "users", force: :cascade do |t|
     t.string   "user_id",        limit: 255
     t.string   "client_type",    limit: 255
+    t.string   "client_id",      limit: 255
     t.string   "user_name",      limit: 255
     t.string   "head_portrait",  limit: 255
     t.integer  "identification", limit: 4,   default: 0

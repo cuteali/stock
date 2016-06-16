@@ -1,0 +1,6 @@
+development:
+  jpush_app_key: 'ac154bc47d17c0f84787b7c2'
+  jpush_master_secret: '9af1205e442eac5d1035a604'
+production:
+  jpush_app_key: 'ac154bc47d17c0f84787b7c2'
+  jpush_master_secret: '9af1205e442eac5d1035a604'

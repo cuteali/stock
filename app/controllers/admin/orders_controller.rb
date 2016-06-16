@@ -32,6 +32,7 @@ class Admin::OrdersController < Admin::BaseController
       @order.update_product_stock_num if !is_bad_order
       status = is_bad_order ? 'deleted' : 'normal'
       @order.change_orders_products_status(status)
+      @order.order_push_message
       AppLog.info("order.complete_time  #{@order.id}")
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path

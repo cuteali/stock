@@ -42,3 +42,53 @@
 .alert-notice {
   @extend .alert-info;
 }
+
+.table tbody tr.green > td {
+  background-color: #66cdaa !important;
+  color: #000000 !important;
+}
+
+.table-hover tbody tr.green:hover > td {
+  background-color: #20b2aa !important;
+  color: #000000 !important;
+}
+
+.table tbody tr.pink > td {
+  background-color: #ff88c2 !important;
+  color: #000000 !important;
+}
+
+.table-hover tbody tr.pink:hover > td {
+  background-color: #ff69b4 !important;
+  color: #000000 !important;
+}
+
+.table tbody tr.blue > td {
+  background-color: #00bfff !important;
+  color: #000000 !important;
+}
+
+.table-hover tbody tr.blue:hover > td {
+  background-color: #1e90ff !important;
+  color: #000000 !important;
+}
+
+.table tbody tr.red > td {
+  background-color: #ff3333 !important;
+  color: #000000 !important;
+}
+
+.table-hover tbody tr.red:hover > td {
+  background-color: #ff0000 !important;
+  color: #000000 !important;
+}
+
+.table tbody tr.purple > td {
+  background-color: #9955ff !important;
+  color: #000000 !important;
+}
+
+.table-hover tbody tr.purple:hover > td {
+  background-color: #7700ff !important;
+  color: #000000 !important;
+}

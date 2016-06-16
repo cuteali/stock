@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :cart_items
   has_many :favorites
   has_many :orders_products
+  has_many :messages
 
   scope :latest, -> { order('created_at DESC') }
   scope :one_days, ->(today) { where("date(created_at) = ?", today) }
@@ -13,12 +14,13 @@ class User < ActiveRecord::Base
   scope :one_months, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(created_at) >= ? and date(created_at) <= ?", start_time, end_time) }
   scope :order_by_money, -> { joins("left join orders on orders.user_id=users.id").group("users.id").order("sum(orders.order_money) DESC, users.created_at DESC") }
+  scope :client_users, -> { where("client_id is not null") }
 
   def is_verified?
     identification == 1
   end
 
-  def self.sign_in(phone_num_encrypt, rand_code, client_type)
+  def self.sign_in(phone_num_encrypt, rand_code, params)
     redis_rand_code = $redis.get(phone_num_encrypt)
     phone = AesUtil.aes_dicrypt($key, phone_num_encrypt)
     token = nil
@@ -29,9 +31,9 @@ class User < ActiveRecord::Base
         token = SecureRandom.urlsafe_base64
         user = User.find_by(phone_num:phone_num_encrypt)
         if user.present?
-          user.update(token: token, client_type: client_type)
+          user.update(token: token, client_type: params[:client_type], client_id: params[:client_id])
         else
-          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1, client_type: client_type)
+          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1, client_type: params[:client_type], client_id: params[:client_id])
         end
         unique_id = user.unique_id
       else
@@ -43,9 +45,9 @@ class User < ActiveRecord::Base
         token = SecureRandom.urlsafe_base64
         user = User.find_by(phone_num:phone_num_encrypt)
         if user.present?
-          user.update(token:token, client_type: client_type)
+          user.update(token:token, client_type: params[:client_type], client_id: params[:client_id])
         else
-          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1, client_type: client_type)
+          user = User.create(token: token, phone_num: phone_num_encrypt, phone: phone, unique_id: SecureRandom.urlsafe_base64, rand: "铜", identification: 1, client_type: params[:client_type], client_id: params[:client_id])
         end
         unique_id = user.unique_id
       else

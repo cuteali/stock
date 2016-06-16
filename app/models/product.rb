@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   has_many :images, as: :target, dependent: :destroy
   has_many :adverts
   has_many :orders_products, dependent: :destroy
+  has_many :messages, as: :messageable
 
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }

@@ -33,8 +33,8 @@ module V1
       end
       get "",jbuilder:"v1/orders/index" do
         if @token.present?
-          state_json = JSON.parse(params[:state].gsub("\\",""))
-          @orders = Order.where(user_id: @user.id, state: state_json).latest
+          state_arr = JSON.parse(params[:state].gsub("\\",""))
+          @orders = @user.orders.by_state(state_arr).latest
         end
       end
 
@@ -74,6 +74,8 @@ module V1
                   if @order
                     send_to_shop(@order)
                     send_to_user(@user, @order)
+                    message = @order.messages.create(user_id: @user.id, title: '要货啦', info: '您好，系统已经收到您的订单！')
+                    message.push_message
                   end
                 end
               end

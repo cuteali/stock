@@ -1,6 +1,6 @@
 module Admin::OrderHelper
   def order_state
-    [["请选择",""],["不可用",-1],["已生效",0],["送货中",1],["已完成",2],["已取消",3]]
+    [["请选择",""],["不可用",-1],["已生效",0],["已打印",4],["已配货",5],["送货中",1],["已完成",2],["已取消",3]]
   end
 
   def order_state_show(state)
@@ -16,6 +16,10 @@ module Admin::OrderHelper
       state_show = "已完成"
     when 3
       state_show = "已取消"
+    when 4
+      state_show = "已打印"
+    when 5
+      state_show = "已配货"
     end
     state_show
   end
@@ -24,13 +28,17 @@ module Admin::OrderHelper
     state_color = ""
     case state
     when 0
-      state_color = "danger"
+      state_color = "pink"
     when 1
-      state_color = "info"
+      state_color = "blue"
     when 2
-      state_color = "success"
+      state_color = "green"
     when 3
       state_color = "warning"
+    when 4
+      state_color = "red"
+    when 5
+      state_color = "purple"
     end
     state_color
   end
