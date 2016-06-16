@@ -74,8 +74,7 @@ module V1
                   if @order
                     send_to_shop(@order)
                     send_to_user(@user, @order)
-                    message = @order.messages.create(user_id: @user.id, title: '要货啦', info: '您好，系统已经收到您的订单！')
-                    message.push_message
+                    @order.order_push_message_to_user
                   end
                 end
               end
@@ -88,11 +87,16 @@ module V1
       params do 
         requires :token,type:String
         requires :unique_id,type:String
+        optional :message_id, type: String
       end
       get ":unique_id",jbuilder:"v1/orders/show" do
         if @token.present?
           @order = Order.find_by(unique_id:params[:unique_id])
           @products = @order.orders_products.joins(:product).order('products.category_id ASC')
+          if params[:message_id]
+            message = Message.normal.find_by(id: params[:message_id])
+            message.read! if message.present?
+          end
         end
       end
     end

@@ -25,11 +25,18 @@ class Order < ActiveRecord::Base
     end
   }
 
+  def order_push_message_to_user
+    if user.client_id
+      message = messages.create(user_id: user_id, title: '要货啦', info: '您好，系统已经收到您的订单！')
+      message.jpush_push_message(alert: message.info, client_id: user.client_id)
+    end
+  end
+
   def order_push_message
-    if [1, 2].include?(state)
+    if [1, 2].include?(state) && user.client_id
       info = state == 1 ? '您好，您的订单已经配货完成，现在送货中，请保持电话畅通！' : '您好，您的订单已经完成，如有问题，请联系客服。客服电话：400-0050-383 转1。'
       message = messages.where(user_id: user_id, title: '要货啦', info: info).first_or_create
-      message.push_message
+      message.jpush_push_message(alert: message.info, client_id: user.client_id)
     end
   end
 

@@ -9,11 +9,16 @@ module V1
       params do
         requires :unique_id, type: String
         optional :token, type: String
+        optional :message_id, type: String
       end
       get ":unique_id", jbuilder: 'v1/products/show' do
         @product = Product.find_by(unique_id:params[:unique_id])
         if @token.present?
           @favorite = @user.favorites.find_by(product_id: @product.try(:id))
+          if params[:message_id]
+            message = Message.normal.find_by(id: params[:message_id])
+            message.read! if message.present?
+          end
         end
       end
 

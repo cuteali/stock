@@ -10,13 +10,11 @@ class Message < ActiveRecord::Base
   scope :broadcast, -> { where("user_id is ?", nil) }
 
   def push_message
-    if user_id
-      jpush_push_message(alert: info, client_id: user.client_id)
-    else
-      User.client_users.each do |u|
-        u.messages.create(messageable_id: messageable_id, messageable_type: messageable_type, title: title, info: info)
+    User.client_users.each do |u|
+      if u.client_id
+        message = u.messages.create(messageable_id: messageable_id, messageable_type: messageable_type, title: title, info: info)
+        message.jpush_push_message(alert: message.info, client_id: u.client_id)
       end
-      jpush_push_message(alert: info)
     end
   end
 
@@ -40,13 +38,13 @@ class Message < ActiveRecord::Base
     set_android(
       alert: options[:alert] || info,
       title: title.blank? ? '要货啦' : title,
-      extras: {obj_id: messageable_id, obj_type: messageable_type}
+      extras: {obj_id: messageable.unique_id, obj_type: obj_type, message_id: id}
     ).set_ios(
       alert: options[:alert] || info,
       sound: 'default',
       badge: 1,
       available: true,
-      extras: {obj_id: messageable_id, obj_type: messageable_type}
+      extras: {obj_id: messageable.unique_id, obj_type: obj_type, message_id: id}
     )
 
     if options[:client_id]

@@ -10,8 +10,9 @@ module V1
         requires :token, type: String
       end
       post "user_info", jbuilder: 'v1/users/show' do
-        # phone_num_encrypt = params[:phone_num]
-        # @user = User.find_by(phone_num:phone_num_encrypt)
+        if @token.present?
+          @messages = @user.messages.normal.unread
+        end
       end
 
       # http://localhost:3000/api/v1/users/send_sms
