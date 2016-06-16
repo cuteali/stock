@@ -10,6 +10,7 @@ class Order < ActiveRecord::Base
 
   before_create :generate_order_no
 
+  scope :by_page, -> (page_num) { page(page_num) if page_num }
   scope :latest, -> { order('created_at DESC') }
   scope :user_orders, ->(ids) { where(user_id: ids) }
   scope :one_days, ->(today) { where("date(created_at) = ?", today) }
@@ -24,6 +25,28 @@ class Order < ActiveRecord::Base
       where(state: [0, 1, 4, 5])
     end
   }
+
+  scope :by_new_state, ->(state) { 
+    case state
+    when '0' then where(state: [0, 1, 2, 3, 4, 5])
+    when '1' then where(state: 0)
+    when '2' then where(state: [1, 4, 5])
+    when '3' then where(state: 2)
+    when '4' then where(state: 3)
+    end
+  }
+
+  def state_return_value
+    if state == 0
+      '1'
+    elsif [1, 4, 5].include?(state)
+      '2'
+    elsif state == 2
+      '3'
+    elsif state == 3
+      '4'
+    end
+  end
 
   def order_push_message_to_user
     if user.client_id
