@@ -76,6 +76,11 @@ class Order < ActiveRecord::Base
       op.product_price * op.product_num
     end
     self.update(order_money: new_order_money)
+    if state == 1
+      self.update(delivery_time: Time.now)
+    elsif state == 2
+      self.update(complete_time: Time.now)
+    end
   end
 
   def restore_products

@@ -34,7 +34,7 @@ module V1
       get 'delete_all', jbuilder: 'v1/messages/delete_all' do
         if @token.present?
           messages = @user.messages.normal
-          @messages = messages.map{|m| m.deleted!} if message.present?
+          @messages = messages.map{|m| m.deleted!} if messages.present?
         end
       end
     end

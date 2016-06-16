@@ -38,13 +38,13 @@ class Message < ActiveRecord::Base
     set_android(
       alert: options[:alert] || info,
       title: title.blank? ? '要货啦' : title,
-      extras: {obj_id: messageable.unique_id, obj_type: obj_type, message_id: id}
+      extras: {obj_id: messageable.try(:unique_id), obj_type: obj_type, message_id: id}
     ).set_ios(
       alert: options[:alert] || info,
       sound: 'default',
       badge: 1,
       available: true,
-      extras: {obj_id: messageable.unique_id, obj_type: obj_type, message_id: id}
+      extras: {obj_id: messageable.try(:unique_id), obj_type: obj_type, message_id: id}
     )
 
     if options[:client_id]
