@@ -1,0 +1,24 @@
+<%= form_for([:admin,@deliveryman],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">送货员:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :name,class:"form-control"%>
+    </div>
+  </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">手机号:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :phone,class:"form-control"%>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-4">
+      <button class="btn btn-success" type="submit">
+        <span class="glyphicon glyphicon-floppy-save">保存</span>
+      </button>
+      <button class="btn btn-success" type="button" onclick="javascript:history.go(-1);">
+        <span class="glyphicon glyphicon-hand-left">返回</span>
+      </button>
+    </div>
+  </div>
+<% end %>

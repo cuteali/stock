@@ -1,0 +1,38 @@
+<% content_for :title do %>
+  车辆列表
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/cars">车辆列表</a>
+</h2>
+<div class="container">
+  <%= link_to '添加车辆', new_admin_car_path, class: 'btn btn-success' %>
+  <% if @cars.present? %>
+    <div class="panel panel-default margin-top-10">
+      <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>车辆信息</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cars.each do |car| %>
+            <tr>
+              <td class="col-sm-2"><%= car.id %></td>
+              <td class="col-sm-2"><%= car.name %></td>
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_car_path(car) %>
+               <%= link_to '删除', admin_car_path(car), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

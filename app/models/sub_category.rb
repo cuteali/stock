@@ -12,4 +12,11 @@ class SubCategory < ActiveRecord::Base
   def self.init_sort
     SubCategory.maximum(:sort) + 1
   end
+
+  def validate_category_id(params_category_id)
+    if category_id != params_category_id.to_i
+      detail_categories.update_all(category_id: params_category_id)
+      products.update_all(category_id: params_category_id)
+    end
+  end
 end

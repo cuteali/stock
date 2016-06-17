@@ -37,7 +37,7 @@
             <th>收货人</th>
             <th>电话</th>
             <th>收货地址</th>
-            <!--th>products</th-->
+            <th>店铺类型</th>
             <th>创建时间</th>
             <th>发货时间</th>
             <th>完成时间</th>
@@ -54,11 +54,11 @@
               <td class="col-sm-1"><%= order.receive_name %></td>
               <td class="col-sm-1"><%= order.phone_num %></td>
               <td class="col-sm-3"><%= order.get_address %></td>
-              <!--td class="col-sm-2"></td-->
+              <td class="col-sm-1"><%= shop_type_name(order.address.try(:shop_type)) %></td>
               <td class="col-sm-1"><%= time_show(order.created_at) %></td>
               <td class="col-sm-1"><%= time_show(order.delivery_time) %></td>
               <td class="col-sm-1"><%= time_show(order.complete_time) %></td>
-              <td class="col-sm-2">
+              <td class="col-sm-1">
                 <%= link_to '详情', admin_order_path(order) %>
                 <% if !current_member.spreader? %>
                   <%= link_to '修改', edit_admin_order_path(order) %>

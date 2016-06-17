@@ -27,6 +27,9 @@
               <p>
                 客户地址：<%= @order.get_address %>
               </p>
+              <p>
+                送货员：<%= @order.deliveryman.try(:name) %>&nbsp;&nbsp;&nbsp;&nbsp;<%= @order.deliveryman.try(:phone) %>
+              </p>
             </div>
             <div class="col-md-6 print-left">
               <p>
@@ -37,6 +40,9 @@
               </p>
               <p>
                 手机号：<%= @order.phone_num %>
+              </p>
+              <p>
+                车辆：<%= @order.car.try(:name) %>
               </p>
             </div>
             <div class="col-md-12 print-right">
@@ -55,8 +61,8 @@
             <table class="table table-striped invoice-table print-font-size">
               <thead>
                 <th></th>
-                <th>货物名称</th>
                 <th>大分类</th>
+                <th>货物名称</th>
                 <th>规格</th>
                 <th>数量</th>
                 <th class="delivered">单价</th>
@@ -76,10 +82,10 @@
                         #<%= index + 1 %>
                       </td>
                       <td>
-                        <%= product.name %>
+                        <%= product.category.name %>
                       </td>
                       <td>
-                        <%= product.category.name %>
+                        <%= product.name %>
                       </td>
                       <td>
                         <%= product.spec %>
@@ -128,7 +134,7 @@
                     &yen;10
                   </td>
                 </tr-->
-                <tr>
+                <!--tr>
                   <td class="text-right" colspan="6">
                     <h5 class="text-primary">
                       总计
@@ -136,10 +142,10 @@
                   </td>
                   <td>
                     <h5 class="text-primary">
-                      &yen;<%= number_to_currency(@order.order_money, unit: '') %>
+                      &yen;<%#= number_to_currency(@order.order_money, unit: '') %>
                     </h5>
                   </td>
-                </tr>
+                </tr-->
               </tfoot>
             </table>
           </div>

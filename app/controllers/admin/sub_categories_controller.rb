@@ -17,12 +17,13 @@ class Admin::SubCategoriesController < Admin::BaseController
   end
 
   def update
+    @sub_category.validate_category_id(category_params[:category_id])
     if @sub_category.update(category_params)
-        return redirect_to session[:return_to] if session[:return_to]
-        redirect_to admin_sub_categories_path
-      else
-        render 'edit' 
-      end
+      return redirect_to session[:return_to] if session[:return_to]
+      redirect_to admin_sub_categories_path
+    else
+      render 'edit' 
+    end
   end
 
   def destroy

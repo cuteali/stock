@@ -1,0 +1,40 @@
+<% content_for :title do %>
+  送货员列表
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/deliverymen">送货员列表</a>
+</h2>
+<div class="container">
+  <%= link_to '添加送货员', new_admin_deliveryman_path, class: 'btn btn-success' %>
+  <% if @deliverymen.present? %>
+    <div class="panel panel-default margin-top-10">
+      <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>送货员</th>
+            <th>手机号</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @deliverymen.each do |deliveryman| %>
+            <tr>
+              <td class="col-sm-2"><%= deliveryman.id %></td>
+              <td class="col-sm-2"><%= deliveryman.name %></td>
+              <td class="col-sm-2"><%= deliveryman.phone %></td>
+              <td class="col-sm-1">
+               <%= link_to '修改', edit_admin_deliveryman_path(deliveryman) %>
+               <%= link_to '删除', admin_deliveryman_path(deliveryman), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

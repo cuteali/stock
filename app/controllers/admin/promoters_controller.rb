@@ -47,6 +47,8 @@ class Admin::PromotersController < Admin::BaseController
     @today = Date.today
     @categories, @series, @start_time, @end_time, @count, @min_tick, @total = User.chart_data(@users, @date, @today, @select_time, params)
     @chart = User.chart_base_line(@categories, @series, @min_tick) if @categories.present?
+    user_ids = @total.pluck(:id)
+    @order_money = Order.user_orders(user_ids).sum(:order_money)
     @user_stats = @users.page(params[:page])
   end
 

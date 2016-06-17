@@ -109,4 +109,21 @@ module ApplicationHelper
       end
     end
   end
+
+  def address_shop_type
+    [["请选择",""],["社区便利店",0],["综合超市",1],["餐饮店",2],["酒店",3],["南北干货店",4],["炒货店",5],["休闲食品店",6],["其他店铺",7]]
+  end
+
+  def shop_type_name(shop_type)
+    case shop_type
+    when 0 then "社区便利店"
+    when 1 then "综合超市"
+    when 2 then "餐饮店"
+    when 3 then "酒店"
+    when 4 then "南北干货店"
+    when 5 then "炒货店"
+    when 6 then "休闲食品店"
+    when 7 then "其他店铺"
+    end
+  end
 end

@@ -79,6 +79,8 @@ Rails.application.routes.draw do
     end
     resources :units
     resources :adverts
+    resources :cars
+    resources :deliverymen
     resources :order_stat, only: :index
     resources :product_stat, only: :index
   end

@@ -23,6 +23,12 @@
       <%= f.text_field :detail, class:"form-control" %>
     </div>
   </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">店铺类型:</label>
+    <div class="col-sm-4">
+      <%= f.select :shop_type, address_shop_type,{}, class: 'form-control' %>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-4">
       <button class="btn btn-success" type="submit">

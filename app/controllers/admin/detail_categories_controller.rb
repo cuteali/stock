@@ -18,6 +18,7 @@ class Admin::DetailCategoriesController < Admin::BaseController
   end
 
   def update
+    @detail_category.validate_category_id_and_sub_category_id(category_params)
     image_params = params[:detail_category][:image]
     if @detail_category.update(category_params)
         ImageUtil.image_upload(image_params,"DetailCategory",@detail_category.id)

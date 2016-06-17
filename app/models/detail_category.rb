@@ -12,4 +12,13 @@ class DetailCategory < ActiveRecord::Base
   def self.init_sort
     DetailCategory.maximum(:sort) + 1
   end
+
+  def validate_category_id_and_sub_category_id(params)
+    if category_id != params[:category_id].to_i
+      products.update_all(category_id: params[:category_id])
+    end
+    if sub_category_id != params[:sub_category_id].to_i
+      products.update_all(sub_category_id: params[:sub_category_id])
+    end
+  end
 end

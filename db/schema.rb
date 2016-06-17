@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615084244) do
+ActiveRecord::Schema.define(version: 20160617054141) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20160615084244) do
     t.string   "receive_name",  limit: 255
     t.string   "receive_phone", limit: 255
     t.integer  "default",       limit: 4,   default: 0
+    t.integer  "shop_type",     limit: 1
     t.string   "unique_id",     limit: 255
   end
 
@@ -41,6 +42,12 @@ ActiveRecord::Schema.define(version: 20160615084244) do
 
   add_index "adverts", ["product_id"], name: "index_adverts_on_product_id", using: :btree
   add_index "adverts", ["sub_category_id"], name: "index_adverts_on_sub_category_id", using: :btree
+
+  create_table "cars", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "cart_items", force: :cascade do |t|
     t.integer  "product_id",  limit: 4
@@ -79,6 +86,13 @@ ActiveRecord::Schema.define(version: 20160615084244) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "deliverymen", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "phone",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "detail_categories", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -160,24 +174,28 @@ ActiveRecord::Schema.define(version: 20160615084244) do
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "state",         limit: 4
-    t.string   "order_no",      limit: 255
-    t.string   "phone_num",     limit: 255
-    t.string   "receive_name",  limit: 255
-    t.string   "area",          limit: 255
-    t.string   "detail",        limit: 255
+    t.integer  "state",          limit: 4
+    t.string   "order_no",       limit: 255
+    t.string   "phone_num",      limit: 255
+    t.string   "receive_name",   limit: 255
+    t.string   "area",           limit: 255
+    t.string   "detail",         limit: 255
     t.datetime "delivery_time"
     t.datetime "complete_time"
-    t.integer  "address_id",    limit: 4
-    t.integer  "user_id",       limit: 4
-    t.datetime "created_at",                                                       null: false
-    t.datetime "updated_at",                                                       null: false
-    t.string   "unique_id",     limit: 255
-    t.decimal  "order_money",               precision: 12, scale: 2, default: 0.0
-    t.string   "remarks",       limit: 255
+    t.integer  "address_id",     limit: 4
+    t.integer  "user_id",        limit: 4
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
+    t.string   "unique_id",      limit: 255
+    t.decimal  "order_money",                precision: 12, scale: 2, default: 0.0
+    t.string   "remarks",        limit: 255
+    t.integer  "deliveryman_id", limit: 4
+    t.integer  "car_id",         limit: 4
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
+  add_index "orders", ["car_id"], name: "index_orders_on_car_id", using: :btree
+  add_index "orders", ["deliveryman_id"], name: "index_orders_on_deliveryman_id", using: :btree
   add_index "orders", ["order_no"], name: "index_orders_on_order_no", using: :btree
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
