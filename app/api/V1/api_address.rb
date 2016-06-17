@@ -48,11 +48,11 @@ module V1
         if @token.present?
           @address = Address.find_by(unique_id:params[:unique_id])
           if @address.present?
-             if params[:default] == "1"
+            if params[:default] == "1"
               address_default = Address.find_by(user_id:@user.id,default:1)
               address_default.update(default:0) if address_default.present?
             end
-            @address.update(area:params[:area],detail:params[:detail],receive_phone:params[:receive_phone],receive_name:params[:receive_name],default:params[:default])
+            @address.update_columns(area:params[:area],detail:params[:detail],receive_phone:params[:receive_phone],receive_name:params[:receive_name],default:params[:default])
             @info = "success"
           end
         end
