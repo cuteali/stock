@@ -115,7 +115,7 @@ class Admin::ProductsController < Admin::BaseController
     end
 
     def product_params
-      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark)
+      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark, :bar_code)
     end
 
     def copy_tempfile(tempfile)

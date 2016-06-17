@@ -69,6 +69,14 @@ module V1
           @products = @sub_category.products.state.sorted.by_page(params[:page_num])
         end
       end
+
+      # http://localhost:3000/api/v1/products/search_bar_code
+      params do
+        requires :bar_code, type: String
+      end
+      get "search_bar_code", jbuilder: 'v1/products/search_bar_code' do
+        @product = Product.find_by(bar_code: params[:bar_code])
+      end
     end
   end
 end
