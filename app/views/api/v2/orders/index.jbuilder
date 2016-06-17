@@ -1,5 +1,7 @@
 if @orders.blank?
-  json.result 1
+  json.result 0
+  json.total_pages 0
+  json.orders []
 else
   json.result 0
   json.total_pages @orders.total_pages if params[:page_num]
@@ -13,5 +15,8 @@ else
     json.delivery_time order.delivery_time.present?? order.delivery_time.strftime("%Y-%m-%d %H:%M:%S").to_s : ""
     json.complete_time order.complete_time.present?? order.complete_time.strftime("%Y-%m-%d %H:%M:%S").to_s : ""
     json.address order.get_address.to_s
+    if order.orders_products.present?
+      json.pro_count order.orders_products.count
+    end
   end
 end

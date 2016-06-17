@@ -14,27 +14,6 @@ else
     json.address order.get_address.to_s
     if order.orders_products.present?
       json.pro_count order.orders_products.count
-      json.products(order.orders_products) do |op|
-        if op.product.present?
-          json.unique_id op.product.unique_id.to_s
-          json.number op.product_num.to_s
-          if op.product.present?
-            json.name op.product.name.to_s
-            json.image Image.get_images(op.product).first.to_s
-            json.unit if op.product.unit.present?? op.product.unit.name.to_s : ""
-            json.stock_num op.product.stock_num.to_s
-            json.price op.product.price.to_s
-            json.old_price op.product.old_price.to_s
-            json.detail_category_id op.product.detail_category_id.to_s
-            json.hot_category_id op.product.hot_category_id.to_s
-            json.sale_count op.product.sale_count.to_s
-            json.spec op.product.spec.to_s
-            json.unit_price op.product.unit_price.to_s
-            json.origin op.product.origin.to_s
-            json.remark op.product.remark.to_s
-          end
-        end
-      end
     end
   end
 end
