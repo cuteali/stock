@@ -2,7 +2,11 @@ class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: [:edit, :update, :destroy, :user_statistics]
   
   def index
-    @q = User.ransack(params[:q])
+    if current_member.spreader?
+      @q = current_member.promoter.users.ransack(params[:q])
+    else
+      @q = User.ransack(params[:q])
+    end
     if params[:by_money]
       @users = @q.result.order_by_money.page(params[:page])
     else
