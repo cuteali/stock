@@ -1,7 +1,7 @@
 class Admin::ProductsController < Admin::BaseController
   include Admin::CategoryHelper
 
-  before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top, :statistics]
+  before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top, :statistics, :new_stock, :create_stock]
   before_filter :authenticate_member!
   after_action :verify_authorized, only: :destroy
   
@@ -109,6 +109,20 @@ class Admin::ProductsController < Admin::BaseController
     @orders_products_stats = OrdersProduct.get_product_stats(@total, @start_time, @end_time)
   end
 
+  def new_stock
+    @product_admin = @product.product_admins.new
+  end
+
+  def create_stock
+    @product_admin = @product.product_admins.new(product_admin_params)
+    if @product_admin.save
+      @product_admin.product.add_or_cut_stock_num(@product_admin.product_num)
+      redirect_to :back, notice: '进货成功'
+    else
+      redirect_to :back, notice: '进货失败'
+    end
+  end
+
   private
     def set_product
       @product = Product.find(params[:id])
@@ -116,6 +130,10 @@ class Admin::ProductsController < Admin::BaseController
 
     def product_params
       params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark, :bar_code)
+    end
+
+    def product_admin_params
+      params.require(:product_admin).permit(:product_id, :product_name, :product_num, :stock_business, :stock_price, :stock_time)
     end
 
     def copy_tempfile(tempfile)

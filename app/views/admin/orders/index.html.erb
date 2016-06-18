@@ -20,6 +20,8 @@
           <%= f.search_field :receive_name_cont, class: 'input-medium', placeholder:"收货人" %>
           <%= f.label '电话：' %>
           <%= f.search_field :phone_num_cont, class: 'input-medium', placeholder:"电话" %>
+          <%= f.label '收货地址：' %>
+          <%= f.search_field :area_or_detail_cont, class: 'input-medium', placeholder:"收货地址" %>
           <%= f.submit '查询', class: 'btn btn-primary' %>
         </div>
       <% end %>

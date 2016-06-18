@@ -48,8 +48,8 @@ Rails.application.routes.draw do
         post :upload_csv
       end
       member do
-        get :delete_image, :image, :statistics
-        post :stick_top
+        get :delete_image, :image, :statistics, :new_stock
+        post :stick_top, :create_stock
       end
     end
     resources :product_admins do

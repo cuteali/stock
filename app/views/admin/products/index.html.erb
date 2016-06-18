@@ -69,6 +69,7 @@
               <%= link_to '详情', admin_product_path(product) %>
               <%= link_to '统计', statistics_admin_product_path(product) %> 
               <%= link_to '修改', edit_admin_product_path(product) %>
+              <%= link_to '进货', new_stock_admin_product_path(product) %>
               <%= link_to '删除', admin_product_path(product), method: :delete, data: { confirm: '确定要删除吗？' } %> 
             </td>
           </tr>
