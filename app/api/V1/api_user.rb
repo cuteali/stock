@@ -96,6 +96,18 @@ module V1
           end
         end
       end
+
+      #http://localhost:3000/api/v1/users/update_client
+      params do
+        requires :token, type: String
+        requires :client_type, type: String
+        requires :client_id, type: String
+      end
+      get 'update_client',jbuilder:"v1/users/update_client" do
+        if @token.present?
+          @result = @user.update(client_type: params[:client_type], client_id: params[:client_id])
+        end
+      end
     end
   end
 end

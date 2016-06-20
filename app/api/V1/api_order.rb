@@ -5,8 +5,9 @@ module V1
 
     helpers do
       def send_to_shop(order)
-        phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03', 'B31193480E86B34F22A7DAE61A6AA1A0']
-        text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！请查看处理～"
+        # phone_num_encrypts = ['C3A06D455704B6ACA7253EEBE3C2E6D0', '42D496FBA94A4900AFE5105D4D4D7E03', 'B31193480E86B34F22A7DAE61A6AA1A0']
+        phone_num_encrypts = SystemSetting.get_phone_arr
+        text = "【要货啦】您好，您有来自 #{@order.receive_name} 的要货单！订单号#{order.order_no}，请查看处理～"
         info = Sms.send_sms(phone_num_encrypts, text)
         AppLog.info("info:#{info}")
       end
@@ -73,7 +74,7 @@ module V1
                   @cart_items.destroy_all if @cart_items.present?
                   if @order
                     send_to_shop(@order)
-                    send_to_user(@user, @order)
+                    # send_to_user(@user, @order)
                     @order.order_push_message_to_user
                   end
                 end

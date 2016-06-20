@@ -41,7 +41,7 @@ class Admin::MembersController < Admin::BaseController
   def update_system_setting
     authorize @member
     @system_setting = SystemSetting.first
-    if @system_setting.update(delivery_price: params[:system_setting][:delivery_price].to_f)
+    if @system_setting.update(delivery_price: params[:system_setting][:delivery_price].to_f, phone_arr: params[:system_setting][:phone_arr])
       redirect_to :back, notice: '设置成功'
     else
       flash[:alert] = '设置失败'
