@@ -71,12 +71,14 @@ module V1
         #requires :new_phone_num,type:String
         requires :user_name, type: String
         #requires :head_portrait,type:String
+        optional :promoter_no, type: String
       end
       put '',jbuilder:"v1/users/update" do 
         if @token.present?
           ActiveRecord::Base.transaction do
             @user.phone_num = params[:new_phone_num] if params[:new_phone_num].present?
             @user.user_name = params[:user_name] if params[:user_name].present?
+            @user.promoter_no = params[:promoter_no] if params[:promoter_no].present? && @user.promoter_no.blank?
             @user.save
             #@user.update(phone_num:params[:new_phone_num],user_name:params[:user_name])
             if params[:head_portrait].present?

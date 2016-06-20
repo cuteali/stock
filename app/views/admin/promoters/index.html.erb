@@ -27,6 +27,7 @@
         <thead>
           <tr>
             <th>id</th>
+            <th>推广员代码</th>
             <th>姓名</th>
             <th>头像</th>
             <th>电话</th>
@@ -40,6 +41,7 @@
           <% @promoters.each do |promoter|%>
             <tr>
               <td><%= promoter.id %></td>
+              <td class="col-sm-1"><%= promoter.promoter_no %></td>
               <td class="col-sm-1"><%= promoter.name %></td>
               <td class="col-sm-1"><%= image_tag get_image_url(promoter), size:"100x100" if promoter.images.present? %></td>
               <td class="col-sm-1"><%= promoter.phone %></td>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617101020) do
+ActiveRecord::Schema.define(version: 20160620033222) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -262,16 +262,18 @@ ActiveRecord::Schema.define(version: 20160617101020) do
   add_index "products", ["unit_id"], name: "index_products_on_unit_id", using: :btree
 
   create_table "promoters", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "phone",      limit: 255
-    t.string   "id_card",    limit: 255
-    t.integer  "sex",        limit: 1,   default: 0, null: false
-    t.string   "material",   limit: 255
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.string   "promoter_no", limit: 255
+    t.string   "name",        limit: 255
+    t.string   "phone",       limit: 255
+    t.string   "id_card",     limit: 255
+    t.integer  "sex",         limit: 1,   default: 0, null: false
+    t.string   "material",    limit: 255
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   add_index "promoters", ["name"], name: "index_promoters_on_name", using: :btree
+  add_index "promoters", ["promoter_no"], name: "index_promoters_on_promoter_no", using: :btree
 
   create_table "sub_categories", force: :cascade do |t|
     t.string   "name",        limit: 255
