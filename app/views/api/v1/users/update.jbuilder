@@ -17,5 +17,5 @@ else
   end
   json.phone_num @user.phone_num.to_s
   json.rand @user.rand.to_s
-  json.promoter_no @user.promoter_no.to_s
+  json.promoter_no @user.promoter.try(:promoter_no).to_s
 end

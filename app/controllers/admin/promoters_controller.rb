@@ -65,6 +65,6 @@ class Admin::PromotersController < Admin::BaseController
     end
 
     def promoter_params
-      params.require(:promoter).permit(:name, :phone, :id_card, :sex, :material)
+      params.require(:promoter).permit(:name, :phone, :id_card, :sex, :material, :promoter_no)
     end
 end

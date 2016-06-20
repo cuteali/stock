@@ -78,7 +78,10 @@ module V1
           ActiveRecord::Base.transaction do
             @user.phone_num = params[:new_phone_num] if params[:new_phone_num].present?
             @user.user_name = params[:user_name] if params[:user_name].present?
-            @user.promoter_no = params[:promoter_no] if params[:promoter_no].present? && @user.promoter_no.blank?
+            if params[:promoter_no].present? && @user.promoter_no.blank?
+              promoter = Promoter.find_by(promoter_no: params[:promoter_no])
+              @user.promoter_id = promoter.try(:id)
+            end
             @user.save
             #@user.update(phone_num:params[:new_phone_num],user_name:params[:user_name])
             if params[:head_portrait].present?

@@ -14,7 +14,7 @@ class Promoter < ActiveRecord::Base
 
   private
     def generate_promoter_no
-      max_promoter_no = Promoter.maximum(:promoter_no) || 20160620000
+      max_promoter_no = Promoter.maximum(:promoter_no) || 8000
       self.promoter_no = max_promoter_no.succ
     end
 end
