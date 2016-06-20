@@ -37,7 +37,7 @@ module V1
       post "sign_in",jbuilder:"v1/users/sign_in" do
         phone_num_encrypt = params[:phone_num]
         rand_code = params[:rand_code]
-        @token, unique_id = User.sign_in(phone_num_encrypt, rand_code, params)
+        @token, unique_id, @user = User.sign_in(phone_num_encrypt, rand_code, params)
         if @token.present?
           redis_token = phone_num_encrypt + unique_id
           $redis.set(redis_token,@token)
@@ -68,27 +68,31 @@ module V1
       #http://localhost:3000/api/v1/users
       params do
         requires :token, type: String
-        #requires :new_phone_num,type:String
         requires :user_name, type: String
-        #requires :head_portrait,type:String
+        optional :new_phone_num,type:String
+        optional :head_portrait, type: String
         optional :promoter_no, type: String
       end
       put '',jbuilder:"v1/users/update" do 
         if @token.present?
           ActiveRecord::Base.transaction do
-            @user.phone_num = params[:new_phone_num] if params[:new_phone_num].present?
-            @user.user_name = params[:user_name] if params[:user_name].present?
-            if params[:promoter_no].present? && @user.promoter_no.blank?
-              promoter = Promoter.find_by(promoter_no: params[:promoter_no])
-              @user.promoter_id = promoter.try(:id)
-            end
-            @user.save
-            #@user.update(phone_num:params[:new_phone_num],user_name:params[:user_name])
             if params[:head_portrait].present?
               @user.images.destroy_all
               @image_util = ImageUtil.base64_image(params[:head_portrait],"User",@user.id)
+              @flag = "1"
             end
-            @flag = "1"
+            @user.phone_num = params[:new_phone_num] if params[:new_phone_num].present?
+            @user.user_name = params[:user_name] if params[:user_name].present?
+            if params[:promoter_no].present? && @user.promoter_id.blank?
+              @promoter = Promoter.find_by(promoter_no: params[:promoter_no])
+              @user.promoter_id = @promoter.id if @promoter
+            end
+            if params[:promoter_no].present? && @promoter.blank?
+              @flag = "2"
+            else
+              @user.save
+              @flag = "1"
+            end
           end
         end
       end

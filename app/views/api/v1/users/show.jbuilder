@@ -15,5 +15,6 @@ else
     json.phone_num @user.phone_num.to_s
     json.rand @user.rand.to_s
     json.is_new_msg @messages.present? ? '0' : '1'
+    json.promoter_no @user.promoter.try(:promoter_no).to_s
   end
 end

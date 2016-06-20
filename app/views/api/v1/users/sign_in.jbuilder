@@ -8,4 +8,5 @@ else
   json.send_price 0
   json.delivery_price @delivery_price
   json.phone_num '400-0050-383'
+  json.promoter_no @user.promoter.try(:promoter_no).to_s
 end
