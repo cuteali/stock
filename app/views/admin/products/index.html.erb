@@ -40,7 +40,6 @@
         <tr>
           <th>id</th>
           <th>产品名称</th>
-          <th>产品条形码</th>
           <th>具体类别</th>
           <th>状态</th>
           <th>单位</th>
@@ -55,8 +54,7 @@
         <% @products.each do |product| %>
           <tr>
             <td><%= product.id %></td>
-            <td class="col-sm-2"><%= link_to product.name, image_admin_product_path(product) %></td>
-            <td class="col-sm-1"><%= product.bar_code %></td>
+            <td class="col-sm-3"><%= link_to product.name, image_admin_product_path(product) %></td>
             <td class="col-sm-1"><%= product.detail_category.try(:name) || '暂无' %></td>
             <td class="col-sm-1"><%= product.state == 1 ? '上架' : '下架' %></td>
             <td class="col-sm-1"><%= product.unit.try(:name) || '暂无' %></td>

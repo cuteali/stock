@@ -59,7 +59,7 @@ class Message < ActiveRecord::Base
       options[:alert] || info,
       title: title.blank? ? '要货啦' : title
     ).set_options(
-      apns_production: false
+      apns_production: true
     )
     ret = pusher.push(push_payload) rescue nil
     Rails.logger.info "============#{ret}============"

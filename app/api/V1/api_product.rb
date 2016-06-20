@@ -75,7 +75,7 @@ module V1
         requires :bar_code, type: String
       end
       get "search_bar_code/:bar_code", jbuilder: 'v1/products/search_bar_code' do
-        @product = Product.find_by(bar_code: params[:bar_code])
+        @product = Product.where("bar_code like ?","%#{params[:bar_code]}%").first
       end
     end
   end

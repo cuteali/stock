@@ -30,7 +30,16 @@
             <li><a href="/admin/hot_categories">热门类别</a></li>
           </ul>
         </li>
-        <li class="<%= 'nav-active' if controller_name == 'product_admins' %>"><a href="/admin/product_admins">进货管理</a></li>
+        <li class="dropdown <%= 'nav-active' if controller_name == 'product_admins' %>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            进货管理
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/admin/product_admins">进货列表</a></li>
+            <li><a href="/admin/product_admins/statistics">进货统计</a></li>
+          </ul>
+        </li>
         <li class="dropdown <%= 'nav-active' if %w(deliverymen cars).include?(controller_name) %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             送货管理

@@ -57,6 +57,18 @@ class Admin::ProductAdminsController < Admin::BaseController
     render json: {html: html}
   end
 
+  def statistics
+    @product_admins = ProductAdmin.latest
+    select_time = true if params[:start_time].present? && params[:end_time].present?
+    @date = params[:created_date].present? ? params[:created_date] : "one_days"
+    @today = Date.today
+    @categories, @series, @start_time, @end_time, @count, @min_tick, @total = ProductAdmin.chart_data(@product_admins, @date, @today, select_time, params)
+    @product_admin_stats = ProductAdmin.get_product_admin_stats(@total, @start_time, @end_time)
+    @chart = ProductAdmin.chart_base_line(@categories, @series, @min_tick) if @categories.present?
+    @categories_amount, @series_amount, start_time, end_time, @amount, @min_tick_amount = ProductAdmin.chart_data_amount(@product_admins, @date, @today, select_time, params)
+    @chart_amount = ProductAdmin.chart_base_line_amount(@categories_amount, @series_amount, @min_tick_amount) if @categories_amount.present?
+  end
+
   private
     def find_product_admin
       @product_admin = ProductAdmin.find(params[:id])

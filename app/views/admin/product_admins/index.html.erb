@@ -30,7 +30,7 @@
             <th>进货量</th>
             <th>进价</th>
             <th>进货时间</th>
-            <th>操作</th>
+            <!--th>操作</th-->
           </tr>
         </thead>
         <tbody>
@@ -41,11 +41,11 @@
               <td class="col-sm-2"><%= product_admin.stock_business %></td>
               <td class="col-sm-1"><%= product_admin.product_num %></td>
               <td class="col-sm-1"><%= product_admin.stock_price %></td>
-              <td class="col-sm-1"><%= time_show(product_admin.stock_time) %></td>
-              <td class="col-sm-1">
-                <%= link_to '修改', edit_admin_product_admin_path(product_admin) %>
-                <%= link_to '删除', admin_product_admin_path(product_admin), method: :delete, data: { confirm: '确定要删除吗？' } %> 
-              </td>
+              <td class="col-sm-2"><%= time_show(product_admin.stock_time) %></td>
+              <!--td class="col-sm-1">
+                <%#= link_to '修改', edit_admin_product_admin_path(product_admin) %>
+                <%#= link_to '删除', admin_product_admin_path(product_admin), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+              </td-->
             </tr>
           <% end %>
         </tbody>

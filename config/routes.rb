@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     end
     resources :product_admins do
       collection do
-        get :select_category
+        get :select_category, :statistics
       end
     end
     resources :addresses
