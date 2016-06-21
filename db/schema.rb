@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620102245) do
+ActiveRecord::Schema.define(version: 20160621070614) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -42,6 +42,15 @@ ActiveRecord::Schema.define(version: 20160620102245) do
 
   add_index "adverts", ["product_id"], name: "index_adverts_on_product_id", using: :btree
   add_index "adverts", ["sub_category_id"], name: "index_adverts_on_sub_category_id", using: :btree
+
+  create_table "bar_codes", force: :cascade do |t|
+    t.integer  "product_id",  limit: 4
+    t.string   "bar_code_no", limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "bar_codes", ["product_id"], name: "index_bar_codes_on_product_id", using: :btree
 
   create_table "cars", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -231,7 +240,6 @@ ActiveRecord::Schema.define(version: 20160620102245) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name",               limit: 255
-    t.string   "bar_code",           limit: 255
     t.integer  "sort",               limit: 4,                            default: 1,   null: false
     t.integer  "state",              limit: 4
     t.string   "image",              limit: 255

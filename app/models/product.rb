@@ -10,6 +10,7 @@ class Product < ActiveRecord::Base
   has_many :orders_products, dependent: :destroy
   has_many :messages, as: :messageable
   has_many :product_admins
+  has_many :bar_codes, dependent: :destroy
 
   scope :state, -> { where(state: 1) }
   scope :sorted, -> { order('sort DESC') }
@@ -41,6 +42,15 @@ class Product < ActiveRecord::Base
     '产地'      => :origin,
     '备注'      => :remark
   }
+
+  def save_bar_codes(params_bar_codes)
+    if params_bar_codes
+      bar_codes.destroy_all
+      params_bar_codes.to_s.split(',').each do |bar_code|
+        bar_codes.create(bar_code_no: bar_code)
+      end
+    end
+  end
 
   def update_orders_product_cost_price(params_cost_price)
     orders_products.joins(:order).one_days(Date.today).where("orders.state in (?)", [0, 1, 4, 5]).each do |op|

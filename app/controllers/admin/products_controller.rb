@@ -24,6 +24,7 @@ class Admin::ProductsController < Admin::BaseController
       CartItem.product_sold_off(@product.id) if product_params[:state] == '0'
       ImageUtil.image_upload(image_params, "Product", @product.id)
       @product.update_cart_items_num
+      @product.save_bar_codes(params[:bar_codes])
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_products_path
     else
@@ -44,6 +45,7 @@ class Admin::ProductsController < Admin::BaseController
     if @product.save
       ImageUtil.image_upload(image_params, "Product", @product.id)
       @product.update_cart_items_num
+      @product.save_bar_codes(params[:bar_codes])
       redirect_to admin_products_path, notice: '操作成功'
     else
       render 'new'
@@ -130,7 +132,7 @@ class Admin::ProductsController < Admin::BaseController
     end
 
     def product_params
-      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark, :bar_code, :cost_price)
+      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark, :cost_price)
     end
 
     def product_admin_params
