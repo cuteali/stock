@@ -19,7 +19,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def update
     image_params = params[:product][:image]
-    @product.update_orders_product_cost_price(params[:cost_price]) if params[:cost_price].present? && @product.cost_price != params[:cost_price].to_f
+    @product.update_orders_product_cost_price(product_params[:cost_price]) if product_params[:cost_price].present? && @product.cost_price != product_params[:cost_price].to_f
     if @product.update(product_params)
       CartItem.product_sold_off(@product.id) if product_params[:state] == '0'
       ImageUtil.image_upload(image_params, "Product", @product.id)
