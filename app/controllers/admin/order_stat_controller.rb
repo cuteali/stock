@@ -14,5 +14,7 @@ class Admin::OrderStatController < Admin::BaseController
     @chart = Order.chart_base_line(@categories, @series, @min_tick) if @categories.present?
     @categories_amount, @series_amount, start_time, end_time, @amount, @min_tick_amount = Order.chart_data_amount(@orders, @date, @today, select_time, params)
     @chart_amount = Order.chart_base_line_amount(@categories_amount, @series_amount, @min_tick_amount) if @categories_amount.present?
+    @categories_profit, @series_profit, start_time, end_time, @profit, @min_tick_profit = Order.chart_data_profit(@orders, @date, @today, select_time, params)
+    @chart_profit = Order.chart_base_line_profit(@categories_profit, @series_profit, @min_tick_profit) if @categories_profit.present?
   end
 end

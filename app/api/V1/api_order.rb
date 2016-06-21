@@ -73,6 +73,7 @@ module V1
                   AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
                   @cart_items.destroy_all if @cart_items.present?
                   if @order
+                    @order.calculate_cost_price
                     send_to_shop(@order)
                     # send_to_user(@user, @order)
                     @order.order_push_message_to_user

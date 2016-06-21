@@ -19,6 +19,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def update
     image_params = params[:product][:image]
+    @product.update_orders_product_cost_price(params[:cost_price]) if params[:cost_price].present? && @product.cost_price != params[:cost_price].to_f
     if @product.update(product_params)
       CartItem.product_sold_off(@product.id) if product_params[:state] == '0'
       ImageUtil.image_upload(image_params, "Product", @product.id)
@@ -129,7 +130,7 @@ class Admin::ProductsController < Admin::BaseController
     end
 
     def product_params
-      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark, :bar_code)
+      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, :spec, :unit_price, :origin, :remark, :bar_code, :cost_price)
     end
 
     def product_admin_params

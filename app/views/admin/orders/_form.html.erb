@@ -78,20 +78,23 @@
       <%= opro.hidden_field :id, name: "order[orders_products_attributes][][id]" %>
       <div class="form-group col-sm-7">
         <div class="col-sm-1 control-label">
-          <%= link_to '', delete_order_product_admin_order_path(opro.object), class: 'glyphicon glyphicon-remove', method: 'delete', data: { confirm: '确定要删除吗？' } %>
+          <%= link_to '', delete_order_product_admin_order_path(opro.object), class: "glyphicon glyphicon-remove #{'hidden' if edit_disabled(@order.state)}", method: 'delete', data: { confirm: '确定要删除吗？' } %>
         </div>
-        <label class="col-sm-4"><%= op.product.try(:name) %>:</label>
+        <label class="col-sm-8"><%= op.product.try(:name) %>:</label>
         <div class="col-sm-2">
           <%= opro.text_field :product_num, class: 'form-control', name: "order[orders_products_attributes][][product_num]" %>
         </div>
         <label class="control-label">个</label>
       </div>
       <div class="form-group col-sm-5">
-        <label class="col-sm-2 text-left">单价:</label>
+        <label class="col-sm-3 text-left">单价(元):</label>
         <div class="col-sm-3">
           <%= opro.text_field :product_price, class: 'form-control', name: "order[orders_products_attributes][][product_price]" %>
         </div>
-        <label class="control-label">元</label>
+        <label class="col-sm-3 text-left">进价(元):</label>
+        <div class="col-sm-3">
+          <%= opro.text_field :cost_price, class: 'form-control', name: "order[orders_products_attributes][][cost_price]" %>
+        </div>
       </div>
     <% end %>
   <% end %>

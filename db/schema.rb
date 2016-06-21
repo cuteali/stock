@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620063012) do
+ActiveRecord::Schema.define(version: 20160620102245) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -174,23 +174,24 @@ ActiveRecord::Schema.define(version: 20160620063012) do
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "state",          limit: 4
-    t.string   "order_no",       limit: 255
-    t.string   "phone_num",      limit: 255
-    t.string   "receive_name",   limit: 255
-    t.string   "area",           limit: 255
-    t.string   "detail",         limit: 255
+    t.integer  "state",            limit: 4
+    t.string   "order_no",         limit: 255
+    t.string   "phone_num",        limit: 255
+    t.string   "receive_name",     limit: 255
+    t.string   "area",             limit: 255
+    t.string   "detail",           limit: 255
     t.datetime "delivery_time"
     t.datetime "complete_time"
-    t.integer  "address_id",     limit: 4
-    t.integer  "user_id",        limit: 4
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
-    t.string   "unique_id",      limit: 255
-    t.decimal  "order_money",                precision: 12, scale: 2, default: 0.0
-    t.string   "remarks",        limit: 255
-    t.integer  "deliveryman_id", limit: 4
-    t.integer  "car_id",         limit: 4
+    t.integer  "address_id",       limit: 4
+    t.integer  "user_id",          limit: 4
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
+    t.string   "unique_id",        limit: 255
+    t.decimal  "order_money",                  precision: 12, scale: 2, default: 0.0
+    t.decimal  "total_cost_price",             precision: 12, scale: 2, default: 0.0
+    t.string   "remarks",          limit: 255
+    t.integer  "deliveryman_id",   limit: 4
+    t.integer  "car_id",           limit: 4
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
@@ -205,6 +206,7 @@ ActiveRecord::Schema.define(version: 20160620063012) do
     t.integer  "product_id",    limit: 4
     t.integer  "product_num",   limit: 4
     t.decimal  "product_price",           precision: 12, scale: 2, default: 0.0
+    t.decimal  "cost_price",              precision: 12, scale: 2, default: 0.0
     t.integer  "status",        limit: 1,                          default: 0,   null: false
     t.datetime "created_at",                                                     null: false
     t.datetime "updated_at",                                                     null: false
@@ -238,6 +240,7 @@ ActiveRecord::Schema.define(version: 20160620063012) do
     t.integer  "restricting_num",    limit: 4
     t.decimal  "price",                          precision: 12, scale: 2, default: 0.0
     t.decimal  "old_price",                      precision: 12, scale: 2, default: 0.0
+    t.decimal  "cost_price",                     precision: 12, scale: 2, default: 0.0
     t.integer  "category_id",        limit: 4
     t.integer  "sub_category_id",    limit: 4
     t.integer  "hot_category_id",    limit: 4

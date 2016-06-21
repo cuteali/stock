@@ -50,16 +50,20 @@
             <tr>
               <th>产品名称</th>
               <th>销量</th>
+              <th>进价</th>
+              <th>利润</th>
             </tr>
           </thead>
           <tbody>
             <% if @orders_products_stats.each do |op| %>
               <tr>
-                <td><%= op.name %></td>
+                <td><%= link_to op.name, edit_admin_product_path(op.product_id) %></td>
                 <td><%= op.num %></td>
+                <td><%= op.p_cost_price %></td>
+                <td><%= op.profit %></td>
               </tr>
             <% end.blank? %>
-              <tr><td colspan="2" class="green text-center">无记录</td></tr>
+              <tr><td colspan="4" class="green text-center">无记录</td></tr>
             <% end %>
           </tbody>
         </table>

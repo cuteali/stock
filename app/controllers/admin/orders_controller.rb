@@ -26,6 +26,7 @@ class Admin::OrdersController < Admin::BaseController
   def update
     AppLog.info("params:   #{params[:order][:complete_time]}")
     @order.restore_products
+    @order.update_product_cost_price(order_params[:orders_products_attributes])
     if @order.update(order_params)
       @order.update_order_money
       is_bad_order = edit_disabled(@order.state)
@@ -33,6 +34,7 @@ class Admin::OrdersController < Admin::BaseController
       status = is_bad_order ? 'deleted' : 'normal'
       @order.change_orders_products_status(status)
       @order.order_push_message
+      @order.calculate_cost_price
       AppLog.info("order.complete_time  #{@order.id}")
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path
@@ -64,8 +66,10 @@ class Admin::OrdersController < Admin::BaseController
 
   def delete_order_product
     order_product = OrdersProduct.find(params[:id])
+    order = order_product.order
     order_product.product.restore_stock_num(order_product.product_num) if order_product.product
     order_product.destroy
+    order.calculate_cost_price
     redirect_to :back
   end
 
@@ -78,6 +82,7 @@ class Admin::OrdersController < Admin::BaseController
     elsif orders_product.save
       @order.update_order_money
       orders_product.product.add_sale_count(orders_product.product_num)
+      @order.calculate_cost_price
       flash[:notice] = "保存成功"
       render js: 'location.reload()'
     else
@@ -103,6 +108,6 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     def order_params
-      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :area, :detail, :complete_time, :user_id, :remarks, :deliveryman_id, :car_id, orders_products_attributes: [:id, :product_num, :product_price])
+      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :area, :detail, :complete_time, :user_id, :remarks, :deliveryman_id, :car_id, orders_products_attributes: [:id, :product_num, :product_price, :cost_price])
     end
 end

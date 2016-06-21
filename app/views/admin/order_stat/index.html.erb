@@ -76,6 +76,29 @@
             <div class="chartInfoHeadFooter">共计<%= @orders.sum(:order_money) %>元</div>
           </div>
         </div>
+        <div class="chart margin-top-20 branch-record col-md-12">
+          <div class="col-md-10 highCharts">
+            <div class="chart" id="chart-3"></div>
+            <div>
+              <span><%= @start_time %></span>
+              <span class="margin-left-10">到</span>
+              <span class="margin-left-10"><%= @end_time %></span>
+              <span class="margin-left-20">订单利润 <%= @profit %> 元</span>
+            </div>
+          </div>
+          <div class="well" style="width:173px; margin-left:10px;">
+            <div class="chartInfoHead">订单利润</div>
+            <div class="chartInfoCon1 text-warning">
+              <b><%= @orders.where("date(created_at) = ?",@today).sum(:total_cost_price) %></b>
+              <span>今日订单利润</span>
+            </div>
+            <div class="chartInfoCon2 text-info ">
+              <b><%= @orders.where("date(created_at) = ?",@today-1.day).sum(:total_cost_price) %></b>
+              <span>昨日订单利润</span>
+            </div>
+            <div class="chartInfoHeadFooter">共计<%= @orders.sum(:total_cost_price) %>元</div>
+          </div>
+        </div>
         <div class="col-sm-12">
           <table class="table table-hover table-striped table-bordered table-condensed dataTable">
             <thead>
@@ -83,6 +106,7 @@
                 <th>日期</th>
                 <th>订单数</th>
                 <th>交易额（元）</th>
+                <th>订单利润（元）</th>
               </tr>
             </thead>
             <tbody>
@@ -91,9 +115,10 @@
                   <td><%= key %></td>
                   <td><%= value[0] %></td>
                   <td><%= value[1] %></td>
+                  <td><%= value[2] %></td>
                 </tr>
               <% end.blank? %>
-                <tr><td colspan="3" class="green text-center">无记录</td></tr>
+                <tr><td colspan="4" class="green text-center">无记录</td></tr>
               <% end %>
             </tbody>
           </table>
@@ -110,12 +135,15 @@
 
       format: "yyyy-mm-dd"
     });
-    <%if @chart%>
+    <% if @chart %>
       $('#chart-1').append("<%= escape_javascript(high_chart('chart_basic_line1', @chart)) -%>");
-    <%end%>
-    <%if @chart_amount%>
+    <% end %>
+    <% if @chart_amount %>
       $('#chart-2').append("<%= escape_javascript(high_chart('chart_basic_line2', @chart_amount)) -%>");
-    <%end%>
+    <% end %>
+    <% if @chart_profit %>
+      $('#chart-3').append("<%= escape_javascript(high_chart('chart_basic_line3', @chart_profit)) -%>");
+    <% end %>
   });
   
 </script>

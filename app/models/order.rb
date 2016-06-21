@@ -38,6 +38,26 @@ class Order < ActiveRecord::Base
     end
   }
 
+  def update_product_cost_price(orders_products_attributes)
+    orders_products_attributes.each do |attrs|
+      op = OrdersProduct.find_by(id: attrs[:id])
+      if op.cost_price != attrs[:cost_price].to_f
+        op.product.update_columns(cost_price: attrs[:cost_price].to_f)
+        OrdersProduct.joins(:order).one_days(Date.today).where("orders.state in (?) and orders_products.product_id = ? and orders_products.id != ?", [0, 1, 4, 5], op.product_id, op.id).each do |today_op|
+          today_op.update_columns(cost_price: attrs[:cost_price].to_f)
+          today_op.order.calculate_cost_price
+        end
+      end
+    end
+  end
+
+  def calculate_cost_price
+    new_total_cost_price = orders_products.to_a.sum do |op|
+      (op.product_price.to_f - op.cost_price.to_f) * op.product_num.to_i
+    end
+    self.update_columns(total_cost_price: new_total_cost_price)
+  end
+
   def state_return_value
     if state == 0
       '1'
@@ -148,12 +168,12 @@ class Order < ActiveRecord::Base
 
   def self.get_order_stats(total, start_time, end_time)
     h = {}
-    order_stats = total.select('date(created_at) as created_date, count(*) as count, sum(order_money) as money').group('date(created_at)').order("created_at asc")
+    order_stats = total.select('date(created_at) as created_date, count(*) as count, sum(order_money) as money, sum(total_cost_price) as profit').group('date(created_at)').order("created_at asc")
     (start_time..end_time).to_a.reverse.each do |day|
       h[day.try(:strftime, "%Y-%m-%d")] = 0
     end
     order_stats.each do |value|
-      h[value.created_date.try(:strftime, "%Y-%m-%d")] = [value.count, value.money]
+      h[value.created_date.try(:strftime, "%Y-%m-%d")] = [value.count, value.money, value.profit]
     end
     h.take(31)
   end
@@ -409,6 +429,143 @@ class Order < ActiveRecord::Base
         })
       f.yAxis({
           title:{text: "交易额趋势图"},
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+        })
+      f.tooltip({
+          valueSuffix: "元"
+        })
+      f.legend({
+          layout: 'horizontal',
+          width: 500,
+          borderWidth: 0
+        })
+      series.each do |serie|
+        f.series({
+          name: serie['name'],
+          data: serie['data']
+        })
+      end
+    end
+  end
+
+  def self.chart_data_profit(orders, date, today, select_time, params)
+    profit = 0
+    series = []
+    categories = []
+    hash = {}
+    hash['name'] = '订单'
+    if select_time
+      start_time = Date.parse(params[:start_time])
+      end_time = Date.parse(params[:end_time])
+      categories, hash['data'], profit = Order.get_select_date_profit(orders, start_time, end_time, profit)
+    else
+      categories, hash['data'], profit, start_time, end_time = Order.get_date_profit(orders, date, today, profit)
+    end
+    series << hash
+    min_tick = categories.length > 7 ? 6 : nil
+    [categories, series, start_time, end_time, profit, min_tick]
+  end
+
+  def self.get_select_date_profit(orders, start_time, end_time, profit)
+    diff_time = (start_time - end_time).to_i
+    h = {}
+    total = orders.select_time(start_time, end_time)
+    profit = total.sum(:total_cost_price)
+    if diff_time <= 31
+      order_stats = total.select('date(created_at) as created_date, sum(total_cost_price) as profit').group('date(created_at)').order("created_at asc")
+      (start_time..end_time).each do |day|
+        h[day.try(:strftime, "%m-%d")] = 0
+      end
+      categories, data = Order.get_hash_day_profit(h, order_stats)
+    elsif diff_time > 31 &&  diff_time < 365
+      order_stats = total.select('year(created_at) as created_year, month(created_at) as created_month, sum(total_cost_price) as profit').group('year(created_at),month(created_at)').order("created_at asc")
+      (start_time..end_time).collect{|item| item.year.to_s+"-"+item.month.to_s}.uniq.each do |month|
+        h[month] = 0
+      end
+      categories, data = Order.get_hash_month_profit(h, order_stats)
+    elsif diff_time > 365
+      order_stats = total.select('year(created_at) as created_year, sum(total_cost_price) as profit').group('year(created_at)').order("created_at asc")
+      (start_time..end_time).collect{|item| item.year.to_s}.uniq.each do |year|
+        h[year] = 0
+      end
+      categories, data = Order.get_hash_year_profit(h, order_stats)
+    end
+    return categories, data, profit
+  end
+
+  def self.get_date_profit(orders, date, today, profit)
+    h = {}
+    total = orders.send(date, today)
+    profit = total.sum(:total_cost_price)
+    order_stats = total.select('date(created_at) as created_date, sum(total_cost_price) as profit').group('date(created_at)').order("created_at asc")
+    if date == "one_days"
+      start_time = today
+      h[today.try(:strftime, "%m-%d")] = 0
+      categories, data = Order.get_hash_day_profit(h, order_stats)
+    elsif date == "one_weeks"
+      start_time = today - 6.day
+      (start_time..today).each do |day|
+        h[day.try(:strftime, "%m-%d")] = 0
+      end
+      categories, data = Order.get_hash_day_profit(h, order_stats)
+    elsif date == "one_months"
+      start_time = today - 1.month
+      (start_time..today).each do |day|
+        h[day.try(:strftime, "%m-%d")] = 0
+      end
+      categories, data = Order.get_hash_day_profit(h, order_stats)
+    end
+    return categories, data, profit, start_time, today
+  end
+
+  def self.get_hash_day_profit(h, order_stats)
+    order_stats.each do |value|
+      h[value.created_date.try(:strftime, "%m-%d")] = value.profit.to_f
+    end
+    categories = h.keys
+    data = h.values
+    return categories, data
+  end
+
+  def self.get_hash_month_profit(h, order_stats)
+    order_stats.each do |value|
+      key = value.created_year.to_s + "-" + value.created_month.to_s
+      h[key] = value.profit.to_f
+    end
+    categories = h.keys
+    data = h.values
+    return categories, data
+  end
+
+  def self.get_hash_year_profit(h, order_stats)
+    order_stats.each do |value|
+      key = value.created_year.to_s
+      h[key] = value.profit.to_f
+    end
+    categories = h.keys
+    data = h.values
+    return categories, data
+  end
+
+  def self.chart_base_line_profit(categories, series, min_tick)
+    @chart = LazyHighCharts::HighChart.new('chart_basic_line3') do |f|
+      f.chart({ type: 'line',
+          marginRight: 10,
+          # marginBottom: 25,
+          height: 305
+          })
+      f.title({ text: "订单利润趋势图"})
+      f.xAxis({
+          categories: categories,
+          # max:20,
+          minTickInterval: min_tick
+        })
+      f.yAxis({
+          title:{text: "订单利润趋势图"},
           plotLines: [{
               value: 0,
               width: 1,

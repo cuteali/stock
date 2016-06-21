@@ -42,6 +42,14 @@ class Product < ActiveRecord::Base
     '备注'      => :remark
   }
 
+  def update_orders_product_cost_price(params_cost_price)
+    orders_products.joins(:order).one_days(Date.today).where("orders.state in (?)", [0, 1, 4, 5]).each do |op|
+      if op.update_columns(cost_price: params_cost_price)
+        op.order.calculate_cost_price
+      end
+    end
+  end
+
   def is_sold_off?
     state == 0
   end
