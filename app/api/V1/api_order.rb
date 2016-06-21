@@ -66,7 +66,7 @@ module V1
                 @stock_num_result, @is_sold_off = Product.validate_stock_num(product_arr)
                 if @stock_num_result == 0 && !@is_sold_off
                   @order = Order.create(state: 0, address_id: address.try(:id), phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, area: address.try(:area), detail: address.try(:detail), order_money: order_money, unique_id: SecureRandom.urlsafe_base64, remarks: params[:remarks])
-                  @order.create_orders_products(@user, product_arr)
+                  @order.create_orders_products(product_arr)
                   pro_ids = @order.update_product_stock_num
                   AppLog.info("pro_ids:      #{pro_ids}")
                   @cart_items = CartItem.where(user_id: @user.id, product_id: pro_ids)
