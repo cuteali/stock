@@ -17,6 +17,7 @@ class Product < ActiveRecord::Base
   scope :order_sale, -> { order('sale_count DESC') }
   scope :hot, -> { where(hot_category_id: 2) }
   scope :by_page, -> (page_num) { page(page_num) if page_num }
+  scope :order_by_stock_num, -> { order('stock_num ASC') }
 
   validates :sort, presence: true
   validates :sort, numericality: { only_integer: true, greater_than_or_equal_to: 1}

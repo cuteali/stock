@@ -7,7 +7,11 @@ class Admin::ProductsController < Admin::BaseController
   
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.sorted.page(params[:page])
+    if params[:by_stock_num]
+      @products = @q.result.order_by_stock_num.page(params[:page])
+    else
+      @products = @q.result.sorted.page(params[:page])
+    end
   end
 
   def new
