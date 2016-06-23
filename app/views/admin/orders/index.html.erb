@@ -62,7 +62,7 @@
               <td class="col-sm-1"><%= time_show(order.complete_time) %></td>
               <td class="col-sm-1">
                 <%= link_to '详情', admin_order_path(order) %>
-                <% if !current_member.spreader? %>
+                <% if current_member.editor? || current_member.admin? %>
                   <%= link_to '修改', edit_admin_order_path(order) %>
                   <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
                 <% end %>

@@ -4,20 +4,28 @@
   </div>
   <div>
     <ul class="nav navbar-nav">
-      <% if !current_member.spreader? %>
+      <% if current_member_can_visit?('products') %>
         <li class="<%= 'nav-active' if controller_name == 'products' %>"><a href="/admin/products">产品管理</a></li>
       <% end %>
-      <li class="<%= 'nav-active' if controller_name == 'orders' %>"><a href="/admin/orders">订单管理</a></li>
-      <% if current_member.admin? || current_member.spreader? %>
+      <% if current_member_can_visit?('orders') %>
+        <li class="<%= 'nav-active' if controller_name == 'orders' %>"><a href="/admin/orders">订单管理</a></li>
+      <% end %>
+      <% if current_member_can_visit?('users') %>
         <li class="<%= 'nav-active' if controller_name == 'users' %>"><a href="/admin/users">用户管理</a></li>
       <% end %>
-      <% if current_member.admin? %>
+      <% if current_member_can_visit?('promoters') %>
         <li class="<%= 'nav-active' if controller_name == 'promoters' %>"><a href="/admin/promoters">推广管理</a></li>
+      <% end %>
+      <% if current_member_can_visit?('addresses') %>
         <li class="<%= 'nav-active' if controller_name == 'addresses' %>"><a href="/admin/addresses">地址管理</a></li>
+      <% end %>
+      <% if current_member_can_visit?('adverts') %>
         <li class="<%= 'nav-active' if controller_name == 'adverts' %>"><a href="/admin/adverts">广告管理</a></li>
       <% end %>
-      <% if !current_member.spreader? %>
+      <% if current_member_can_visit?('units') %>
         <li class="<%= 'nav-active' if controller_name == 'units' %>"><a href="/admin/units">单位管理</a></li>
+      <% end %>
+      <% if current_member_can_visit?('categories') %>
         <li class="dropdown <%= 'nav-active' if %w(categories sub_categories hot_categories detail_categories).include?(controller_name) %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             类别管理
@@ -30,6 +38,8 @@
             <li><a href="/admin/hot_categories">热门类别</a></li>
           </ul>
         </li>
+      <% end %>
+      <% if current_member_can_visit?('product_admins') %>
         <li class="dropdown <%= 'nav-active' if controller_name == 'product_admins' %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             进货管理
@@ -40,6 +50,8 @@
             <li><a href="/admin/product_admins/statistics">进货统计</a></li>
           </ul>
         </li>
+      <% end %>
+      <% if current_member_can_visit?('deliverymen') %>
         <li class="dropdown <%= 'nav-active' if %w(deliverymen cars).include?(controller_name) %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             送货管理
@@ -51,13 +63,13 @@
           </ul>
         </li>
       <% end %>
-      <% if current_member.admin? || current_member.editor? || current_member.spreader? %>
+      <% if current_member_can_visit?('order_stat') %>
         <li class="<%= 'nav-active' if controller_name == 'order_stat' %>"><a href="/admin/order_stat">交易统计</a></li>
-        <% if !current_member.spreader? %>
-          <li class="<%= 'nav-active' if controller_name == 'product_stat' %>"><a href="/admin/product_stat">销量统计</a></li>
-        <% end %>
       <% end %>
-      <% if current_member.admin? %>
+      <% if current_member_can_visit?('product_stat') %>
+        <li class="<%= 'nav-active' if controller_name == 'product_stat' %>"><a href="/admin/product_stat">销量统计</a></li>
+      <% end %>
+      <% if current_member_can_visit?('members') %>
         <li class="<%= 'nav-active' if controller_name == 'members' %>"><a href="/admin/members">账号管理</a></li>
       <% end %>
     </ul>

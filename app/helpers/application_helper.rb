@@ -126,4 +126,16 @@ module ApplicationHelper
     when 7 then "其他店铺"
     end
   end
+
+  def current_member_can_visit?(controller)
+    if current_member.user?
+      %w(orders users promoters order_stat).include?(controller)
+    elsif current_member.editor?
+      %w(products orders units categories product_admins deliverymen order_stat product_stat).include?(controller)
+    elsif current_member.spreader?
+      %w(orders users order_stat).include?(controller)
+    elsif current_member.admin?
+      return true
+    end
+  end
 end

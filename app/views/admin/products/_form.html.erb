@@ -82,6 +82,13 @@
     </div>
   </div>
   <div class ="form-group">
+    <label class="col-sm-2 control-label">安全库存数量:</label>
+    <div class="col-sm-4">
+      <%= f.text_field :safe_stock_num,class:"form-control"%>
+    </div>
+    <label class="control-label">（不必填，设置后，库存数量小于安全库存数量时将显示红色）</label>
+  </div>
+  <div class ="form-group">
     <label class="col-sm-2 control-label">销量:</label>
     <div class="col-sm-4">
       <%= f.text_field :sale_count,class:"form-control"%>
