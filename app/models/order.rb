@@ -3,6 +3,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :deliveryman
   belongs_to :car
+  belongs_to :storehouse
   has_many :messages, as: :messageable
   has_many :orders_products, dependent: :destroy
   has_many :products, through: :orders_products

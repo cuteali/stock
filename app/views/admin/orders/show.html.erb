@@ -22,13 +22,13 @@
                 订单编号：<%= @order.order_no %>
               </p>
               <p>
-                客户：<%= @order.receive_name %>
-              </p>
-              <p>
-                客户地址：<%= @order.get_address %>
+                仓库：<%= @order.storehouse.try(:name) %>
               </p>
               <p>
                 送货员：<%= @order.deliveryman.try(:name) %>&nbsp;&nbsp;&nbsp;&nbsp;<%= @order.deliveryman.try(:phone) %>
+              </p>
+              <p>
+                车辆：<%= @order.car.try(:name) %>
               </p>
             </div>
             <div class="col-md-6 print-left">
@@ -36,13 +36,13 @@
                 创建时间：<%= time_show(@order.created_at) %>
               </p>
               <p>
-                联系人：<%= @order.receive_name %>
+                收货人：<%= @order.receive_name %>
               </p>
               <p>
-                手机号：<%= @order.phone_num %>
+                收货人电话：<%= @order.phone_num %>
               </p>
               <p>
-                车辆：<%= @order.car.try(:name) %>
+                收货地址：<%= @order.get_address %>
               </p>
             </div>
             <div class="col-md-12 print-right">

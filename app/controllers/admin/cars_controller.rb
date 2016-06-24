@@ -4,7 +4,7 @@ class Admin::CarsController < Admin::BaseController
   before_filter :authenticate_member!
   
   def index
-    @cars = Car.all
+    @cars = Car.page(params[:page])
   end
 
   def new

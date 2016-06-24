@@ -73,6 +73,13 @@
       <%= f.select :car_id, car_options.insert(0,["选择车辆",""]), { selected: f.object.car_id }, class: 'form-control' %>
     </div>
   </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">仓库:</label>
+    <div class="col-sm-4">
+      <% storehouse_options = Storehouse.order(:id).pluck(:name, :id) %>
+      <%= f.select :storehouse_id, storehouse_options.insert(0,["选择仓库",""]), { selected: f.object.storehouse_id }, class: 'form-control' %>
+    </div>
+  </div>
   <% @order.orders_products.each_with_index do |op, i| %>
     <%= f.fields_for :orders_products, op do |opro| %>
       <%= opro.hidden_field :id, name: "order[orders_products_attributes][][id]" %>

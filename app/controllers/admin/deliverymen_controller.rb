@@ -4,7 +4,7 @@ class Admin::DeliverymenController < Admin::BaseController
   before_filter :authenticate_member!
   
   def index
-    @deliverymen = Deliveryman.all
+    @deliverymen = Deliveryman.page(params[:page])
   end
 
   def new

@@ -52,7 +52,7 @@
         </li>
       <% end %>
       <% if current_member_can_visit?('deliverymen') %>
-        <li class="dropdown <%= 'nav-active' if %w(deliverymen cars).include?(controller_name) %>">
+        <li class="dropdown <%= 'nav-active' if %w(deliverymen cars storehouses).include?(controller_name) %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             送货管理
             <b class="caret"></b>
@@ -60,6 +60,7 @@
           <ul class="dropdown-menu">
             <li><a href="/admin/deliverymen">送货员管理</a></li>
             <li><a href="/admin/cars">车辆管理</a></li>
+            <li><a href="/admin/storehouses">仓库管理</a></li>
           </ul>
         </li>
       <% end %>

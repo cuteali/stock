@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623100543) do
+ActiveRecord::Schema.define(version: 20160624040821) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -201,12 +201,14 @@ ActiveRecord::Schema.define(version: 20160623100543) do
     t.string   "remarks",          limit: 255
     t.integer  "deliveryman_id",   limit: 4
     t.integer  "car_id",           limit: 4
+    t.integer  "storehouse_id",    limit: 4
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
   add_index "orders", ["car_id"], name: "index_orders_on_car_id", using: :btree
   add_index "orders", ["deliveryman_id"], name: "index_orders_on_deliveryman_id", using: :btree
   add_index "orders", ["order_no"], name: "index_orders_on_order_no", using: :btree
+  add_index "orders", ["storehouse_id"], name: "index_orders_on_storehouse_id", using: :btree
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "orders_products", force: :cascade do |t|
@@ -286,6 +288,13 @@ ActiveRecord::Schema.define(version: 20160623100543) do
 
   add_index "promoters", ["name"], name: "index_promoters_on_name", using: :btree
   add_index "promoters", ["promoter_no"], name: "index_promoters_on_promoter_no", using: :btree
+
+  create_table "storehouses", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "detail",     limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "sub_categories", force: :cascade do |t|
     t.string   "name",        limit: 255

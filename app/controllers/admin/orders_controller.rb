@@ -108,6 +108,6 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     def order_params
-      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :area, :detail, :complete_time, :user_id, :remarks, :deliveryman_id, :car_id, orders_products_attributes: [:id, :product_num, :product_price, :cost_price])
+      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :area, :detail, :complete_time, :user_id, :remarks, :deliveryman_id, :car_id, :storehouse_id, orders_products_attributes: [:id, :product_num, :product_price, :cost_price])
     end
 end
