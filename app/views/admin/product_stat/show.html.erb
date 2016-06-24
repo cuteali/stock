@@ -1,0 +1,57 @@
+<% content_for :title do %>
+  销量统计详情
+<% end %>
+<h2 class="col-sm-offset-5">
+  <%= link_to "#{@product.name}销量详情", admin_product_stat_path(@product.id, order_ids: @order_ids) %>
+</h2>
+<div class="container-fluid">
+  <% if @orders.present? %>
+    <div class="panel panel-default margin-top-10">
+      <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>订单号</th>
+            <th>订单状态</th>
+            <th>收货人</th>
+            <th>收货人电话</th>
+            <th>收货地址</th>
+            <th>店铺类型</th>
+            <th>创建时间</th>
+            <th>发货时间</th>
+            <th>完成时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr class="<%= get_tr_color(order.state) %>">
+              <td><%= order.id %></td>
+              <td class="col-sm-1"><%= order.order_no %></td>
+              <td class="col-sm-1"><%= order_state_show(order.state) %></td>
+              <td class="col-sm-1"><%= order.receive_name %></td>
+              <td class="col-sm-1"><%= order.phone_num %></td>
+              <td class="col-sm-3"><%= order.get_address %></td>
+              <td class="col-sm-1"><%= shop_type_name(order.address.try(:shop_type)) %></td>
+              <td class="col-sm-1"><%= time_show(order.created_at) %></td>
+              <td class="col-sm-1"><%= time_show(order.delivery_time) %></td>
+              <td class="col-sm-1"><%= time_show(order.complete_time) %></td>
+              <td class="col-sm-1">
+                <%= link_to '详情', admin_order_path(order) %>
+                <% if current_member.editor? || current_member.admin? %>
+                  <%= link_to '修改', edit_admin_order_path(order) %>
+                  <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @orders %>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

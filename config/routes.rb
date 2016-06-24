@@ -82,8 +82,8 @@ Rails.application.routes.draw do
     resources :cars
     resources :deliverymen
     resources :storehouses
+    resources :product_stat
     resources :order_stat, only: :index
-    resources :product_stat, only: :index
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

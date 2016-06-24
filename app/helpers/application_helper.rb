@@ -138,4 +138,8 @@ module ApplicationHelper
       return true
     end
   end
+
+  def order_ids(scope_ops, product_id)
+    scope_ops.by_pro_ids(product_id).pluck(:order_id).uniq.join(',')
+  end
 end
