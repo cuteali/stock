@@ -37,6 +37,7 @@ class Product < ActiveRecord::Base
     '库存数量'  => :stock_num,
     '销量'      => :sale_count,
     '价格'      => :price,
+    '进价'      => :cost_price,
     '原始价格'  => :old_price,
     '规格'      => :spec,
     '单价'      => :unit_price,
@@ -196,6 +197,9 @@ class Product < ActiveRecord::Base
       # attrs[:state] = 1
       attrs[:hot_category_id] = 1
       attrs[:unique_id] = SecureRandom.urlsafe_base64
+      attrs[:price] = attrs[:price].to_f
+      attrs[:cost_price] = attrs[:price].to_f if attrs[:cost_price].blank?
+      attrs[:old_price] = attrs[:old_price].to_f
       product = Product.new(attrs)
       Product.where(attrs.slice(:name, :category_id, :sub_category_id, :detail_category_id, :price)).delete_all
       if product.save # 导入产品成功
