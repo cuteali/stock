@@ -1,6 +1,12 @@
 if @token.blank?
   json.result 1
-  json.errmsg '登录失败，手机或验证码不正确'
+  if @user.blank?
+    json.errmsg '手机号不正确'
+  elsif !@is_rand_code
+    json.errmsg '验证码不正确'
+  else
+    json.errmsg '登录失败'
+  end
   json.token ""
 else
   json.result 0

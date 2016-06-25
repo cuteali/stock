@@ -23,14 +23,14 @@ class User < ActiveRecord::Base
   def self.sign_in(phone_num_encrypt, rand_code, params)
     redis_rand_code = $redis.get(phone_num_encrypt)
     phone = AesUtil.aes_dicrypt($key, phone_num_encrypt)
-    token = nil
+    token = SecureRandom.urlsafe_base64
     unique_id = nil
-    user = nil
+    user = User.find_by(phone_num:phone_num_encrypt)
+    is_rand_code = false
     if %w(F59E10256A72D10742349BEBBFDD8FA8 D6694C9CC6FD5AC0D6EABF1C6CB04B9D).include?(phone_num_encrypt)
-      if rand_code == "1111"
+      is_rand_code = rand_code == "1111"
+      if is_rand_code
         #1.验证正确,存入cookies.
-        token = SecureRandom.urlsafe_base64
-        user = User.find_by(phone_num:phone_num_encrypt)
         if user.present?
           user.update(token: token, client_type: params[:client_type], client_id: params[:client_id])
         else
@@ -41,10 +41,9 @@ class User < ActiveRecord::Base
         token = nil
       end
     else
-      if redis_rand_code == rand_code
+      is_rand_code = redis_rand_code == rand_code
+      if is_rand_code
         #1.验证正确,存入cookies.
-        token = SecureRandom.urlsafe_base64
-        user = User.find_by(phone_num:phone_num_encrypt)
         if user.present?
           user.update(token:token, client_type: params[:client_type], client_id: params[:client_id])
         else
@@ -56,7 +55,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    [token,unique_id,user]
+    [token,unique_id,user,is_rand_code]
   end
 
   def self.chart_data(users, date, today, select_time, params)

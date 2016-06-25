@@ -90,21 +90,19 @@ class Product < ActiveRecord::Base
     [products, total_pages]
   end
 
-  def self.validate_stock_num(products)
-    result = 0
-    is_sold_off = false
+  def self.valid_product_num_and_state(products)
+    not_enough_products = []
+    sold_off_products = []
     products.each do |p|
       product = Product.find_by(unique_id: p["unique_id"])
       if product.is_sold_off?
-        is_sold_off = true
-        break
+        sold_off_products << product.name
       end
       if product.stock_num < p["number"].to_i
-        result = 3
-        break
+        not_enough_products << product.name
       end
     end
-    [result, is_sold_off]
+    [not_enough_products, sold_off_products]
   end
 
   def restore_stock_num(number)

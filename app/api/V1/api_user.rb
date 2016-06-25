@@ -37,7 +37,7 @@ module V1
       post "sign_in",jbuilder:"v1/users/sign_in" do
         phone_num_encrypt = params[:phone_num]
         rand_code = params[:rand_code]
-        @token, unique_id, @user = User.sign_in(phone_num_encrypt, rand_code, params)
+        @token, unique_id, @user, @is_rand_code = User.sign_in(phone_num_encrypt, rand_code, params)
         if @token.present?
           redis_token = phone_num_encrypt + unique_id
           $redis.set(redis_token,@token)

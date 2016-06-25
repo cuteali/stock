@@ -42,6 +42,27 @@
     </div>
   </div>
   <div class ="form-group">
+    <label class="col-sm-2 control-label">仓库:</label>
+    <div class="col-sm-4">
+      <% storehouse_options = Storehouse.order(:id).pluck(:name, :id) %>
+      <%= f.select :storehouse_id, storehouse_options.insert(0,["选择仓库",""]), { selected: f.object.storehouse_id }, class: 'form-control' %>
+    </div>
+  </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">车辆:</label>
+    <div class="col-sm-4">
+      <% car_options = Car.order(:id).pluck(:name, :id) %>
+      <%= f.select :car_id, car_options.insert(0,["选择车辆",""]), { selected: f.object.car_id }, class: 'form-control' %>
+    </div>
+  </div>
+  <div class ="form-group">
+    <label class="col-sm-2 control-label">送货员:</label>
+    <div class="col-sm-4">
+      <% deliveryman_options = Deliveryman.order(:id).pluck(:name, :id) %>
+      <%= f.select :deliveryman_id, deliveryman_options.insert(0,["选择送货员",""]), { selected: f.object.deliveryman_id }, class: 'form-control' %>
+    </div>
+  </div>
+  <div class ="form-group">
     <label class="col-sm-2 control-label">发货时间:</label>
     <div class="col-sm-4">
       <%= f.text_field :delivery_time, class: "form-control datetimepicker" %>
@@ -57,27 +78,6 @@
     <label class="col-sm-2 control-label">备注:</label>
     <div class="col-sm-4">
       <%= f.text_area :remarks, class: "form-control" %>
-    </div>
-  </div>
-  <div class ="form-group">
-    <label class="col-sm-2 control-label">送货员:</label>
-    <div class="col-sm-4">
-      <% deliveryman_options = Deliveryman.order(:id).pluck(:name, :id) %>
-      <%= f.select :deliveryman_id, deliveryman_options.insert(0,["选择送货员",""]), { selected: f.object.deliveryman_id }, class: 'form-control' %>
-    </div>
-  </div>
-  <div class ="form-group">
-    <label class="col-sm-2 control-label">车辆:</label>
-    <div class="col-sm-4">
-      <% car_options = Car.order(:id).pluck(:name, :id) %>
-      <%= f.select :car_id, car_options.insert(0,["选择车辆",""]), { selected: f.object.car_id }, class: 'form-control' %>
-    </div>
-  </div>
-  <div class ="form-group">
-    <label class="col-sm-2 control-label">仓库:</label>
-    <div class="col-sm-4">
-      <% storehouse_options = Storehouse.order(:id).pluck(:name, :id) %>
-      <%= f.select :storehouse_id, storehouse_options.insert(0,["选择仓库",""]), { selected: f.object.storehouse_id }, class: 'form-control' %>
     </div>
   </div>
   <% @order.orders_products.each_with_index do |op, i| %>

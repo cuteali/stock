@@ -9,6 +9,9 @@
     <div class="col-sm-12">
       <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
         <div class="col-md-10 row">
+          <%= f.label '仓库：' %>
+          <% storehouse_options = Storehouse.latest.pluck(:name, :id) %>
+          <%= f.select :storehouse_id_eq, storehouse_options.insert(0,["选择仓库",""]), {}, class: "form-control" %>
           <%= f.label '订单状态：' %>
           <%= f.select :state_eq, order_state, {}, class: "form-control" %>
           <%= f.label '订单号：' %>
