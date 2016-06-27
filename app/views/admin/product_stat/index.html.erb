@@ -40,9 +40,15 @@
   </div>
 </div>
 <div class="panel panel-default margin-top-10">
-  <span><%= @start_time %></span>
-  <span class="margin-left-10">至</span>
-  <span class="margin-left-10"><%= @end_time %></span>
+  <div class="col-md-9">
+    <div class="input-group red">
+      <span><%= @start_time %></span>
+      <span class="margin-left-10">至</span>
+      <span class="margin-left-10"><%= @end_time %></span>
+      <span class="margin-left-10">总金额：<%= @total_price %></span>
+      <span class="margin-left-10">总利润：<%= @total_cost_price %></span>
+    </div>
+  </div>
   <table class="table table-hover table-striped table-bordered table-condensed dataTable">
     <thead>
       <tr>
@@ -63,7 +69,7 @@
           <td><%= link_to '详情', admin_product_stat_path(op.product_id, order_ids: order_ids(@scope_ops, op.product_id)) %></td>
         </tr>
       <% end.blank? %>
-        <tr><td colspan="4" class="green text-center">无记录</td></tr>
+        <tr><td colspan="5" class="green text-center">无记录</td></tr>
       <% end %>
     </tbody>
   </table>

@@ -138,7 +138,13 @@ class Order < ActiveRecord::Base
   def create_orders_products(products)
     products.each do |p|
       product = Product.find_by(unique_id: p['unique_id'])
-      self.orders_products.create(user_id: user_id, product_id: product.try(:id), product_num: p['number'], product_price: product.try(:price).to_f, cost_price: product.try(:cost_price).to_f)
+      orders_product = self.orders_products.new
+      orders_product.user_id = self.user_id
+      orders_product.product_id = product.try(:id)
+      orders_product.product_num = p['number'].to_i
+      orders_product.product_price = product.try(:price).to_f
+      orders_product.cost_price = product.try(:cost_price).to_f
+      orders_product.save
     end
   end
 

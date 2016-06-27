@@ -12,6 +12,18 @@ class OrdersProduct < ActiveRecord::Base
 
   enum status: [ :normal, :deleted ]
 
+  def self.sum_total_cost_price(orders_products)
+    total_cost_price = orders_products.to_a.sum do |op|
+      (op.product_price.to_f - op.cost_price.to_f) * op.product_num.to_i
+    end
+  end
+
+  def self.sum_total_price(orders_products)
+    total_price = orders_products.to_a.sum do |op|
+      op.product_price.to_f * op.product_num.to_i
+    end
+  end
+
   def self.chart_data(orders_products, date, today, select_time, params)
     if select_time
       start_time = Date.parse(params[:start_time])
