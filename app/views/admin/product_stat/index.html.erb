@@ -45,8 +45,9 @@
       <span><%= @start_time %></span>
       <span class="margin-left-10">至</span>
       <span class="margin-left-10"><%= @end_time %></span>
-      <span class="margin-left-10">总金额：<%= @total_price %></span>
-      <span class="margin-left-10">总利润：<%= @total_cost_price %></span>
+      <span class="margin-left-10">总销量：<%= @scope_ops.sum(:product_num) %></span>
+      <span class="margin-left-10">总金额：<%= number_with_precision(@total_price, :precision => 2) %></span>
+      <span class="margin-left-10">总利润：<%= number_with_precision(@total_cost_price, :precision => 2) %></span>
     </div>
   </div>
   <table class="table table-hover table-striped table-bordered table-condensed dataTable">
