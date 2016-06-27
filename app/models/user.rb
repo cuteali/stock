@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   def self.sign_in(phone_num_encrypt, rand_code, params)
     redis_rand_code = $redis.get(phone_num_encrypt)
     phone = AesUtil.aes_dicrypt($key, phone_num_encrypt)
-    token = SecureRandom.urlsafe_base64
+    token = nil
     unique_id = nil
     user = User.find_by(phone_num:phone_num_encrypt)
     is_rand_code = false
@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
       is_rand_code = rand_code == "1111"
       if is_rand_code
         #1.验证正确,存入cookies.
+        token = SecureRandom.urlsafe_base64
         if user.present?
           user.update(token: token, client_type: params[:client_type], client_id: params[:client_id])
         else
@@ -44,6 +45,7 @@ class User < ActiveRecord::Base
       is_rand_code = redis_rand_code == rand_code
       if is_rand_code
         #1.验证正确,存入cookies.
+        token = SecureRandom.urlsafe_base64
         if user.present?
           user.update(token:token, client_type: params[:client_type], client_id: params[:client_id])
         else
