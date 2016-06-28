@@ -24,8 +24,9 @@
               <td class="col-sm-2"><%= deliveryman.name %></td>
               <td class="col-sm-2"><%= deliveryman.phone %></td>
               <td class="col-sm-1">
-               <%= link_to '修改', edit_admin_deliveryman_path(deliveryman) %>
-               <%= link_to '删除', admin_deliveryman_path(deliveryman), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                <%= link_to '修改', edit_admin_deliveryman_path(deliveryman) %>
+                <%= link_to '删除', admin_deliveryman_path(deliveryman), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                <%= link_to '统计', admin_deliveryman_path(deliveryman) %>
               </td>
             </tr>
           <% end %>

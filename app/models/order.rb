@@ -14,12 +14,12 @@ class Order < ActiveRecord::Base
   before_create :generate_order_no
 
   scope :by_page, -> (page_num) { page(page_num) if page_num }
-  scope :latest, -> { order('created_at DESC') }
+  scope :latest, -> { order('orders.created_at DESC') }
   scope :user_orders, ->(ids) { where(user_id: ids) }
-  scope :one_days, ->(today) { where("date(created_at) = ?", today) }
-  scope :one_weeks, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 6.day), today) }
-  scope :one_months, ->(today) { where("date(created_at) >= ? and date(created_at) <= ?", (today - 1.month), today) }
-  scope :select_time, ->(start_time,end_time) { where("date(created_at) >= ? and date(created_at) <= ?", start_time, end_time) }
+  scope :one_days, ->(today) { where("date(orders.created_at) = ?", today) }
+  scope :one_weeks, ->(today) { where("date(orders.created_at) >= ? and date(orders.created_at) <= ?", (today - 6.day), today) }
+  scope :one_months, ->(today) { where("date(orders.created_at) >= ? and date(orders.created_at) <= ?", (today - 1.month), today) }
+  scope :select_time, ->(start_time,end_time) { where("date(orders.created_at) >= ? and date(orders.created_at) <= ?", start_time, end_time) }
   scope :normal_orders, -> { where(state: [0, 1, 2, 4, 5]) }
   scope :by_state, ->(state_arr) { 
     if state_arr.include?(2)
@@ -175,12 +175,14 @@ class Order < ActiveRecord::Base
 
   def self.get_order_stats(total, start_time, end_time)
     h = {}
+    total_orders_products = OrdersProduct.normal_orders.normal.where(order_id: total.pluck(:id))
     order_stats = total.select('date(created_at) as created_date, count(*) as count, sum(order_money) as money, sum(total_cost_price) as profit').group('date(created_at)').order("created_at asc")
     (start_time..end_time).to_a.reverse.each do |day|
       h[day.try(:strftime, "%Y-%m-%d")] = 0
     end
     order_stats.each do |value|
-      h[value.created_date.try(:strftime, "%Y-%m-%d")] = [value.count, value.money, value.profit]
+      total_product_num = total_orders_products.one_days(value.created_date).sum("orders_products.product_num")
+      h[value.created_date.try(:strftime, "%Y-%m-%d")] = [value.count, value.money, value.profit, total_product_num]
     end
     h.take(31)
   end
@@ -581,6 +583,143 @@ class Order < ActiveRecord::Base
         })
       f.tooltip({
           valueSuffix: "元"
+        })
+      f.legend({
+          layout: 'horizontal',
+          width: 500,
+          borderWidth: 0
+        })
+      series.each do |serie|
+        f.series({
+          name: serie['name'],
+          data: serie['data']
+        })
+      end
+    end
+  end
+
+  def self.chart_data_product_num(orders, date, today, select_time, params)
+    total_product_num = 0
+    series = []
+    categories = []
+    hash = {}
+    hash['name'] = '订单'
+    if select_time
+      start_time = Date.parse(params[:start_time])
+      end_time = Date.parse(params[:end_time])
+      categories, hash['data'], total_product_num = Order.get_select_date_product_num(orders, start_time, end_time, total_product_num)
+    else
+      categories, hash['data'], total_product_num, start_time, end_time = Order.get_date_product_num(orders, date, today, total_product_num)
+    end
+    series << hash
+    min_tick = categories.length > 7 ? 6 : nil
+    [categories, series, start_time, end_time, total_product_num, min_tick]
+  end
+
+  def self.get_select_date_product_num(orders, start_time, end_time, total_product_num)
+    diff_time = (start_time - end_time).to_i
+    h = {}
+    total = orders.select_time(start_time, end_time).joins(:orders_products)
+    total_product_num = total.sum("orders_products.product_num")
+    if diff_time <= 31
+      order_stats = total.select('date(orders.created_at) as created_date, sum(orders_products.product_num) as total_product_num').group('date(orders.created_at)').order("orders.created_at asc")
+      (start_time..end_time).each do |day|
+        h[day.try(:strftime, "%m-%d")] = 0
+      end
+      categories, data = Order.get_hash_day_product_num(h, order_stats)
+    elsif diff_time > 31 &&  diff_time < 365
+      order_stats = total.select('year(orders.created_at) as created_year, month(orders.created_at) as created_month, sum(orders_products.product_num) as total_product_num').group('year(orders.created_at),month(orders.created_at)').order("orders.created_at asc")
+      (start_time..end_time).collect{|item| item.year.to_s+"-"+item.month.to_s}.uniq.each do |month|
+        h[month] = 0
+      end
+      categories, data = Order.get_hash_month_product_num(h, order_stats)
+    elsif diff_time > 365
+      order_stats = total.select('year(orders.created_at) as created_year, sum(orders_products.product_num) as total_product_num').group('year(orders.created_at)').order("orders.created_at asc")
+      (start_time..end_time).collect{|item| item.year.to_s}.uniq.each do |year|
+        h[year] = 0
+      end
+      categories, data = Order.get_hash_year_product_num(h, order_stats)
+    end
+    return categories, data, total_product_num
+  end
+
+  def self.get_date_product_num(orders, date, today, total_product_num)
+    h = {}
+    total = orders.send(date, today).joins(:orders_products)
+    total_product_num = total.sum("orders_products.product_num")
+    order_stats = total.select('date(orders.created_at) as created_date, sum(orders_products.product_num) as total_product_num').group('date(orders.created_at)').order("orders.created_at asc")
+    if date == "one_days"
+      start_time = today
+      h[today.try(:strftime, "%m-%d")] = 0
+      categories, data = Order.get_hash_day_product_num(h, order_stats)
+    elsif date == "one_weeks"
+      start_time = today - 6.day
+      (start_time..today).each do |day|
+        h[day.try(:strftime, "%m-%d")] = 0
+      end
+      categories, data = Order.get_hash_day_product_num(h, order_stats)
+    elsif date == "one_months"
+      start_time = today - 1.month
+      (start_time..today).each do |day|
+        h[day.try(:strftime, "%m-%d")] = 0
+      end
+      categories, data = Order.get_hash_day_product_num(h, order_stats)
+    end
+    return categories, data, total_product_num, start_time, today
+  end
+
+  def self.get_hash_day_product_num(h, order_stats)
+    order_stats.each do |value|
+      h[value.created_date.try(:strftime, "%m-%d")] = value.total_product_num.to_f
+    end
+    categories = h.keys
+    data = h.values
+    return categories, data
+  end
+
+  def self.get_hash_month_product_num(h, order_stats)
+    order_stats.each do |value|
+      key = value.created_year.to_s + "-" + value.created_month.to_s
+      h[key] = value.total_product_num.to_f
+    end
+    categories = h.keys
+    data = h.values
+    return categories, data
+  end
+
+  def self.get_hash_year_product_num(h, order_stats)
+    order_stats.each do |value|
+      key = value.created_year.to_s
+      h[key] = value.total_product_num.to_f
+    end
+    categories = h.keys
+    data = h.values
+    return categories, data
+  end
+
+  def self.chart_base_line_product_num(categories, series, min_tick)
+    @chart = LazyHighCharts::HighChart.new('chart_basic_line4') do |f|
+      f.chart({ type: 'line',
+          marginRight: 10,
+          # marginBottom: 25,
+          height: 305
+          })
+      f.title({ text: "订单产品总件数趋势图"})
+      f.xAxis({
+          categories: categories,
+          # max:20,
+          minTickInterval: min_tick
+        })
+      f.yAxis({
+          title:{text: "订单产品总件数趋势图"},
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+        })
+      f.tooltip({
+          valueSuffix: "件"
         })
       f.legend({
           layout: 'horizontal',

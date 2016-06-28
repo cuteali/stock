@@ -1,0 +1,148 @@
+<% content_for :title do %>
+  仓库交易统计
+<% end %>
+<h2 class="col-sm-offset-5">
+  <%= link_to "#{@storehouse.name}（交易统计）", admin_storehouse_path(@storehouse) %>
+</h2>
+<div class="container">
+  <div class="main-content">
+    <div class="page-content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="col-md-4 row">
+            <%{"今天" => "one_days", "最近7天" => "one_weeks", "最近一月" => "one_months"}.each do |key, value|%>
+              <a href="<%= admin_storehouse_path(@storehouse, created_date: value) %>" class="btn btn-primary btn-sm btn-filter btn-filter-tab <%= "active" if @date == value %>"><%= key %></a>
+            <%end%>
+          </div>
+          <div class="col-md-5">
+            <%= form_tag admin_storehouse_path(@storehouse) ,:method => :get do %>
+              <div class="input-group width-240px pull-left">
+                <span class="input-group-addon">
+                  <i class="icon-calendar"></i>
+                </span>
+                <%= text_field_tag :start_time, params[:start_time], class: 'datepicker input-small'  %>
+                <span class="input-group-addon">
+                  <i class="">-</i>
+                </span>
+                <%= text_field_tag :end_time, params[:end_time], class: 'datepicker input-small' %>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm btn-filter margin-left-5">查询</button>
+            <% end %>
+          </div>
+        </div>
+        <div class="chart margin-top-20 branch-record col-md-12">
+          <div class="col-md-10 highCharts">
+            <div class="chart" id="chart-1"></div>
+            <div>
+              <span><%= @start_time %></span>
+              <span class="margin-left-10">到</span>
+              <span class="margin-left-10"><%= @end_time %></span>
+              <span class="margin-left-20">订单数： <%= @count %></span>
+            </div>
+          </div>
+          <div class="well" style="width:173px; margin-left:10px;">
+            <div class="chartInfoHead">订单数</div>
+            <div class="chartInfoCon1 text-warning">
+              <b><%= @orders.where("date(created_at) = ?",@today).length %></b>
+              <span>今日订单</span>
+            </div>
+            <div class="chartInfoCon2 text-info ">
+              <b><%= @orders.where("date(created_at) = ?",@today-1.day).length %></b>
+              <span>昨日订单</span>
+            </div>
+            <div class="chartInfoHeadFooter">共计<%= @orders.length %>个</div>
+          </div>
+        </div>
+        <div class="chart margin-top-20 branch-record col-md-12">
+          <div class="col-md-10 highCharts">
+            <div class="chart" id="chart-2"></div>
+            <div>
+              <span><%= @start_time %></span>
+              <span class="margin-left-10">到</span>
+              <span class="margin-left-10"><%= @end_time %></span>
+              <span class="margin-left-20">交易额 <%= @amount %> 元</span>
+            </div>
+          </div>
+          <div class="well" style="width:173px; margin-left:10px;">
+            <div class="chartInfoHead">交易额</div>
+            <div class="chartInfoCon1 text-warning">
+              <b><%= @orders.where("date(created_at) = ?",@today).sum(:order_money) %></b>
+              <span>今日交易额</span>
+            </div>
+            <div class="chartInfoCon2 text-info ">
+              <b><%= @orders.where("date(created_at) = ?",@today-1.day).sum(:order_money) %></b>
+              <span>昨日交易额</span>
+            </div>
+            <div class="chartInfoHeadFooter">共计<%= @orders.sum(:order_money) %>元</div>
+          </div>
+        </div>
+        <div class="chart margin-top-20 branch-record col-md-12">
+          <div class="col-md-10 highCharts">
+            <div class="chart" id="chart-4"></div>
+            <div>
+              <span><%= @start_time %></span>
+              <span class="margin-left-10">到</span>
+              <span class="margin-left-10"><%= @end_time %></span>
+              <span class="margin-left-20">产品总件数 <%= @total_product_num %> 件</span>
+            </div>
+          </div>
+          <div class="well" style="width:173px; margin-left:10px;">
+            <div class="chartInfoHead">产品总件数</div>
+            <div class="chartInfoCon1 text-warning">
+              <b><%= @orders.where("date(orders.created_at) = ?",@today).joins(:orders_products).sum("orders_products.product_num") %></b>
+              <span>今日产品总件数</span>
+            </div>
+            <div class="chartInfoCon2 text-info ">
+              <b><%= @orders.where("date(orders.created_at) = ?",@today-1.day).joins(:orders_products).sum("orders_products.product_num") %></b>
+              <span>昨日产品总件数</span>
+            </div>
+            <div class="chartInfoHeadFooter">共计<%= @orders.joins(:orders_products).sum("orders_products.product_num") %>件</div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <table class="table table-hover table-striped table-bordered table-condensed dataTable">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>订单数</th>
+                <th>交易额（元）</th>
+                <th>产品总件数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @order_stats.each do |key, value| %>
+                <tr>
+                  <td><%= key %></td>
+                  <td><%= value[0] %></td>
+                  <td><%= value[1] %></td>
+                  <td><%= value[3] %></td>
+                </tr>
+              <% end.blank? %>
+                <tr><td colspan="4" class="green text-center">无记录</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('input[class*="datepicker"]').attr('readonly', 'readonly').datepicker({
+      todayBtn: "linked",
+      autoclose: true,
+
+      format: "yyyy-mm-dd"
+    });
+    <% if @chart %>
+      $('#chart-1').append("<%= escape_javascript(high_chart('chart_basic_line1', @chart)) -%>");
+    <% end %>
+    <% if @chart_amount %>
+      $('#chart-2').append("<%= escape_javascript(high_chart('chart_basic_line2', @chart_amount)) -%>");
+    <% end %>
+    <% if @chart_product_num %>
+      $('#chart-4').append("<%= escape_javascript(high_chart('chart_basic_line4', @chart_product_num)) -%>");
+    <% end %>
+  });
+</script>
