@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160624040821) do
+ActiveRecord::Schema.define(version: 20160630152653) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -218,6 +218,7 @@ ActiveRecord::Schema.define(version: 20160624040821) do
     t.integer  "product_num",   limit: 4
     t.decimal  "product_price",           precision: 12, scale: 2, default: 0.0
     t.decimal  "cost_price",              precision: 12, scale: 2, default: 0.0
+    t.decimal  "push_money",              precision: 12, scale: 2, default: 0.0
     t.integer  "status",        limit: 1,                          default: 0,   null: false
     t.datetime "created_at",                                                     null: false
     t.datetime "updated_at",                                                     null: false
@@ -252,6 +253,7 @@ ActiveRecord::Schema.define(version: 20160624040821) do
     t.decimal  "price",                          precision: 12, scale: 2, default: 0.0
     t.decimal  "old_price",                      precision: 12, scale: 2, default: 0.0
     t.decimal  "cost_price",                     precision: 12, scale: 2, default: 0.0
+    t.decimal  "push_money",                     precision: 12, scale: 2, default: 0.0
     t.integer  "category_id",        limit: 4
     t.integer  "sub_category_id",    limit: 4
     t.integer  "hot_category_id",    limit: 4

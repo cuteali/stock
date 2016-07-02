@@ -75,7 +75,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def add_order_product
     product = Product.find(params[:product_id])
-    orders_product = @order.orders_products.new(product_id: product.id, product_num: params[:product_num], product_price: params[:product_price])
+    orders_product = @order.orders_products.new(user_id: @order.user_id, product_id: product.id, product_num: params[:product_num], product_price: params[:product_price], cost_price: product.cost_price, push_money: product.push_money, created_at: @order.created_at)
     if params[:product_num].to_i > product.stock_num
       flash[:alert] = "保存失败，产品库存不足"
       render js: 'location.reload()'
@@ -108,6 +108,6 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     def order_params
-      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :area, :detail, :complete_time, :user_id, :remarks, :deliveryman_id, :car_id, :storehouse_id, orders_products_attributes: [:id, :product_num, :product_price, :cost_price])
+      params.require(:order).permit(:state, :phone_num, :receive_name, :delivery_time, :area, :detail, :complete_time, :user_id, :remarks, :deliveryman_id, :car_id, :storehouse_id, orders_products_attributes: [:id, :product_num, :product_price, :cost_price, :push_money])
     end
 end

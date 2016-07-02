@@ -49,6 +49,8 @@ class Admin::DeliverymenController < Admin::BaseController
     @chart_amount = Order.chart_base_line_amount(@categories_amount, @series_amount, @min_tick_amount) if @categories_amount.present?
     @categories_product_num, @series_product_num, start_time, end_time, @total_product_num, @min_tick_product_num = Order.chart_data_product_num(@orders, @date, @today, select_time, params)
     @chart_product_num = Order.chart_base_line_product_num(@categories_product_num, @series_product_num, @min_tick_product_num) if @categories_product_num.present?
+    @categories_push_money, @series_push_money, start_time, end_time, @total_push_money, @min_tick_push_money = Order.chart_data_push_money(@orders, @date, @today, select_time, params)
+    @chart_push_money = Order.chart_base_line_push_money(@categories_push_money, @series_push_money, @min_tick_push_money) if @categories_push_money.present?
   end
 
   private 

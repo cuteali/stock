@@ -83,24 +83,28 @@
   <% @order.orders_products.each_with_index do |op, i| %>
     <%= f.fields_for :orders_products, op do |opro| %>
       <%= opro.hidden_field :id, name: "order[orders_products_attributes][][id]" %>
-      <div class="form-group col-sm-7">
+      <div class="form-group">
         <div class="col-sm-1 control-label">
           <%= link_to '', delete_order_product_admin_order_path(opro.object), class: "glyphicon glyphicon-remove #{'hidden' if edit_disabled(@order.state)}", method: 'delete', data: { confirm: '确定要删除吗？' } %>
         </div>
-        <label class="col-sm-8"><%= op.product.try(:name) %>:</label>
+        <label class="col-sm-11"><%= op.product.try(:name) %>:</label>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-1 text-left">数量(个):</label>
         <div class="col-sm-2">
           <%= opro.text_field :product_num, class: 'form-control', name: "order[orders_products_attributes][][product_num]" %>
         </div>
-        <label class="control-label">个</label>
-      </div>
-      <div class="form-group col-sm-5">
-        <label class="col-sm-3 text-left">单价(元):</label>
-        <div class="col-sm-3">
+        <label class="col-sm-1 text-left">单价(元):</label>
+        <div class="col-sm-2">
           <%= opro.text_field :product_price, class: 'form-control', name: "order[orders_products_attributes][][product_price]" %>
         </div>
-        <label class="col-sm-3 text-left">进价(元):</label>
-        <div class="col-sm-3">
+        <label class="col-sm-1 text-left">进价(元):</label>
+        <div class="col-sm-2">
           <%= opro.text_field :cost_price, class: 'form-control', name: "order[orders_products_attributes][][cost_price]" %>
+        </div>
+        <label class="col-sm-1 text-left">提成(元):</label>
+        <div class="col-sm-2">
+          <%= opro.text_field :push_money, class: 'form-control', name: "order[orders_products_attributes][][push_money]" %>
         </div>
       </div>
     <% end %>

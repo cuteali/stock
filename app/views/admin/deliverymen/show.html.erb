@@ -99,6 +99,29 @@
             <div class="chartInfoHeadFooter">共计<%= @orders.joins(:orders_products).sum("orders_products.product_num") %>件</div>
           </div>
         </div>
+        <div class="chart margin-top-20 branch-record col-md-12">
+          <div class="col-md-10 highCharts">
+            <div class="chart" id="chart-5"></div>
+            <div>
+              <span><%= @start_time %></span>
+              <span class="margin-left-10">到</span>
+              <span class="margin-left-10"><%= @end_time %></span>
+              <span class="margin-left-20">产品提成 <%= @total_push_money %> 元</span>
+            </div>
+          </div>
+          <div class="well" style="width:173px; margin-left:10px;">
+            <div class="chartInfoHead">产品提成</div>
+            <div class="chartInfoCon1 text-warning">
+              <b><%= @orders.where("date(orders.created_at) = ?",@today).joins(:orders_products).sum("orders_products.product_num * orders_products.push_money") %></b>
+              <span>今日产品提成</span>
+            </div>
+            <div class="chartInfoCon2 text-info ">
+              <b><%= @orders.where("date(orders.created_at) = ?",@today-1.day).joins(:orders_products).sum("orders_products.product_num * orders_products.push_money") %></b>
+              <span>昨日产品提成</span>
+            </div>
+            <div class="chartInfoHeadFooter">共计<%= @orders.joins(:orders_products).sum("orders_products.product_num * orders_products.push_money") %>元</div>
+          </div>
+        </div>
         <div class="col-sm-12">
           <table class="table table-hover table-striped table-bordered table-condensed dataTable">
             <thead>
@@ -107,6 +130,7 @@
                 <th>订单数</th>
                 <th>交易额（元）</th>
                 <th>产品总件数</th>
+                <th>产品提成</th>
               </tr>
             </thead>
             <tbody>
@@ -116,9 +140,10 @@
                   <td><%= value[0] %></td>
                   <td><%= value[1] %></td>
                   <td><%= value[3] %></td>
+                  <td><%= value[4] %></td>
                 </tr>
               <% end.blank? %>
-                <tr><td colspan="4" class="green text-center">无记录</td></tr>
+                <tr><td colspan="5" class="green text-center">无记录</td></tr>
               <% end %>
             </tbody>
           </table>
@@ -143,6 +168,9 @@
     <% end %>
     <% if @chart_product_num %>
       $('#chart-4').append("<%= escape_javascript(high_chart('chart_basic_line4', @chart_product_num)) -%>");
+    <% end %>
+    <% if @chart_push_money %>
+      $('#chart-5').append("<%= escape_javascript(high_chart('chart_basic_line5', @chart_push_money)) -%>");
     <% end %>
   });
 </script>
