@@ -10,6 +10,7 @@ class OrdersProduct < ActiveRecord::Base
   scope :one_months, ->(today) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", start_time, end_time) }
   scope :normal_op_orders, -> { joins(:order).where("orders.state in (?)", [0, 1, 2, 4, 5]) }
+  scope :finish_orders, -> { joins(:order).where("orders.state = ?", 2) }
 
   enum status: [ :normal, :deleted ]
 

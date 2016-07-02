@@ -38,7 +38,7 @@ class Admin::DeliverymenController < Admin::BaseController
   end
 
   def show
-    @orders = @deliveryman.orders.normal_orders.latest
+    @orders = @deliveryman.orders.where(state: 2).latest
     select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"
     @today = Date.today

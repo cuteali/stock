@@ -176,7 +176,7 @@ class Order < ActiveRecord::Base
 
   def self.get_order_stats(total, start_time, end_time)
     h = {}
-    total_orders_products = OrdersProduct.normal_op_orders.normal.where(order_id: total.pluck(:id))
+    total_orders_products = OrdersProduct.finish_orders.normal.where(order_id: total.pluck(:id))
     order_stats = total.select('date(created_at) as created_date, count(*) as count, sum(order_money) as money, sum(total_cost_price) as profit').group('date(created_at)').order("created_at asc")
     (start_time..end_time).to_a.reverse.each do |day|
       h[day.try(:strftime, "%Y-%m-%d")] = 0
