@@ -49,7 +49,7 @@ module Sms
 
   def self.app_ios_msg
     mobile_encrypts = User.where(client_type: 'ios').pluck(:phone_num)
-    text = "【要货啦】要货啦苹果最新版已经上架，请您在App Store中搜索要货啦，进行更新。如有问题请联系客服，电话：400-0050-383"
+    text = "【要货啦】您好，要货啦苹果版故障已经解决，现在可以更新使用新版。如有问题请联系客服，电话：400-0050-383"
     Sms.send_sms(mobile_encrypts, text)
   end
 end
