@@ -41,14 +41,15 @@ module Sms
     return newpass
   end
 
-  def self.app_error_msg(options={})
-    if options.present?
-      mobile_encrypts = options[:phones]
-      text = options[:text]
-    else
-      mobile_encrypts = User.all.pluck(:phone_num)
-      text = "【要货啦】您好，要货啦APP苹果版 出现暂时性故障，安卓版新版本现在可以正常使用。如需订货请拨打客服电话400-0050-383转1！"
-    end
+  def self.app_error_msg
+    mobile_encrypts = User.all.pluck(:phone_num)
+    text = "【要货啦】您好，要货啦APP苹果版 出现暂时性故障，安卓版新版本现在可以正常使用。如需订货请拨打客服电话400-0050-383转1！"
+    Sms.send_sms(mobile_encrypts, text)
+  end
+
+  def self.app_ios_msg
+    mobile_encrypts = User.where(client_type: 'ios').pluck(:phone_num)
+    text = "【要货啦】要货啦苹果最新版已经上架，请您在App Store中搜索要货啦，进行更新。如有问题请联系客服，电话：400-0050-383"
     Sms.send_sms(mobile_encrypts, text)
   end
 end
