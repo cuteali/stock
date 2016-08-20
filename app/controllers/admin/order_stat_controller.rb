@@ -1,10 +1,12 @@
 class Admin::OrderStatController < Admin::BaseController
   def index
+    @order_state = params[:order_state].present? ? params[:order_state] : "normal_orders"
+    select_orders = Order.send(@order_state)
     if current_member.spreader?
       user_ids = current_member.promoter.users.pluck(:id)
-      @orders = Order.normal_orders.user_orders(user_ids).latest
+      @orders = select_orders.user_orders(user_ids).latest
     else
-      @orders = Order.normal_orders.latest
+      @orders = select_orders.latest
     end
     select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"

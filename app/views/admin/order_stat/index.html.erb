@@ -14,8 +14,11 @@
               <a href="<%= admin_order_stat_index_path(created_date: value) %>" class="btn btn-primary btn-sm btn-filter btn-filter-tab <%= "active" if @date == value %>"><%= key %></a>
             <%end%>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-8">
             <%= form_tag admin_order_stat_index_path ,:method => :get do %>
+              <div class="col-sm-3">
+                <%= select_tag :order_state, options_for_select([["选择订单状态","normal_orders"],["已完成", "completed_orders"]], @order_state), class: "form-control" %>
+              </div>
               <div class="input-group width-240px pull-left">
                 <span class="input-group-addon">
                   <i class="icon-calendar"></i>

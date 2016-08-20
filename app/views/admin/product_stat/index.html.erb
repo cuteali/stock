@@ -23,6 +23,7 @@
         <% detail_category_options = DetailCategory.where(sub_category_id: f.object.sub_category_id_eq).sorted.pluck(:name, :id).unshift(['选择具体类别', '']) %>
         <%= f.select :detail_category_id_eq, detail_category_options, {}, id: 'detail_category_id', class: "form-control" %>
         <%= f.search_field :name_cont, class: 'input-medium', placeholder:"产品名称" %>
+        <%= select_tag :order_state, options_for_select([["选择订单状态","normal_op_orders"],["已完成", "finish_orders"]], @order_state), class: "form-control" %>
         <div class="input-group width-240px">
           <span class="input-group-addon">
             <i class="icon-calendar"></i>

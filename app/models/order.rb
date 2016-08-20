@@ -21,6 +21,7 @@ class Order < ActiveRecord::Base
   scope :one_months, ->(today) { where("date(orders.created_at) >= ? and date(orders.created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(orders.created_at) >= ? and date(orders.created_at) <= ?", start_time, end_time) }
   scope :normal_orders, -> { where(state: [0, 1, 2, 4, 5]) }
+  scope :completed_orders, -> { where(state: 2) }
   scope :by_state, ->(state_arr) { 
     if state_arr.include?(2)
       where(state: 2)
