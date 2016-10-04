@@ -54,7 +54,7 @@ module ExportErpXls
       address = u.addresses.first
       complete_address = address.try(:area).to_s + " " + address.try(:detail).to_s
       time = u.created_at.try(:strftime, "%Y-%m-%d %H:%M:%S")
-      sing_sheet << [u.unique_id, u.user_name, state, complete_address, u.phone, time, user.promoter.try(:name)].flatten
+      sing_sheet << [u.unique_id, u.user_name, state, complete_address, u.phone, time, u.promoter.try(:name)].flatten
     end
     sing_sheet
   end
