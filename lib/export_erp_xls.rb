@@ -24,7 +24,7 @@ module ExportErpXls
     return [book,sheet,bold_heading]
   end
 
-  def get_sheet(type, sing_sheet)
+  def self.get_sheet(type, sing_sheet)
     case type
     when 'product'
       ['导出产品', ExportErpXls.sheet_product(sing_sheet)]
