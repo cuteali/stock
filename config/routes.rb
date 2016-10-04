@@ -84,6 +84,7 @@ Rails.application.routes.draw do
     resources :storehouses
     resources :product_stat
     resources :order_stat, only: :index
+    resources :export_to_erps, only: :index
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
