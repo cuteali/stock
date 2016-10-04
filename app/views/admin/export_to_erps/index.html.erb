@@ -5,7 +5,7 @@
    <a href="/admin/categories">导出erp可使用的excel</a>
 </h2>
 <div class="container">
-  <%= link_to '导出产品', admin_export_to_erps_index_path(:format => :xls, :type => :product) , class: 'btn btn-primary btn-filter' %>
-  <%= link_to '导出用户', admin_export_to_erps_index_path(:format => :xls, :type => :user) , class: 'btn btn-primary btn-filter' %>
-  <%= link_to '导出订单', admin_export_to_erps_index_path(:format => :xls, :type => :order) , class: 'btn btn-primary btn-filter' %>
+  <%= link_to '导出产品', admin_export_to_erps_path(:format => :xls, :type => :product) , class: 'btn btn-primary btn-filter' %>
+  <%= link_to '导出用户', admin_export_to_erps_path(:format => :xls, :type => :user) , class: 'btn btn-primary btn-filter' %>
+  <%= link_to '导出订单', admin_export_to_erps_path(:format => :xls, :type => :order) , class: 'btn btn-primary btn-filter' %>
 </div>
