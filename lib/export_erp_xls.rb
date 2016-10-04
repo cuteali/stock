@@ -16,7 +16,6 @@ module ExportErpXls
   end
 
   def self.new_excel(sheet_name)
-    sheet_name = get_sheet_name(type)
     Spreadsheet.client_encoding = "UTF-8"
     book = Spreadsheet::Workbook.new
     bold_heading = Spreadsheet::Format.new(:weight => :bold, :align => :merge)
