@@ -102,6 +102,16 @@ class Admin::OrdersController < Admin::BaseController
     render json: {html: html}
   end
 
+  def export_order
+    respond_to do |format|
+      format.xls {
+                send_data(ExportErpXls.export_excel(params[:type], params[:id]),
+                :type => "text/excel;charset=utf-8; header=present",
+                :filename => Time.now.to_s(:db).to_s.gsub(/[\s|\t|\:]/,'_') + rand(99999).to_s + ".xls")
+              }
+    end
+  end
+
   private 
     def set_order
       @order = Order.find(params[:id])

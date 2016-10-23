@@ -65,6 +65,9 @@ Rails.application.routes.draw do
         get :select_product
         get :search_product
       end
+      member do
+        get :export_order
+      end
     end
     resources :promoters do
       member do

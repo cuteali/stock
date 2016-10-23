@@ -1,8 +1,8 @@
 module ExportErpXls
-  def self.export_excel(type)
+  def self.export_excel(type, id=nil)
     xls_report = StringIO.new
     sing_sheet = []
-    sheet_name, sing_sheet = ExportErpXls.get_sheet(type, sing_sheet)
+    sheet_name, sing_sheet = ExportErpXls.get_sheet(type, sing_sheet, id)
     book = ExportErpXls.new_excel(sheet_name)
     book_excel = book[0]
     book_sheet = book[1]
@@ -23,14 +23,14 @@ module ExportErpXls
     return [book,sheet,bold_heading]
   end
 
-  def self.get_sheet(type, sing_sheet)
+  def self.get_sheet(type, sing_sheet, id)
     case type
     when 'product'
       ['导出产品', ExportErpXls.sheet_product(sing_sheet)]
     when 'user'
       ['导出用户', ExportErpXls.sheet_user(sing_sheet)]
     when 'order'
-      ['导出订单', ExportErpXls.sheet_order(sing_sheet)]
+      ['导出订单', ExportErpXls.sheet_order(sing_sheet, id)]
     end
   end
 
@@ -59,10 +59,15 @@ module ExportErpXls
     sing_sheet
   end
 
-  def self.sheet_order(sing_sheet)
+  def self.sheet_order(sing_sheet, id)
     export_title = ['编号', '用户编号', '用户名称', '商品编号', '商品名称', '单价', '数量']
     sing_sheet << export_title
-    OrdersProduct.order(:order_id).each do |op|
+    if id.present?
+      orders_products = OrdersProduct.where(order_id: id).order(:order_id)
+    else
+      orders_products = OrdersProduct.order(:order_id)
+    end
+    orders_products.each do |op|
       sing_sheet << [op.order.unique_id, op.user.try(:unique_id), op.user.try(:user_name),
         op.product.try(:unique_id), op.product.try(:name), op.product_price, op.product_num].flatten
     end

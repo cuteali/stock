@@ -61,6 +61,7 @@
               <td class="col-sm-1">
                 <%= link_to '详情', admin_order_path(order) %>
                 <% if current_member.editor? || current_member.admin? %>
+                  <%= link_to '导出', export_order_admin_order_path(order, format: :xls, type: :order) %>
                   <%= link_to '修改', edit_admin_order_path(order) %>
                   <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
                 <% end %>

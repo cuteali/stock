@@ -1,4 +1,12 @@
 <%= form_for([:admin,@product],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
+  <% if @product.persisted? %>
+    <div class ="form-group">
+      <label class="col-sm-2 control-label">编号:</label>
+      <div class="col-sm-4">
+        <%= f.text_field :unique_id, class:"form-control", disabled: true %>
+      </div>
+    </div>
+  <% end %>
   <div class ="form-group">
     <label class="col-sm-2 control-label">产品名称:</label>
     <div class="col-sm-4">
