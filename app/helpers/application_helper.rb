@@ -98,7 +98,7 @@ module ApplicationHelper
 
   def statistics_user_order_money(user, start_time, end_time, date, today)
     if start_time.present? && end_time.present?
-      user.orders.select_time(start_time, end_time).sum(:order_money)
+      user.orders.completed_orders.select_time(start_time, end_time).sum(:order_money)
     else
       if date == 'one_days'
         user.orders.one_days(today).sum(:order_money)

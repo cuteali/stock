@@ -1,6 +1,6 @@
 class Admin::PromotersController < Admin::BaseController
   before_action :set_promoter, only: [:edit, :update, :destroy, :statistics]
-  
+
   def index
     @q = Promoter.ransack(params[:q])
     @promoters = @q.result.latest.page(params[:page])
@@ -15,12 +15,12 @@ class Admin::PromotersController < Admin::BaseController
 
   def update
     image_params = params[:promoter][:image]
-    if @promoter.update(promoter_params)     
+    if @promoter.update(promoter_params)
       ImageUtil.image_upload(image_params,"Promoter",@promoter.id)
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_promoters_path
     else
-      render 'edit' 
+      render 'edit'
     end
   end
 
@@ -48,17 +48,17 @@ class Admin::PromotersController < Admin::BaseController
     @categories, @series, @start_time, @end_time, @count, @min_tick, @total = User.chart_data(@users, @date, @today, @select_time, params)
     @chart = User.chart_base_line(@categories, @series, @min_tick) if @categories.present?
     user_ids = @total.pluck(:id)
-    @order_money = Order.user_orders(user_ids).sum(:order_money)
+    @order_money = Order.completed_orders.user_orders(user_ids).sum(:order_money)
     @user_stats = @users.page(params[:page])
   end
 
-  private 
+  private
 
     def image_upload(image_params,model_name,model_id)
       image_params.each do |img|
         Image.create(image:img,target_type:model_name,target_id:model_id)
       end
-    end 
+    end
 
     def set_promoter
       @promoter = Promoter.find(params[:id])

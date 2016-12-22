@@ -6,7 +6,7 @@ module V2
     resources 'orders' do
       # http://localhost:3000/api/v2/orders
       # bcb67d8860d033061090fbbf9f4c605c
-      params do 
+      params do
         requires :token,type: String
         requires :state,type: String
         optional :page_num, type: String
@@ -19,19 +19,22 @@ module V2
       end
 
       #http://localhost:3000/api/v2/orders/cancel
-      params do 
+      params do
         requires :token,type:String
         requires :unique_id,type:String
       end
       get "cancel",jbuilder:"v2/orders/cancel" do
         if @token.present?
           order = Order.find_by(unique_id:params[:unique_id])
-          @order = order.update(state: 3)
+          if order
+            order.restore_products
+            @order = order.update(state: 3)
+          end
         end
       end
 
       #http://localhost:3000/api/v2/orders/:unique_id
-      params do 
+      params do
         requires :token,type:String
         requires :unique_id,type:String
         optional :message_id, type: String
