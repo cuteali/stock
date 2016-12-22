@@ -31,7 +31,7 @@ class OrdersProduct < ActiveRecord::Base
       start_time = Date.parse(params[:start_time])
       end_time = Date.parse(params[:end_time])
       scope_ops = orders_products.select_time(start_time, end_time)
-      total = scope_ops.joins(:product).select('product_id, products.cost_price as p_cost_price, sum(product_num * (product_price - orders_products.cost_price)) as profit, products.name as name, sum(product_num) as num').group('product_id').order("num DESC")
+      total = scope_ops.joins(:product).select('product_id, products.price as p_price, products.cost_price as p_cost_price, sum(product_num * (product_price - orders_products.cost_price)) as profit, products.name as name, sum(product_num) as num').group('product_id').order("num DESC")
     else
       start_time, end_time, total, scope_ops = OrdersProduct.get_date(orders_products, date, today)
     end
@@ -40,7 +40,7 @@ class OrdersProduct < ActiveRecord::Base
 
   def self.get_date(orders_products, date, today)
     scope_ops = orders_products.send(date, today)
-    total = scope_ops.joins(:product).select('product_id, products.cost_price as p_cost_price, sum(product_num * (product_price - orders_products.cost_price)) as profit, products.name as name, sum(product_num) as num').group('product_id').order("num DESC")
+    total = scope_ops.joins(:product).select('product_id, products.price as p_price, products.cost_price as p_cost_price, sum(product_num * (product_price - orders_products.cost_price)) as profit, products.name as name, sum(product_num) as num').group('product_id').order("num DESC")
     if date == "one_days"
       start_time = today
     elsif date == "one_weeks"

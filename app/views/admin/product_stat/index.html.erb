@@ -34,7 +34,7 @@
           </span>
           <%= text_field_tag :end_time, params[:end_time], class: 'datepicker input-small' %>
         </div>
-        
+
         <button type="submit" class="btn btn-primary btn-sm btn-filter margin-left-5">查询</button>
       <% end %>
     </div>
@@ -56,6 +56,7 @@
       <tr>
         <th>产品名称</th>
         <th>销量</th>
+        <th>卖价</th>
         <th>进价</th>
         <th>利润</th>
         <th>操作</th>
@@ -66,6 +67,7 @@
         <tr>
           <td><%= link_to op.name, edit_admin_product_path(op.product_id) %></td>
           <td><%= op.num %></td>
+          <td><%= op.p_price %></td>
           <td><%= op.p_cost_price %></td>
           <td><%= op.profit %></td>
           <td><%= link_to '详情', admin_product_stat_path(op.product_id, order_ids: order_ids(@scope_ops, op.product_id)) %></td>
@@ -87,8 +89,8 @@
     });
   });
   $("#category_id").change(function(){
-    var set_url = "<%= select_category_admin_products_url %>" + 
-                  "?category_id=" + $("#category_id").val() + 
+    var set_url = "<%= select_category_admin_products_url %>" +
+                  "?category_id=" + $("#category_id").val() +
                   "&id=sub_category_id&name=q[sub_category_id_eq]&first_option=选择小类别&class_name=SubCategory";
     jQuery.ajax({
       type: "GET",
@@ -100,8 +102,8 @@
     });
   });
   $("#sub_category_id").change(function(){
-    var set_url = "<%= select_category_admin_products_url %>" + 
-                  "?sub_category_id=" + $("#sub_category_id").val() + 
+    var set_url = "<%= select_category_admin_products_url %>" +
+                  "?sub_category_id=" + $("#sub_category_id").val() +
                   "&id=detail_category_id&name=q[detail_category_id_eq]&first_option=选择具体类别&class_name=DetailCategory";
     jQuery.ajax({
       type: "GET",
