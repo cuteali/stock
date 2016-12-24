@@ -21,6 +21,8 @@ class Product < ActiveRecord::Base
 
   validates :sort, :minimum, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1}
 
+  after_commit :update_cart_items_minimum
+
   HEADER_HASH = {
     '产品名称'  => :name,
     '产品描述'  => :desc,
@@ -69,6 +71,14 @@ class Product < ActiveRecord::Base
     if restricting_num.present?
       cart_items.each do |item|
         item.update(product_num: restricting_num) if item.product_num > restricting_num
+      end
+    end
+  end
+
+  def update_cart_items_minimum
+    if previous_changes.has_key?(:minimum)
+      cart_items.each do |item|
+        item.update(product_num: minimum) if item.product_num < minimum
       end
     end
   end
