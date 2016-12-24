@@ -32,6 +32,7 @@ else
           json.unit_price op.product.unit_price.to_s
           json.origin op.product.origin.to_s
           json.remark op.product.remark.to_s
+          json.minimum op.product.minimum.to_s
         end
       end
     end

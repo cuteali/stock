@@ -19,8 +19,7 @@ class Product < ActiveRecord::Base
   scope :by_page, -> (page_num) { page(page_num) if page_num }
   scope :order_by_stock_num, -> { order('stock_num ASC') }
 
-  validates :sort, presence: true
-  validates :sort, numericality: { only_integer: true, greater_than_or_equal_to: 1}
+  validates :sort, :minimum, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1}
 
   HEADER_HASH = {
     '产品名称'  => :name,

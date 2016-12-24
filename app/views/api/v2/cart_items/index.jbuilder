@@ -24,6 +24,7 @@ else
         json.product_unit_price cart_item.product.unit_price.to_s
         json.product_origin cart_item.product.origin
         json.product_remark cart_item.product.remark
+        json.product_minimum cart_item.product.minimum
       end
     end
   end

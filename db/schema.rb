@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630152653) do
+ActiveRecord::Schema.define(version: 20161224075601) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -248,6 +248,7 @@ ActiveRecord::Schema.define(version: 20160630152653) do
     t.string   "image",              limit: 255
     t.string   "unit_id",            limit: 255
     t.integer  "stock_num",          limit: 4
+    t.integer  "minimum",            limit: 4,                            default: 1
     t.integer  "safe_stock_num",     limit: 4
     t.integer  "restricting_num",    limit: 4
     t.decimal  "price",                          precision: 12, scale: 2, default: 0.0

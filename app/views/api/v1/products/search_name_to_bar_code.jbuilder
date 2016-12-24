@@ -21,5 +21,6 @@ else
     json.origin product.origin.to_s
     json.remark product.remark.to_s
     json.bar_codes product.bar_codes.pluck(:bar_code_no).join(',')
+    json.minimum product.minimum.to_s
   end
 end

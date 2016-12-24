@@ -18,6 +18,7 @@ if @favorites
     json.product_unit_price favorite.product.unit_price.to_s
     json.product_origin favorite.product.origin.to_s
     json.product_remark favorite.product.remark.to_s
+    json.product_minimum favorite.product.minimum.to_s
   end
 else
   json.result 1
