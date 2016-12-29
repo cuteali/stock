@@ -23,7 +23,7 @@ module V1
       end
 
       #http://localhost:3000/api/v1/products/search
-      params do 
+      params do
         requires :key_word, type: String
         optional :token, type: String
         optional :page_num, type: String
@@ -47,7 +47,7 @@ module V1
       end
 
       #http://localhost:3000/api/v1/products/search_name
-      params do 
+      params do
         requires :key_word, type: String
         optional :token, type: String
         optional :page_num, type: String
@@ -80,8 +80,9 @@ module V1
       end
 
       #http://localhost:3000/api/v1/products/search_name_to_bar_code
-      params do 
+      params do
         requires :key_word, type: String
+        optional :token, type: String
         optional :page_num, type: String
       end
       post 'search_name_to_bar_code',jbuilder:'v1/products/search_name_to_bar_code' do
