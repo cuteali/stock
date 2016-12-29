@@ -24,5 +24,6 @@ else
       json.cart_item_unique_id cart_item.try(:unique_id).to_s
       json.number cart_item.try(:product_num).to_s
     end
+    json.minimum pop_product.minimum.to_s
   end
 end

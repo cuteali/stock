@@ -23,5 +23,6 @@ else
     json.hot_category_id pop_product.hot_category_id.to_s
     json.sale_count pop_product.sale_count.to_s
     json.spec pop_product.spec.to_s
+    json.minimum pop_product.minimum.to_s
   end
 end
