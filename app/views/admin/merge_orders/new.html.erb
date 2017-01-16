@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="col-sm-offset-5">
+    <h2>新建合并订单</h2>
+  </div>
+  <%= form_for([:admin, @merge_order],html: {class: "form-horizontal", role: "form"}) do |f| %>
+    <div class ="form-group">
+      <label class="col-sm-2 control-label">请输入需要合并的订单号，并以空格分隔:</label>
+      <div class="col-sm-8">
+        <%= text_area_tag :order_nos, nil, rows: 10, cols: 25, class: "form-control" %>
+      </div>
+      <label class="control-label">（如：1603060 1603061 ...）</label>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-4">
+        <button class="btn btn-success" type="submit" id='form_save'>
+          <span class="glyphicon glyphicon-floppy-save">保存</span>
+        </button>
+        <button class="btn btn-success" type="button" onclick="javascript:history.go(-1);">
+          <span class="glyphicon glyphicon-hand-left">返回</span>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>

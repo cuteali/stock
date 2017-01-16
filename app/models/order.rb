@@ -7,6 +7,7 @@ class Order < ActiveRecord::Base
   has_many :messages, as: :messageable
   has_many :orders_products, dependent: :destroy
   has_many :products, through: :orders_products
+  has_many :merge_orders_orders, dependent: :destroy
   accepts_nested_attributes_for :orders_products, allow_destroy: true
 
   validates :order_no, uniqueness: true

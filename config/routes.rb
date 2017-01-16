@@ -69,6 +69,7 @@ Rails.application.routes.draw do
         get :export_order
       end
     end
+    resources :merge_orders
     resources :promoters do
       member do
         get :statistics

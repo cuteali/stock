@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161224075601) do
+ActiveRecord::Schema.define(version: 20170116134251) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -166,6 +166,39 @@ ActiveRecord::Schema.define(version: 20161224075601) do
   add_index "members", ["email"], name: "index_members_on_email", unique: true, using: :btree
   add_index "members", ["promoter_id"], name: "index_members_on_promoter_id", using: :btree
   add_index "members", ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true, using: :btree
+
+  create_table "merge_orders", force: :cascade do |t|
+    t.string   "merge_order_no", limit: 255
+    t.string   "unique_id",      limit: 255
+    t.integer  "state",          limit: 4
+    t.integer  "member_id",      limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "merge_orders", ["member_id"], name: "index_merge_orders_on_member_id", using: :btree
+  add_index "merge_orders", ["merge_order_no"], name: "index_merge_orders_on_merge_order_no", using: :btree
+
+  create_table "merge_orders_orders", force: :cascade do |t|
+    t.integer  "merge_order_id", limit: 4
+    t.integer  "order_id",       limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "merge_orders_orders", ["merge_order_id"], name: "index_merge_orders_orders_on_merge_order_id", using: :btree
+  add_index "merge_orders_orders", ["order_id"], name: "index_merge_orders_orders_on_order_id", using: :btree
+
+  create_table "merge_orders_products", force: :cascade do |t|
+    t.integer  "merge_order_id", limit: 4
+    t.integer  "product_id",     limit: 4
+    t.integer  "product_num",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "merge_orders_products", ["merge_order_id"], name: "index_merge_orders_products_on_merge_order_id", using: :btree
+  add_index "merge_orders_products", ["product_id"], name: "index_merge_orders_products_on_product_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
     t.integer  "user_id",          limit: 4
@@ -352,6 +385,7 @@ ActiveRecord::Schema.define(version: 20161224075601) do
   add_foreign_key "addresses", "users"
   add_foreign_key "adverts", "products"
   add_foreign_key "detail_categories", "sub_categories"
+  add_foreign_key "merge_orders", "members"
   add_foreign_key "orders", "addresses"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "hot_categories"

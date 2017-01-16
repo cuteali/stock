@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   has_many :images, as: :target, dependent: :destroy
   has_many :adverts
   has_many :orders_products, dependent: :destroy
+  has_many :merge_orders_products, dependent: :destroy
   has_many :messages, as: :messageable
   has_many :product_admins
   has_many :bar_codes, dependent: :destroy

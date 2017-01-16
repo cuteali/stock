@@ -1,0 +1,58 @@
+<% content_for :title do %>
+  合并订单列表
+<% end %>
+<h2 class="col-sm-offset-5">
+   <a href="/admin/merge_orders">合并订单列表</a>
+</h2>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
+        <div class="col-md-2 row pull-left">
+          <%= link_to '新建合并订单', new_admin_merge_order_path, class: 'btn btn-success' %>
+        </div>
+        <div class="col-md-10 row">
+          <%= f.label '编号：' %>
+          <%= f.search_field :merge_order_no_cont, class: 'input-medium', placeholder:"编号" %>
+          <%= f.submit '查询', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% if @merge_orders.present? %>
+    <div class="panel panel-default margin-top-10">
+      <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>编号</th>
+            <th>合并的订单</th>
+            <th>创建时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @merge_orders.each do |merge_order| %>
+            <tr>
+              <td><%= merge_order.id %></td>
+              <td class="col-sm-1"><%= merge_order.merge_order_no %></td>
+              <td class="col-sm-8"><%= merge_order.orders.pluck(:order_no).join(', ') %></td>
+              <td class="col-sm-1"><%= time_show(merge_order.created_at) %></td>
+              <td class="col-sm-1">
+                <%= link_to '详情', admin_merge_order_path(merge_order) %>
+                <% if current_member.admin? %>
+                  <%= link_to '删除', admin_merge_order_path(merge_order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @merge_orders %>
+  <% else %>
+    <div class="col-sm-offset-2">
+      <h2>暂无</h2>
+    </div>
+  <% end %>
+</div>

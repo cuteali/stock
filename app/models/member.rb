@@ -2,6 +2,7 @@ class Member < ActiveRecord::Base
   attr_accessor :login
 
   belongs_to :promoter
+  has_many :merge_orders
 
   validates :name,
   presence: true,
