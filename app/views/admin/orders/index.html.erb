@@ -22,6 +22,12 @@
           <%= f.search_field :phone_num_cont, class: 'input-medium', placeholder:"电话" %>
           <%= f.label '收货地址：' %>
           <%= f.search_field :area_or_detail_cont, class: 'input-medium', placeholder:"收货地址" %>
+        </div>
+        <div class="col-md-10 row">
+          <%= f.label '创建时间：' %>
+          <%= f.search_field :created_at_gteq, class: 'datetimepicker input-medium'  %>
+          <span><i>-</i></span>
+          <%= f.search_field :created_at_lteq, class: 'datetimepicker input-medium' %>
           <%= f.submit '查询', class: 'btn btn-primary' %>
         </div>
         <div class="col-md-1 row pull-right">
@@ -66,7 +72,7 @@
                 <% if current_member.editor? || current_member.admin? %>
                   <%= link_to '导出', export_order_admin_order_path(order, format: :xls, type: :order) %>
                   <%= link_to '修改', edit_admin_order_path(order) %>
-                  <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %> 
+                  <%= link_to '删除', admin_order_path(order), method: :delete, data: { confirm: '确定要删除吗？' } %>
                 <% end %>
               </td>
             </tr>
@@ -81,3 +87,12 @@
     </div>
   <% end %>
 </div>
+<script type="text/javascript">
+$(function(){
+  $(".datetimepicker").datetimepicker({
+    autoclose: true,
+    todayBtn: true,
+    language: "zh"
+  });
+});
+</script>

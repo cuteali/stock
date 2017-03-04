@@ -101,11 +101,11 @@ module ApplicationHelper
       user.orders.completed_orders.select_time(start_time, end_time).sum(:order_money)
     else
       if date == 'one_days'
-        user.orders.one_days(today).sum(:order_money)
+        user.orders.completed_orders.one_days(today).sum(:order_money)
       elsif date == 'one_weeks'
-        user.orders.one_weeks(today).sum(:order_money)
+        user.orders.completed_orders.one_weeks(today).sum(:order_money)
       elsif date == 'one_months'
-        user.orders.one_months(today).sum(:order_money)
+        user.orders.completed_orders.one_months(today).sum(:order_money)
       end
     end
   end
