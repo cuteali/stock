@@ -9,10 +9,10 @@ class Admin::ProductStatController < Admin::BaseController
     else
       @orders_products = select_orders_products.normal
     end
-    select_time = true if params[:start_time].present? && params[:end_time].present?
+    @select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"
-    @today = Date.today
-    @start_time, @end_time, @total, @scope_ops = OrdersProduct.chart_data(@orders_products, @date, @today, select_time, params)
+    @today = DateTime.now
+    @start_time, @end_time, @total, @scope_ops = OrdersProduct.chart_data(@orders_products, @date, @today, @select_time, params)
     @total_price = OrdersProduct.sum_total_price(@scope_ops)
     @total_cost_price = OrdersProduct.sum_total_cost_price(@scope_ops)
     @orders_products_stats = @total.page(params[:page])

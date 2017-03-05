@@ -6,14 +6,14 @@
 </h2>
 <div class="row">
   <div class="col-xs-12">
-    <div class="col-md-3 row">
-      <%{"今天" => "one_days", "最近7天" => "one_weeks", "最近一月" => "one_months"}.each do |key, value|%>
+    <div class="col-md-1 row">
+      <%{"今天" => "one_days"}.each do |key, value|%>
         <a href="<%= admin_product_stat_index_path(created_date: value, q: params[:q]) %>" class="btn btn-primary btn-sm btn-filter btn-filter-tab <%= "active" if @date == value %>">
           <%= key %>
         </a>
       <%end%>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-11">
       <%= search_form_for @q, url: {action: action_name}, class: 'form-inline', html: { method: :get } do |f| %>
         <%= hidden_field_tag :created_date, params[:created_date] %>
         <% category_options = Category.sorted.pluck(:name, :id) %>
@@ -28,11 +28,11 @@
           <span class="input-group-addon">
             <i class="icon-calendar"></i>
           </span>
-          <%= text_field_tag :start_time, params[:start_time], class: 'datepicker input-small'  %>
+          <%= text_field_tag :start_time, params[:start_time], class: 'datetimepicker input-medium'  %>
           <span class="input-group-addon">
             <i class="">-</i>
           </span>
-          <%= text_field_tag :end_time, params[:end_time], class: 'datepicker input-small' %>
+          <%= text_field_tag :end_time, params[:end_time], class: 'datetimepicker input-medium' %>
         </div>
 
         <button type="submit" class="btn btn-primary btn-sm btn-filter margin-left-5">查询</button>
@@ -43,9 +43,13 @@
 <div class="panel panel-default margin-top-10">
   <div class="col-md-9">
     <div class="input-group red">
-      <span><%= @start_time %></span>
-      <span class="margin-left-10">至</span>
-      <span class="margin-left-10"><%= @end_time %></span>
+      <% if @select_time %>
+        <span><%= @start_time.strftime("%Y-%m-%d %H:%M") %></span>
+        <span class="margin-left-10">至</span>
+        <span class="margin-left-10"><%= @end_time.strftime("%Y-%m-%d %H:%M") %></span>
+      <% else %>
+        <span><%= @start_time.strftime("%Y-%m-%d") %></span>
+      <% end %>
       <span class="margin-left-10">总销量：<%= @scope_ops.sum(:product_num) %></span>
       <span class="margin-left-10">总金额：<%= number_with_precision(@total_price, :precision => 2) %></span>
       <span class="margin-left-10">总利润：<%= number_with_precision(@total_cost_price, :precision => 2) %></span>
@@ -81,11 +85,11 @@
 <%= paginate @orders_products_stats %>
 <script type="text/javascript">
   $(document).ready(function(){
-    $('input[class*="datepicker"]').attr('readonly', 'readonly').datepicker({
+    $('input[class*="datetimepicker"]').attr('readonly', 'readonly').datetimepicker({
       todayBtn: "linked",
       autoclose: true,
-
-      format: "yyyy-mm-dd"
+      format: "yyyy-mm-dd hh:ii",
+      language: "zh"
     });
   });
   $("#category_id").change(function(){

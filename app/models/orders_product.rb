@@ -9,6 +9,7 @@ class OrdersProduct < ActiveRecord::Base
   scope :one_weeks, ->(today) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", (today - 6.day), today) }
   scope :one_months, ->(today) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", (today - 1.month), today) }
   scope :select_time, ->(start_time,end_time) { where("date(orders_products.created_at) >= ? and date(orders_products.created_at) <= ?", start_time, end_time) }
+  scope :select_time_at, ->(start_time,end_time) { where("orders_products.created_at >= ? and orders_products.created_at <= ?", start_time, end_time) }
   scope :normal_op_orders, -> { joins(:order).where("orders.state in (?)", [0, 1, 2, 4, 5]) }
   scope :finish_orders, -> { joins(:order).where("orders.state = ?", 2) }
 
@@ -28,9 +29,9 @@ class OrdersProduct < ActiveRecord::Base
 
   def self.chart_data(orders_products, date, today, select_time, params)
     if select_time
-      start_time = Date.parse(params[:start_time])
-      end_time = Date.parse(params[:end_time])
-      scope_ops = orders_products.select_time(start_time, end_time)
+      start_time = DateTime.parse(params[:start_time])
+      end_time = DateTime.parse(params[:end_time])
+      scope_ops = orders_products.select_time_at(start_time, end_time)
       total = scope_ops.joins(:product).select('product_id, products.price as p_price, products.cost_price as p_cost_price, sum(product_num * (product_price - orders_products.cost_price)) as profit, products.name as name, sum(product_num) as num').group('product_id').order("num DESC")
     else
       start_time, end_time, total, scope_ops = OrdersProduct.get_date(orders_products, date, today)
