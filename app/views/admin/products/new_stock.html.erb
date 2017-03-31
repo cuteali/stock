@@ -4,6 +4,7 @@
   </div>
   <%= form_for(@product_admin, url: create_stock_admin_product_path(@product), html: {class: "form-horizontal", role: "form", multipart: true, method: :post}) do |f| %>
     <%= f.hidden_field :product_id, value: @product.id %>
+    <%= f.hidden_field :product_name, value: @product.name %>
     <div class ="form-group">
       <label class="col-sm-2 control-label">产品名称:</label>
       <div class="col-sm-4">

@@ -4,7 +4,7 @@ class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: [:edit, :update, :destroy, :show, :image, :stick_top, :statistics, :new_stock, :create_stock]
   before_filter :authenticate_member!
   after_action :verify_authorized, only: :destroy
-  
+
   def index
     @q = Product.ransack(params[:q])
     if params[:by_stock_num]
@@ -32,7 +32,7 @@ class Admin::ProductsController < Admin::BaseController
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_products_path
     else
-      render 'edit' 
+      render 'edit'
     end
   end
 
@@ -62,7 +62,7 @@ class Admin::ProductsController < Admin::BaseController
     elsif params[:sub_category_id]
       options = Object.const_get(params[:class_name]).where(sub_category_id: params[:sub_category_id]).order(:id)
     elsif params[:detail_category_id]
-      options = Object.const_get(params[:class_name]).where(detail_category_id: params[:detail_category_id]).sorted
+      options = Object.const_get(params[:class_name]).where(detail_category_id: params[:detail_category_id]).state.sorted
     end
     html = get_select_category_html(options, params[:id], params[:name], params[:first_option])
     render json: {html: html}
@@ -136,8 +136,8 @@ class Admin::ProductsController < Admin::BaseController
     end
 
     def product_params
-      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num, 
-        :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count, 
+      params.require(:product).permit(:name, :sort, :desc, :info, :state, :unit_id, :stock_num, :restricting_num,
+        :price, :old_price, :category_id, :sub_category_id, :detail_category_id, :hot_category_id, :sale_count,
         :spec, :unit_price, :origin, :remark, :cost_price, :safe_stock_num, :push_money, :minimum)
     end
 

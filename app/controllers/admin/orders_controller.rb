@@ -5,7 +5,7 @@ class Admin::OrdersController < Admin::BaseController
   before_action :set_order, only: [:edit, :update, :destroy, :show, :add_order_product]
   before_filter :authenticate_member!
   after_action :verify_authorized, only: :destroy
-  
+
   def index
     if current_member.spreader?
       user_ids = current_member.promoter.users.pluck(:id)
@@ -39,7 +39,7 @@ class Admin::OrdersController < Admin::BaseController
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_orders_path
     else
-      render 'edit' 
+      render 'edit'
     end
   end
 
@@ -97,7 +97,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def search_product
-    options = Product.where("name like ?", "%#{params[:product_name]}%").sorted
+    options = Product.where("name like ?", "%#{params[:product_name]}%").state.sorted
     html = get_select_category_html(options, params[:id], params[:name], params[:first_option])
     render json: {html: html}
   end
@@ -112,7 +112,7 @@ class Admin::OrdersController < Admin::BaseController
     end
   end
 
-  private 
+  private
     def set_order
       @order = Order.find(params[:id])
     end

@@ -3,17 +3,43 @@
     <h2><%= @product_admin.new_record? ? '新建' : '编辑' %>进货单</h2>
   </div>
   <%= form_for([:admin,@product_admin],html: {class: "form-horizontal", role: "form", multipart: true}) do |f| %>
-    <div class ="form-group">
-      <label class="col-sm-2 control-label">搜索:</label>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">查询条件:</label>
       <div class="col-sm-2">
+        <input type="radio" name="inline-radios" class="ace" value='0' checked>
+        <span class="lbl">按产品名称</span>
+      </div>
+      <div class="col-sm-2">
+        <input type="radio" name="inline-radios" class="ace" value='1'>
+        <span class="lbl">按产品分类</span>
+      </div>
+    </div>
+    <div class="form-group hidden">
+      <label class="col-sm-2 control-label">大类别:</label>
+      <div class="col-sm-4">
         <% options = Category.order(:id).pluck(:name, :id) %>
-        <%= select_tag :product_admin_category_id, options_for_select(options.insert(0,["选择大类别",""]), ''), id: 'product_admin_category_id', class: "form-control" %>
+        <%= select_tag :category_id, options_for_select(options.insert(0,["选择大类别",""])), class: "form-control" %>
       </div>
-      <div class="col-sm-2">
-        <%= select_tag :product_admin_sub_category_id, options_for_select([["选择小类别",""]], ''), id: 'product_admin_sub_category_id', class: "form-control" %>
+    </div>
+    <div class="form-group hidden">
+      <label class="col-sm-2 control-label">小类别:</label>
+      <div class="col-sm-4">
+        <%= select_tag :sub_category_id, options_for_select([["选择小类别",""]]), class: "form-control" %>
       </div>
-      <div class="col-sm-2">
-        <%= select_tag :product_admin_detail_category_id, options_for_select([["选择具体类别",""]], ''), id: 'product_admin_detail_category_id', class: "form-control" %>
+    </div>
+    <div class="form-group hidden">
+      <label class="col-sm-2 control-label">具体类别:</label>
+      <div class="col-sm-4">
+        <%= select_tag :detail_category_id, options_for_select([["选择具体类别",""]]), class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">产品名称:</label>
+      <div class="col-sm-4">
+        <%= text_field_tag :product_name, nil, class: "form-control" %>
+      </div>
+      <div class="col-sm-1">
+        <button type="button" id="search_name" class="btn btn-primary btn-sm">查询</button>
       </div>
     </div>
     <div class ="form-group">
@@ -67,35 +93,38 @@
   <% end %>
 </div>
 <script type="text/javascript">
-$('#product_admin_category_id').change(function(){
-  var set_url = "<%= select_category_admin_product_admins_url %>" + 
-                "?category_id=" + $('#product_admin_category_id').val() + 
-                "&id=product_admin_sub_category_id&name=product_admin[sub_category_id]&first_option=选择小类别&class_name=SubCategory";
+$('#product_admin_product_id').change(function(){
+  $('#product_admin_product_name').val($(this).find(":selected").text());
+});
+$("#category_id").change(function(){
+  var set_url = "<%= select_category_admin_products_url %>" +
+                "?category_id=" + $("#category_id").val() +
+                "&id=sub_category_id&name=sub_category_id&first_option=选择小类别&class_name=SubCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,
     dataType: "json",
     success: function(data){
-      $('#product_admin_sub_category_id').html(data.html);
+      $('#sub_category_id').html(data.html);
     }
   });
 });
-$('#product_admin_sub_category_id').change(function(){
-  var set_url = "<%= select_category_admin_product_admins_url %>" + 
-                "?sub_category_id=" + $('#product_admin_sub_category_id').val() + 
-                "&id=product_admin_detail_category_id&name=product_admin[detail_category_id]&first_option=选择具体类别&class_name=DetailCategory";
+$("#sub_category_id").change(function(){
+  var set_url = "<%= select_category_admin_products_url %>" +
+                "?sub_category_id=" + $("#sub_category_id").val() +
+                "&id=detail_category_id&name=detail_category_id&first_option=选择具体类别&class_name=DetailCategory";
   jQuery.ajax({
     type: "GET",
     url: set_url,
     dataType: "json",
     success: function(data){
-      $('#product_admin_detail_category_id').html(data.html);
+      $('#detail_category_id').html(data.html);
     }
   });
 });
-$('#product_admin_detail_category_id').change(function(){
-  var set_url = "<%= select_category_admin_product_admins_url %>" + 
-                "?detail_category_id=" + $('#product_admin_detail_category_id').val() + 
+$("#detail_category_id").change(function(){
+  var set_url = "<%= select_category_admin_products_url %>" +
+                "?detail_category_id=" + $("#detail_category_id").val() +
                 "&id=product_admin_product_id&name=product_admin[product_id]&first_option=选择产品&class_name=Product";
   jQuery.ajax({
     type: "GET",
@@ -106,9 +135,29 @@ $('#product_admin_detail_category_id').change(function(){
     }
   });
 });
-
-$('#product_admin_product_id').change(function(){
-  $('#product_admin_product_name').val($(this).find(":selected").text());
+$("#search_name").click(function(){
+  var set_url = "<%= search_product_admin_orders_url %>" +
+                "?product_name=" + $("#product_name").val() +
+                "&id=product_admin_product_id&name=product_admin[product_id]&first_option=选择产品&class_name=Product";
+  jQuery.ajax({
+    type: "GET",
+    url: set_url,
+    dataType: "json",
+    success: function(data){
+      $('#product_admin_product_id').html(data.html);
+    }
+  });
+});
+$('input:radio').click(function(event) {
+  $('.form-group').removeClass('hidden');
+  var $this=$(this);
+  if ($this.val() == '0') {
+    $('#category_id').parent().parent().addClass('hidden');
+    $('#sub_category_id').parent().parent().addClass('hidden');
+    $('#detail_category_id').parent().parent().addClass('hidden');
+  } else {
+    $('#product_name').parent().parent().addClass('hidden');
+  }
 });
 </script>
 <script type="text/javascript">
@@ -117,7 +166,7 @@ $('#product_admin_product_id').change(function(){
     todayBtn: true,
     language: "zh"
   });
-  $("#product_admin_stock_time" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+  $("#product_admin_stock_time" ).datetimepicker( "option", "dateFormat", "yy-mm-dd" );
   var stock_time = '<%= @product_admin.stock_time.try(:strftime, "%Y-%m-%d %H:%M") %>'
   if(stock_time != null && stock_time != ""){
     $("#product_admin_stock_time" ).val(stock_time)
