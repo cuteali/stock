@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: [:edit, :update, :destroy, :user_statistics]
-  
+
   def index
     if current_member.spreader?
       @q = current_member.promoter.users.ransack(params[:q])
@@ -23,12 +23,12 @@ class Admin::UsersController < Admin::BaseController
 
   def update
     image_params = params[:user][:image]
-    if @user.update(user_params)     
+    if @user.update(user_params)
       ImageUtil.image_upload(image_params,"User",@user.id)
       return redirect_to session[:return_to] if session[:return_to]
       redirect_to admin_users_path
     else
-      render 'edit' 
+      render 'edit'
     end
   end
 
@@ -52,7 +52,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def user_statistics
-    @orders = @user.orders.normal_orders.latest
+    @orders = @user.orders.completed_orders.latest
     select_time = true if params[:start_time].present? && params[:end_time].present?
     @date = params[:created_date].present? ? params[:created_date] : "one_days"
     @today = Date.today
@@ -63,13 +63,13 @@ class Admin::UsersController < Admin::BaseController
     @chart_amount = Order.chart_base_line_amount(@categories_amount, @series_amount, @min_tick_amount) if @categories_amount.present?
   end
 
-  private 
+  private
 
     def image_upload(image_params,model_name,model_id)
       image_params.each do |img|
         Image.create(image:img,target_type:model_name,target_id:model_id)
       end
-    end 
+    end
 
     def set_user
       @user = User.find(params[:id])
