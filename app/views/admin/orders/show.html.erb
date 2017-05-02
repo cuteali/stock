@@ -76,7 +76,7 @@
                     </td>
                   </tr>
                   <% products.each_with_index do |product, index| %>
-                    <% orders_product = product.orders_products.find_by(order_id: @order.id) %>
+                    <% orders_product = product.orders_products.find_by(id: product.op_id) %>
                     <tr>
                       <td>
                         #<%= index + 1 %>

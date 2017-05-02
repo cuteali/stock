@@ -61,7 +61,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def show
-    @products = @order.products.group_by(&:category_id)
+    @products = @order.products.select('orders_products.id as op_id, products.*').group_by(&:category_id)
   end
 
   def delete_order_product
