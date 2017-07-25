@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170116134251) do
+ActiveRecord::Schema.define(version: 20170725114321) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "province",      limit: 255
@@ -240,7 +240,7 @@ ActiveRecord::Schema.define(version: 20170116134251) do
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
   add_index "orders", ["car_id"], name: "index_orders_on_car_id", using: :btree
   add_index "orders", ["deliveryman_id"], name: "index_orders_on_deliveryman_id", using: :btree
-  add_index "orders", ["order_no"], name: "index_orders_on_order_no", using: :btree
+  add_index "orders", ["order_no"], name: "index_orders_on_order_no", unique: true, using: :btree
   add_index "orders", ["storehouse_id"], name: "index_orders_on_storehouse_id", using: :btree
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
