@@ -28,7 +28,7 @@ module V1
     resources 'orders' do
       # http://localhost:3000/api/v1/orders
       # bcb67d8860d033061090fbbf9f4c605c
-      params do 
+      params do
         requires :token,type: String
         requires :state,type: String
       end
@@ -40,7 +40,7 @@ module V1
       end
 
       #http://localhost:3000/api/v1/orders
-      params do 
+      params do
         requires :token, type: String
         requires :receive_name, type: String
         requires :phone_num, type: String
@@ -50,43 +50,44 @@ module V1
         optional :remarks, type: String
       end
       post "",jbuilder:"v1/orders/create" do
-        if @token.present? && @user.is_verified?
-          AppLog.info("products : #{params[:products]}")
-          address = Address.find_by(unique_id:params[:address_id])
-          products_json = params[:products].gsub("\\","")
-          AppLog.info("products_json : #{products_json}")
-          ActiveRecord::Base.transaction do 
-            product_arr = JSON.parse(products_json)
-            order_money, @is_restricting, @is_send_out = Order.check_order_money(@user, product_arr)
-            AppLog.info("money:#{params[:money]}")
-            if !@is_restricting && !@is_send_out
-              @delivery_price = SystemSetting.first.try(:delivery_price)
-              @is_sending_price = order_money >= @delivery_price.to_f
-              if (order_money == params[:money].gsub(/[^\d\.]/, '').to_f) && @is_sending_price
-                @not_enough_products, @sold_off_products = Product.valid_product_num_and_state(product_arr)
-                if @not_enough_products.blank? && @sold_off_products.blank?
-                  @order = Order.create(state: 0, address_id: address.try(:id), phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, area: address.try(:area), detail: address.try(:detail), order_money: order_money, unique_id: SecureRandom.urlsafe_base64, remarks: params[:remarks])
-                  @order.create_orders_products(product_arr)
-                  pro_ids = @order.update_product_stock_num
-                  AppLog.info("pro_ids:      #{pro_ids}")
-                  @cart_items = CartItem.where(user_id: @user.id, product_id: pro_ids)
-                  AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
-                  @cart_items.destroy_all if @cart_items.present?
-                  if @order
-                    @order.calculate_cost_price
-                    send_to_shop(@order)
-                    # send_to_user(@user, @order)
-                    @order.order_push_message_to_user
-                  end
-                end
-              end
-            end
-          end
-        end
+        # if @token.present? && @user.is_verified?
+        #   AppLog.info("products : #{params[:products]}")
+        #   address = Address.find_by(unique_id:params[:address_id])
+        #   products_json = params[:products].gsub("\\","")
+        #   AppLog.info("products_json : #{products_json}")
+        #   ActiveRecord::Base.transaction do
+        #     product_arr = JSON.parse(products_json)
+        #     order_money, @is_restricting, @is_send_out = Order.check_order_money(@user, product_arr)
+        #     AppLog.info("money:#{params[:money]}")
+        #     if !@is_restricting && !@is_send_out
+        #       @delivery_price = SystemSetting.first.try(:delivery_price)
+        #       @is_sending_price = order_money >= @delivery_price.to_f
+        #       if (order_money == params[:money].gsub(/[^\d\.]/, '').to_f) && @is_sending_price
+        #         @not_enough_products, @sold_off_products = Product.valid_product_num_and_state(product_arr)
+        #         if @not_enough_products.blank? && @sold_off_products.blank?
+        #           @order = Order.create(state: 0, address_id: address.try(:id), phone_num: params[:phone_num], receive_name: params[:receive_name], user_id: @user.id, area: address.try(:area), detail: address.try(:detail), order_money: order_money, unique_id: SecureRandom.urlsafe_base64, remarks: params[:remarks])
+        #           @order.create_orders_products(product_arr)
+        #           pro_ids = @order.update_product_stock_num
+        #           AppLog.info("pro_ids:      #{pro_ids}")
+        #           @cart_items = CartItem.where(user_id: @user.id, product_id: pro_ids)
+        #           AppLog.info("cart_items:   #{@cart_items.pluck(:id)}")
+        #           @cart_items.destroy_all if @cart_items.present?
+        #           if @order
+        #             @order.calculate_cost_price
+        #             send_to_shop(@order)
+        #             # send_to_user(@user, @order)
+        #             @order.order_push_message_to_user
+        #           end
+        #         end
+        #       end
+        #     end
+        #   end
+        # end
+        @errmsg = '请至应用商店更新到3.0.0版，如有问题请打客服电话！'
       end
 
       #http://localhost:3000/api/v1/orders/:unique_id
-      params do 
+      params do
         requires :token,type:String
         requires :unique_id,type:String
         optional :message_id, type: String

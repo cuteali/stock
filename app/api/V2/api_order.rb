@@ -24,13 +24,14 @@ module V2
         requires :unique_id,type:String
       end
       get "cancel",jbuilder:"v2/orders/cancel" do
-        if @token.present?
-          order = Order.find_by(unique_id:params[:unique_id])
-          if order
-            order.restore_products
-            @order = order.update(state: 3)
-          end
-        end
+        # if @token.present?
+        #   order = Order.find_by(unique_id:params[:unique_id])
+        #   if order
+        #     order.restore_products
+        #     @order = order.update(state: 3)
+        #   end
+        # end
+        @errmsg = '请至应用商店更新到3.0.0版，如有问题请打客服电话！'
       end
 
       #http://localhost:3000/api/v2/orders/:unique_id
